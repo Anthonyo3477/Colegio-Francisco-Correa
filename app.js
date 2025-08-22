@@ -22,6 +22,10 @@ app.get('/documentosAlumnos', (req, res) => {
     res.render('documentosAlumnos');
 });
 
+app.get('/InicioSeccion', (req, res) => {
+    res.render('InicioSeccion');
+});
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Algo salió mal!');

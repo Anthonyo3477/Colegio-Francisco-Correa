@@ -24,3 +24,13 @@ CREATE TABLE apoderados (
     alumno_id INT NOT NULL,
     FOREIGN KEY (alumno_id) REFERENCES alumno(id) ON DELETE CASCADE
 );
+
+CREATE TABLE admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rut_admin VARCHAR(12) NOT NULL UNIQUE,
+    nombre_admin VARCHAR(100) NOT NULL,
+    correo_admin VARCHAR(100) NOT NULL UNIQUE,
+    contrasena_admin VARCHAR(100) NOT NULL,
+    telefono VARCHAR(15) NOT NULL,
+    direccion VARCHAR(255) NOT NULL
+);

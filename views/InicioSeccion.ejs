@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Inicio de Sesión</title>
+    <link rel="stylesheet" href="/css/inicioSeccion.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+
+        <header class="text-center mt-4">
+            <h1>Colegio San Francisco Carrasco</h1>
+            <p>Bienvenidos a nuestra comunidad educativa</p>
+        </header>
+
+        <main class="container mt-5 pt-3">
+            <div class="card mx-auto" style="max-width: 450px;">
+                <div class="card-body">
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs mb-3" id="authTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
+                                type="button" role="tab">Iniciar Sesión</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register"
+                                type="button" role="tab">Registrarse</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="authTabsContent">
+                        <!-- Login -->
+                        <div class="tab-pane fade show active" id="login" role="tabpanel">
+                            <form id="loginForm" method="POST" action="/auth/login">
+                                <h2 class="text-center mb-4">Inicio de Sesión</h2>
+                                <div class="mb-3">
+                                    <label for="LoginEmail" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="LoginEmail" name="correo" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="LoginPassword" class="form-label">Contraseña</label>
+                                    <input type="password" class="form-control" id="LoginPassword" name="contrasena"
+                                        required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100" id="btnLogin">Ingresar</button>
+                                <!-- Botón de logout -->
+                                <form action="/logout" method="POST" style="text-align:center; margin:20px 0;">
+                                    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+                                </form>
+                            </form>
+                        </div>
+
+                        <!-- Registro -->
+                        <div class="tab-pane fade" id="register" role="tabpanel">
+                            <form id="registerForm">
+                                <h2 class="text-center mb-4">Registrarse</h2>
+                                <div class="mb-3">
+                                    <label for="RegisterNombre" class="form-label">Nombre Completo</label>
+                                    <input type="text" class="form-control" id="RegisterNombre" name="nombre" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="RegisterEmail" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="RegisterEmail" name="correo" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="RegisterPassword" class="form-label">Contraseña</label>
+                                    <input type="password" class="form-control" id="RegisterPassword" name="contrasena"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="RegisterTelefono" class="form-label">Teléfono</label>
+                                    <input type="text" class="form-control" id="RegisterTelefono" name="telefono"
+                                        required pattern="[0-9]{9,15}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="RegisterDireccion" class="form-label">Dirección</label>
+                                    <textarea class="form-control" id="RegisterDireccion" name="direccion" rows="2"
+                                        required></textarea>
+                                </div>
+                                <button type="button" class="btn btn-success w-100"
+                                    id="btnRegister">Registrarse</button>
+                                <!-- Botón de logout -->
+                                <form action="/logout" method="POST" style="text-align:center; margin:20px 0;">
+                                    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+                                </form>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer>
+            <%- include('partials/footer') %>
+        </footer>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Validaciones -->
+        <script>
+            document.getElementById('btnLogin').addEventListener('click', function (e) {
+                const email = document.getElementById('LoginEmail').value.trim();
+                const contrasena = document.getElementById('LoginPassword').value.trim();
+
+                if (!email || !contrasena) {
+                    e.preventDefault();
+                    alert('Por favor complete ambos campos.');
+                }
+            });
+
+            document.getElementById('btnRegister').addEventListener('click', async function (e) {
+                e.preventDefault();
+
+                const nombre = document.getElementById('RegisterNombre').value.trim();
+                const correo = document.getElementById('RegisterEmail').value.trim();
+                const contrasena = document.getElementById('RegisterPassword').value.trim();
+                const telefono = document.getElementById('RegisterTelefono').value.trim();
+                const direccion = document.getElementById('RegisterDireccion').value.trim();
+
+                if (!nombre || !correo || !contrasena || !telefono || !direccion) {
+                    alert('Por favor, complete todos los campos.');
+                    return;
+                }
+
+                try {
+                    const res = await fetch('/auth/registrar', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nombre, correo, contrasena, telefono, direccion })
+                    });
+
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        alert('Registro exitoso. Ahora puede iniciar sesión.');
+                        document.getElementById('registerForm').reset();
+                        document.getElementById('login-tab').click(); // Cambia a login
+                    } else {
+                        alert(data.error || 'Error al registrar.');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Error de conexión con el servidor.');
+                }
+            });
+        </script>
+</body>
+
+</html>

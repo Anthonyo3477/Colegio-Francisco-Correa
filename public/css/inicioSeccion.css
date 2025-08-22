@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Encabezado */
+header {
+    background: #2d98da;
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+    margin: 0; /* evita huecos */
+}
+
+header h1 {
+    margin: 0; /* elimina espacio extra del h1 */
+}
+
+/* Navbar */
+nav {
+    background: #1e73be;
+    color: #fff;
+    padding: 10px 20px;
+    margin: 0; /* sin hueco debajo */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0; /* elimina espacio arriba/abajo del ul */
+    display: flex;
+    gap: 15px;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Contenido principal */
+main {
+    padding: 40px 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card de login */
+.card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    width: 350px;
+    text-align: center;
+}
+
+.card h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Formulario organizado */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* separación automática entre inputs y botones */
+}
+
+/* Inputs */
+input[type="text"], 
+input[type="email"], 
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* Botones */
+button, 
+input[type="submit"] {
+    width: 100%;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+button:hover, 
+input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* Footer */
+footer {
+    background: #2d98da;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
