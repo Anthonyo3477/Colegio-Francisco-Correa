@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Colegio San Francisco Carrasco - Inicio</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+
+        <header>
+            <h1>Colegio San Francisco Carrasco</h1>
+            <p>Bienvenidos a nuestra comunidad educativa</p>
+        </header>
+        <main>
+
+            <div id="carouselExample" class="carousel slide">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/Imagenes - Prueba/ford mustang.JPG.webp" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/Imagenes - Prueba/img3.wallspic.com-agua-ambiente-afterglow-naturaleza-paisaje_natural-4096x4096.png"
+                            class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/Imagenes - Prueba/129294-las_luces_de_la_ciudad-7680x4320.jpg" class="d-block w-100"
+                            alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+
+            <h2>Nosotros</h2>
+            <p>
+                Nuestro colegio ofrece educación integral, valores y excelencia académica.<br>
+                Descubre más sobre nosotros y nuestras actividades.
+            </p>
+            <a href="/contacto" class="btn">Contáctanos</a>
+
+            <div class="cards-container">
+
+                <!-- tarjeta numero 1-->
+                <div class="card">
+                    <img src="img1.jpg" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Alumnos</h5>
+                        <p class="card-text">Registra un nuevo alumno en el sistema.</p>
+                        <!-- Cambié el href a "alumno" para que coincida con la rut_alumnosa correcta -->
+                        <a href="/nuevo" class="btn">Ir</a>
+                    </div>
+                </div>
+
+                <!-- tarjeta numero 2-->
+                <div class="card">
+                    <img src="img2.jpg" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Ver datos</h5>
+                        <p class="card-text">Visualizacion de los datos del Alumno en el sistema. </p>
+                        <a href="/listaAlumnos" class="btn">Ir</a>
+                    </div>
+                </div>
+
+                <!-- tarjeta numero 3-->
+                <div class="card">
+                    <img src="img3.jpg" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Solicitar Papeles</h5>
+                        <p class="card-text">Solicitar papeles importantes</p>
+                        <a href="/documentosAlumnos" class="btn">Ir</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <%- include('partials/footer') %>
+</body>
+
+</html>

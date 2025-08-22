@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Listado de Alumnos</title>
+    <link rel="stylesheet" href="/css/listaAlumnos.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+
+    <header>
+        <h1>Colegio San Francisco Carrasco</h1>
+        <p>Bienvenidos a nuestra comunidad educativa</p>
+    </header>
+
+    <main>
+        <h2 style="text-align:center;">Listado de Alumnos</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>RUT</th>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Curso</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Nacionalidad</th>
+                    <th>Orden Llegada</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (alumnos && alumnos.length > 0) { %>
+                    <% alumnos.forEach(alumno => { %>
+                        <tr>
+                            <td><%= alumno.rut_alumnos %></td>
+                            <td><%= alumno.nombre %></td>
+                            <td><%= alumno.apellido_paterno %></td>
+                            <td><%= alumno.apellido_materno %></td>
+                            <td><%= alumno.curso %></td>
+                            <td>
+                                <%= alumno.fecha_ingreso instanceof Date 
+                                    ? alumno.fecha_ingreso.toISOString().split('T')[0] 
+                                    : alumno.fecha_ingreso %>
+                            </td>
+                            <td><%= alumno.nacionalidad %></td>
+                            <td><%= alumno.orden_llegada %></td>
+                            <td>
+                                <!-- Botón para editar -->
+                                <a href="/editar/<%= alumno.id %>" class="btn btn-sm btn-warning">Modificar</a>
+
+                                <!-- Botón para eliminar -->
+                                <form action="/eliminar/<%= alumno.id %>" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="9" style="text-align:center;">No hay alumnos registrados</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <button type="button" onclick="window.history.back()" class="btn-volver">Volver</button>
+    </main>
+
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,180 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Encabezado */
+header {
+    background: #2d98da;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Navbar */
+nav {
+    background: #1e73be;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 15px;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding-bottom: 60px;
+}
+
+.btn-volver {
+    margin: 30px auto 0 auto;
+    display: block;
+    background: #2d98da;
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.btn-volver:hover {
+    background: #2275a5;
+}
+
+.btn-filtrar {
+    margin-left: 10px;
+    background: #2d98da;
+    color: white;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-filtrar:hover {
+    background: #2275a5;
+}
+
+.btn-editar {
+    background: #2275a5;
+    color: #fff;
+    padding: 7px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 6px rgba(44, 62, 80, 0.08);
+    display: inline-block;
+}
+
+.btn-editar:hover {
+    background: #2275a5;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Tabla de alumnos */
+table {
+    width: 90%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 1em;
+}
+
+th {
+    background: #2d98da;
+    color: #fff;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+}
+
+tr:nth-child(even) {
+    background: #f5f6fa;
+}
+
+tr:hover {
+    background: #e1ecf7;
+    transition: background 0.2s;
+}
+
+caption {
+    caption-side: top;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #3867d6;
+}
+
+/* Footer */
+footer {
+    background: #2d98da;
+    color: #fff;
+    text-align: center;
+    padding: 12px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    font-size: 15px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Responsividad */
+@media (max-width: 800px) {
+    table {
+        width: 100%;
+        font-size: 0.95em;
+    }
+
+    th,
+    td {
+        padding: 7px 4px;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 8px 0;
+    }
+}
