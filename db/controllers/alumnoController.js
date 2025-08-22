@@ -29,9 +29,7 @@ function createAlumno(alumno) {
 function getAllAlumnos() {
     return new Promise((resolve, reject) => {
         conn.query(
-            `SELECT id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, 
-                    DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso, nacionalidad, orden_llegada 
-             FROM ${TABLA}`,
+            `SELECT id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso,  DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso, nacionalidad, orden_llegada  FROM ${TABLA}`,
             (error, result) => error ? reject(error) : resolve(result)
         );
     });
@@ -41,12 +39,9 @@ function getAllAlumnos() {
 function getAlumnoById(id) {
     return new Promise((resolve, reject) => {
         conn.query(
-            `SELECT id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, 
-                    DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso, nacionalidad, orden_llegada 
-             FROM ${TABLA} 
-             WHERE id = ?`,
-            [id],
-            (error, result) => error ? reject(error) : resolve(result[0] || null)
+            `SELECT * FROM ${TABLA}  WHERE id = ?`, [id], (error, result) => {
+                return error ? reject(error) : resolve(result[0]);
+            } 
         );
     });
 }
@@ -54,12 +49,9 @@ function getAlumnoById(id) {
 // Actualizar alumno por ID
 function updateAlumno(id, alumno) {
     const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada } = alumno;
-
     return new Promise((resolve, reject) => {
         conn.query(
-            `UPDATE ${TABLA} 
-             SET rut_alumnos = ?, nombre = ?, apellido_paterno = ?, apellido_materno = ?, curso = ?, fecha_ingreso = ?, nacionalidad = ?, orden_llegada = ?
-             WHERE id = ?`,
+            `UPDATE ${TABLA}  SET rut_alumnos = ?, nombre = ?, apellido_paterno = ?, apellido_materno = ?, curso = ?, fecha_ingreso = ?, nacionalidad = ?, orden_llegada = ? WHERE id = ?`,
             [
                 rut_alumnos,
                 nombre,
@@ -95,10 +87,4 @@ function formatDate(date) {
     return date;
 }
 
-module.exports = {
-    createAlumno,
-    getAllAlumnos,
-    getAlumnoById,
-    updateAlumno,
-    deleteAlumno
-};
+module.exports = { createAlumno, getAllAlumnos, getAlumnoById, updateAlumno, deleteAlumno };
