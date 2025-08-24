@@ -64,11 +64,12 @@
                                 </td>
                                 <td>
                                     <!-- Botón para editar -->
-                                    <a href="/editar/<%= alumno.rut_alumnos %>" class="btn btn-sm btn-warning">Modificar</a>
+                                    <a href="/editar/<%= alumno.id %>" class="btn btn-sm btn-warning">Modificar</a>
                                     <!-- Botón para eliminar -->
                                     <form action="/eliminar/<%= alumno.id %>" method="POST" style="display:inline;">
                                         <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                                     </form>
+
                                 </td>
                             </tr>
                             <% }) %>

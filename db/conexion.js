@@ -13,28 +13,43 @@ class Conexion {
             queueLimit: 0
         });
 
+        // Verificar la conexión
         this.pool.getConnection((err, connection) => {
             if (err) {
-                console.error("Error en la conexión a la base de datos: ", err);
+                console.error('Error al conectar a la base de datos:', err);
             } else {
-                console.log("Conectado a la base de datos");
+                console.log('Conexión a la base de datos establecida con éxito');
                 connection.release();
             }
         });
     }
 
+    /**
+     * Ejecuta una consulta SQL con valores preparados (recomendado para seguridad).
+     * @param {string} sql
+     * @param {Array} valores
+     * @returns {Promise<[Array, Array]>} Retorna una promesa con [filas, campos]
+     */
     execute(sql, valores = []) {
         return new Promise((resolve, reject) => {
+            // Asegúrate de que el callback tiene (error, resultados, fields)
             this.pool.execute(sql, valores, (error, resultados, fields) => {
                 if (error) {
                     console.error('Error en la consulta:', error);
                     return reject(error);
                 }
+                // ¡Aquí es donde se asegura que siempre se devuelve un array!
                 resolve([resultados, fields]);
             });
         });
     }
 
+    /**
+     * Ejecuta una consulta SQL estándar (menos segura si no se sanitizan los valores).
+     * @param {string} sql
+     * @param {Array} valores
+     * @returns {Promise<[Array, Array]>} Retorna una promesa con [filas, campos]
+     */
     query(sql, valores = []) {
         return new Promise((resolve, reject) => {
             this.pool.query(sql, valores, (error, resultados, fields) => {
@@ -47,6 +62,10 @@ class Conexion {
         });
     }
 
+    /**
+     * Cierra el pool de conexiones.
+     * @returns {Promise<void>}
+     */
     cerrarConexion() {
         return new Promise((resolve, reject) => {
             this.pool.end(err => {

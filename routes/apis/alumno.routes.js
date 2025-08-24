@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const alumnoController = require('../../db/controllers/alumnoController');
 
+// Middleware para parsear body
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
@@ -9,21 +10,24 @@ router.use(express.json());
    CREAR ALUMNO
 ================================================== */
 
-// Mostrar formulario para crear nuevo alumno
+// Mostrar formulario de creación
 router.get('/nuevo', (req, res) => {
-    res.render('alumno', { title: 'Registrar Nuevo Alumno' });
+    res.render('alumno', {
+        title: 'Registrar Nuevo Alumno',
+        error: null,
+        valores: {}
+    });
 });
 
-// Procesar creación de alumno
+// Procesar creación
 router.post('/insert', async (req, res) => {
     try {
         const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada } = req.body;
 
-        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() ||
-            !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso ||
-            !nacionalidad?.trim()) {
+        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim()) {
             return res.status(400).render('alumno', {
-                error: 'Todos los campos son obligatorios y deben ser válidos',
+                title: 'Registrar Nuevo Alumno',
+                error: 'Todos los campos son obligatorios',
                 valores: req.body
             });
         }
@@ -39,84 +43,15 @@ router.post('/insert', async (req, res) => {
             orden_llegada: orden_llegada ? parseInt(orden_llegada) : null
         });
 
+        console.log("Alumno creado correctamente:", rut_alumnos);
         res.redirect('/listaAlumnos');
+
     } catch (error) {
         console.error('Error al crear alumno:', error);
         res.status(500).render('alumno', {
+            title: 'Registrar Nuevo Alumno',
             error: 'Error al guardar el alumno',
             valores: req.body
-        });
-    }
-});
-
-
-
-
-/* ==================================================
-MODIFICAR ALUMNO
-================================================== */
-
-// Mostrar formulario de edición (por ID)
-router.get('/editar/:id', async (req, res) => {
-    try {
-        const alumno = await alumnoController.getAlumnoById(req.params.id);
-        
-        if (!alumno) {
-            return res.status(404).render('error', { message: 'Alumno no encontrado' });
-        }
-        
-        res.render('EditarAlumnos', {
-            title: `Editar ${alumno.nombre}`,
-            alumno
-        });
-    } catch (error) {
-        console.error('Error al cargar el formulario de edición:', error);
-        res.status(500).render('error', { message: 'Error al obtener alumno' });
-    }
-});
-
-// Procesar actualización (por ID)
-router.post('/actualizar/:id', async (req, res) => {
-    try {
-        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada } = req.body;
-        
-        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim()) {
-            return res.status(400).render('EditarAlumnos', {
-                error: 'Todos los campos son obligatorios y deben ser válidos',
-                alumno: { 
-                    id: req.params.id, 
-                    rut_alumnos, 
-                    nombre, 
-                    apellido_paterno, 
-                    apellido_materno, 
-                    curso, 
-                    fecha_ingreso, 
-                    nacionalidad, 
-                    orden_llegada 
-                }
-            });
-        }
-        
-        await alumnoController.updateAlumno(req.params.id, {
-            rut_alumnos: rut_alumnos.trim(),
-            nombre: nombre.trim(),
-            apellido_paterno: apellido_paterno.trim(),
-            apellido_materno: apellido_materno.trim(),
-            curso: curso.trim(),
-            fecha_ingreso,
-            nacionalidad: nacionalidad.trim(),
-            orden_llegada: orden_llegada ? parseInt(orden_llegada) : null
-        });
-        
-        res.redirect('/listaAlumnos');
-    } catch (error) {
-        console.error('Error al actualizar alumno:', error);
-        res.status(500).render('EditarAlumnos', {
-            error: 'Error al actualizar el alumno',
-            alumno: { 
-                id: req.params.id, 
-                ...req.body 
-            }
         });
     }
 });
@@ -128,6 +63,7 @@ router.post('/actualizar/:id', async (req, res) => {
 router.get('/listaAlumnos', async (req, res) => {
     try {
         const alumnos = await alumnoController.getAllAlumnos();
+        console.log("Alumnos cargados:", alumnos.length);
         res.render('listaAlumnos', { alumnos });
     } catch (error) {
         console.error('Error al obtener alumnos:', error);
@@ -135,15 +71,89 @@ router.get('/listaAlumnos', async (req, res) => {
     }
 });
 
-
 /* ==================================================
-ELIMINAR ALUMNO
+   MODIFICAR ALUMNO
 ================================================== */
 
-// Eliminar alumno (por ID)
-router.post('/eliminar/:id', async (req, res) => {
+// Formulario edición
+router.get('/editar/:id', async (req, res) => {
+    const id = req.params.id;
+    console.log("Solicitud GET /editar con ID:", id);
+
     try {
-        await alumnoController.deleteAlumno(req.params.id);
+        // Promesa con timeout opcional de 5 segundos
+        const alumno = await Promise.race([
+            alumnoController.getAlumnoById(id),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout DB')), 5000))
+        ]);
+
+        console.log("Alumno encontrado:", alumno);
+
+        if (!alumno) {
+            return res.status(404).render('error', { message: 'Alumno no encontrado' });
+        }
+
+        res.render('EditarAlumnos', {
+            title: `Editar ${alumno.nombre}`,
+            alumno,
+            error: null
+        });
+
+    } catch (error) {
+        console.error('Error al cargar el formulario de edición:', error);
+        res.status(500).render('error', { message: `Error al obtener alumno: ${error.message}` });
+    }
+});
+
+// Procesar actualización
+router.post('/actualizar/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada } = req.body;
+
+        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim()) {
+            return res.status(400).render('EditarAlumnos', {
+                title: `Editar Alumno`,
+                error: 'Todos los campos son obligatorios',
+                alumno: { id, ...req.body }
+            });
+        }
+
+        await alumnoController.updateAlumno(id, {
+            rut_alumnos: rut_alumnos.trim(),
+            nombre: nombre.trim(),
+            apellido_paterno: apellido_paterno.trim(),
+            apellido_materno: apellido_materno.trim(),
+            curso: curso.trim(),
+            fecha_ingreso,
+            nacionalidad: nacionalidad.trim(),
+            orden_llegada: orden_llegada ? parseInt(orden_llegada) : null
+        });
+
+        console.log("Alumno actualizado correctamente:", id);
+        res.redirect('/listaAlumnos');
+
+    } catch (error) {
+        console.error('Error al actualizar alumno:', error);
+        res.status(500).render('EditarAlumnos', {
+            title: `Editar Alumno`,
+            error: `Error al actualizar el alumno: ${error.message}`,
+            alumno: { id, ...req.body }
+        });
+    }
+});
+
+/* ==================================================
+   ELIMINAR ALUMNO
+================================================== */
+
+router.post('/eliminar/:id', async (req, res) => {
+    const id = req.params.id;
+    console.log("Solicitud POST /eliminar con ID:", id);
+
+    try {
+        await alumnoController.deleteAlumno(id);
+        console.log("Alumno eliminado correctamente:", id);
         res.redirect('/listaAlumnos');
     } catch (error) {
         console.error('Error al eliminar alumno:', error);

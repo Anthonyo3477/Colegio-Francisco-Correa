@@ -11,7 +11,7 @@ CREATE TABLE alumno (
     curso VARCHAR(10) NOT NULL,
     fecha_ingreso DATE NOT NULL,
     nacionalidad VARCHAR(100) NOT NULL,
-    orden_llegada INT UNIQUE
+    orden_llegada INT UNIQUE NOT NULL
 );
 
 CREATE TABLE apoderados (
