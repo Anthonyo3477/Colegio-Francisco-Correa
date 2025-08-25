@@ -18,6 +18,9 @@ realizaria en web, ya que se les hacia mas sencillo y tenian mejores tenian un p
 
 <img width="1080" height="403" alt="image" src="https://github.com/user-attachments/assets/16bfff0a-7759-4acf-a9ab-23231a294513" />
 
+# Algunas Observaciones
+- Algunas observaciones que dejare por aca con algunas cosas qeu faltan o mejor dicho tareas, incompletas que estaan de momento, me faltaria mejorara algunas vistas por parte de los .css y comenzar con el registro de apoderados del alumno, luego crear una session, y al final pulir mas el fronten para asi investigar sobre como extraer datos de la base de datos para crear un pdf con eseos datos y que pueda descargar una lista con los datos del alumno en un archivo de excel
+
 
 ## 📥 Clonar el Repositorio
 
