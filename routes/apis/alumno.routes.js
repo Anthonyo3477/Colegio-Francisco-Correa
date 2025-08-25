@@ -60,11 +60,42 @@ router.post('/insert', async (req, res) => {
    LISTAR ALUMNOS
 ================================================== */
 
-router.get('/listaAlumnos', async (req, res) => {
+/*router.get('/listaAlumnos', async (req, res) => {
     try {
         const alumnos = await alumnoController.getAllAlumnos();
         console.log("Alumnos cargados:", alumnos.length);
         res.render('listaAlumnos', { alumnos });
+    } catch (error) {
+        console.error('Error al obtener alumnos:', error);
+        res.status(500).render('error', { message: 'Error al cargar alumnos' });
+    }
+});*/
+
+/* ==================================================
+   LISTAR ALUMNOS con FILTRO
+================================================== */
+
+router.get('/listaAlumnos', async (req, res) => {
+    try {
+        const cursoSeleccionado = req.query.curso || "";
+
+        // Traer alumnos filtrados (si hay curso, filtrar)
+        let alumnos;
+        if (cursoSeleccionado) {
+            alumnos = await alumnoController.getAlumnosByCurso(cursoSeleccionado);
+        } else {
+            alumnos = await alumnoController.getAllAlumnos();
+        }
+
+        // Obtener lista única de cursos
+        const cursos = await alumnoController.getAllCursos();
+
+        res.render('listaAlumnos', {
+            alumnos,
+            cursos,
+            cursoSeleccionado
+        });
+
     } catch (error) {
         console.error('Error al obtener alumnos:', error);
         res.status(500).render('error', { message: 'Error al cargar alumnos' });

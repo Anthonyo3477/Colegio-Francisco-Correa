@@ -27,6 +27,17 @@ async function getAllAlumnos() {
     return rows;
 }
 
+// Obtienes Alumnos filtrdos
+async function getAlumnosByCurso(curso) {
+    const [rows] = await conn.query("SELECT * FROM alumno WHERE curso = ?", [curso]);
+    return rows;
+}
+
+async function getAllCursos() {
+    const [rows] = await conn.query("SELECT DISTINCT curso FROM alumno ORDER BY curso ASC");
+    return rows.map(r => r.curso);
+}
+
 // Obtener alumno por ID
 async function getAlumnoById(id) {
     if (!id) return null;
@@ -51,4 +62,4 @@ async function deleteAlumno(id) {
     return result;
 }
 
-module.exports = { createAlumno, getAllAlumnos, getAlumnoById, updateAlumno, deleteAlumno };
+module.exports = { createAlumno, getAllAlumnos, getAlumnoById, getAllCursos, getAlumnosByCurso, updateAlumno, deleteAlumno };
