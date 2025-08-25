@@ -27,4 +27,4 @@ Sigue estos pasos para clonar y ejecutar el proyecto en tu equipo local:
 2. Ejecuta el siguiente comando para clonar el repositorio:
 
    ```bash
-   https://github.com/Anthonyo3477/Colegio-Francisco-Carrasco.git
+   https://github.com/Anthonyo3477/Colegio-Francisco-Correa.git
