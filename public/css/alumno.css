@@ -43,15 +43,44 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* Main */
+/* Main en columna: título arriba y formularios abajo */
 main {
     padding: 40px 10px 60px 10px;
+    display: flex;
+    flex-direction: column;
+    /* primero h2, después formularios */
+    align-items: center;
+    gap: 30px;
 }
 
-/* Formulario (ya lo tienes, solo agrego detalles extra) */
+/* Título dentro de main */
+main h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #000;
+}
+
+/* Contenedor para los formularios */
+.formularios {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    /* espacio entre tarjetas */
+    flex-wrap: wrap;
+    /* en pantallas pequeñas se apilan */
+    width: 100%;
+    max-width: 1100px;
+    /* límite de ancho */
+}
+
+/* Formulario */
 form {
+    flex: 1 1 400px;
+    /* se ajusta con mínimo 400px */
     max-width: 500px;
-    margin: 30px auto;
+    margin: 0;
     padding: 20px;
     background: #fff;
     border-radius: 8px;
