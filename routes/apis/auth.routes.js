@@ -8,11 +8,11 @@ router.post('/login', authController.login);
 //Procesar Registro
 router.post('/registrar', authController.registrar);
 
-//Cierre Sesion
-router.get('/logout', (req, res) =>{
-    req.session.destroy(err =>{
+// Cierre Sesión (mejor con POST)
+router.post('/logout', (req, res) => {
+    req.session.destroy(err => {
         if (err) {
-            console.error('Error al cerrar la sesion:',err);
+            console.error('Error al cerrar la sesion:', err);
             return res.status(500).send('Error al cerrar su sesion');
         }
         res.redirect('/InicioSeccion');
