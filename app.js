@@ -14,9 +14,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // rutas
 const home = require('./routes/apis/home.routes');
 const alumnoRoutes = require('./routes/apis/alumno.routes');
+const authRoutes = require('./routes/apis/auth.routes');
 
 app.use('/', home);
 app.use('/', alumnoRoutes);
+app.use('/', authRoutes);
+
 
 app.get('/documentosAlumnos', (req, res) => {
     res.render('documentosAlumnos');

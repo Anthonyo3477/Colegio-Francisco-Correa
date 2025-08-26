@@ -37,7 +37,7 @@
                     <div class="tab-content" id="authTabsContent">
                         <!-- Login -->
                         <div class="tab-pane fade show active" id="login" role="tabpanel">
-                            <form id="loginForm" method="POST" action="/auth/login">
+                            <form id="loginForm" method="POST" action="/login">
                                 <h2 class="text-center mb-4">Inicio de Sesión</h2>
                                 <div class="mb-3">
                                     <label for="LoginEmail" class="form-label">Correo Electrónico</label>
@@ -64,6 +64,10 @@
                         <div class="tab-pane fade" id="register" role="tabpanel">
                             <form id="registerForm">
                                 <h2 class="text-center mb-4">Registrarse</h2>
+                                <div class="mb-3">
+                                    <label for="RegisterNombre" class="form-label">Rut</label>
+                                    <input type="text" class="form-control" id="Re" name="nombre" required>
+                                </div>
                                 <div class="mb-3">
                                     <label for="RegisterNombre" class="form-label">Nombre Completo</label>
                                     <input type="text" class="form-control" id="RegisterNombre" name="nombre" required>
@@ -126,13 +130,14 @@
             document.getElementById('btnRegister').addEventListener('click', async function (e) {
                 e.preventDefault();
 
-                const nombre = document.getElementById('RegisterNombre').value.trim();
-                const correo = document.getElementById('RegisterEmail').value.trim();
-                const contrasena = document.getElementById('RegisterPassword').value.trim();
+                const rut_admin = document.getElementById('RegistrarRut').value.trim();
+                const nombre_admin = document.getElementById('RegisterNombre').value.trim();
+                const correo_admin = document.getElementById('RegisterEmail').value.trim();
+                const contrasena_admin = document.getElementById('RegisterPassword').value.trim();
                 const telefono = document.getElementById('RegisterTelefono').value.trim();
                 const direccion = document.getElementById('RegisterDireccion').value.trim();
 
-                if (!nombre || !correo || !contrasena || !telefono || !direccion) {
+                if (!rut_admin || !nombre_admin || !correo_admin || !contrasena_admin || !telefono || !direccion) {
                     alert('Por favor, complete todos los campos.');
                     return;
                 }
@@ -141,7 +146,7 @@
                     const res = await fetch('/auth/registrar', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ nombre, correo, contrasena, telefono, direccion })
+                        body: JSON.stringify({ rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion })
                     });
 
                     const data = await res.json();
@@ -149,7 +154,7 @@
                     if (res.ok) {
                         alert('Registro exitoso. Ahora puede iniciar sesión.');
                         document.getElementById('registerForm').reset();
-                        document.getElementById('login-tab').click(); // Cambia a login
+                        document.getElementById('login-tab').click();
                     } else {
                         alert(data.error || 'Error al registrar.');
                     }
@@ -158,6 +163,7 @@
                     alert('Error de conexión con el servidor.');
                 }
             });
+
         </script>
 </body>
 

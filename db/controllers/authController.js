@@ -2,13 +2,13 @@ const conn = require('../conexion');
 
 // Muestra el formulario
 exports.mostrarFormularioLogin = (req, res) => {
-    if (req.session.id) {
+    if (req.session.adminId) {
         return res.redirect('/');
     }
 
     const { error, returnto } = req.query;
     res.render('InicioSeccion', {
-        title: 'Inicio de Seccion',
+        title: 'Inicio de Sesión',
         error,
         returnto: returnto || '/'
     });
@@ -24,8 +24,8 @@ exports.login = async (req, res) => {
 
     try {
         const [resultado] = await conn.execute(
-            'SELECT * FROM admin WHERE correo_admin = ? AND contrasena_admin = ?',
-            [correo_admin, contrasena_admin]
+            'SELECT * FROM admin WHERE correo_admin = ?',
+            [correo_admin]
         );
 
         if (resultado.length === 0) {
@@ -33,13 +33,20 @@ exports.login = async (req, res) => {
         }
 
         const admin = resultado[0];
-        req.session.id = admin.id;
+
+        // Verificar contraseña
+        const isMatch = await bcrypt.compare(contrasena_admin, admin.contrasena_admin);
+        if (!isMatch) {
+            return res.redirect('/InicioSeccion?error=Credenciales%20incorrectas');
+        }
+
+        // Guardar datos en la sesión
+        req.session.adminId = admin.id;
         req.session.rut_admin = admin.rut_admin;
         req.session.nombre_admin = admin.nombre_admin;
         req.session.telefono = admin.telefono;
         req.session.direccion = admin.direccion;
 
-        //redirige al inicio
         res.redirect('/');
 
     } catch (err) {
@@ -60,19 +67,12 @@ exports.registrar = async (req, res) => {
     try {
         const [result] = await conn.execute(
             'INSERT INTO admin (rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?)',
-            [rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion]
+            [rut_admin, nombre_admin, correo_admin, hashedPassword, telefono, direccion]
         );
 
-        const admin = {
-            id: result.insertId,
-            rut_admin,
-            nombre_admin,
-            correo_admin,
-            telefono,
-            direccion
-        };
+        const admin = { id: result.insertId, rut_admin, nombre_admin, correo_admin, telefono, direccion };
 
-        req.session.id = admin.id;
+        req.session.adminId = admin.id;
         req.session.rut_admin = admin.rut_admin;
         req.session.nombre_admin = admin.nombre_admin;
         req.session.telefono = admin.telefono;

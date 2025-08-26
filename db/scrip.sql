@@ -34,3 +34,12 @@ CREATE TABLE admin (
     telefono VARCHAR(15) NOT NULL,
     direccion VARCHAR(255) NOT NULL
 );
+
+INSERT INTO admin (id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada) 
+VALUES (1, '21.222.347-6', 'Antonio', 'Verdugo', 'Díaz', '4 Medio', '2025-08-13', '55');
+
+INSERT INTO admin (id, rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, alumno_id) 
+VALUES (1, '22.355.498-7', 'Celina', 'Vergara', 'Venegas', 'Chilena', 1);
+
+INSERT INTO admin (id, rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion) 
+VALUES (1, '21.222.347-6', 'Antonio Verdugo', 'antonio@gmail.com', '1234', '+56936177611', 'tu mamita');
