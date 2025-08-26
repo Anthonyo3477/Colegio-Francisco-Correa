@@ -1,4 +1,4 @@
-const conn = require('../Conexion.js');
+const conn = require('../conexion');
 const TABLA = 'apoderados';
 
 
