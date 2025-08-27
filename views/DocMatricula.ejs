@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/DocumentoMatricula.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+        <header>
+            <h1>Colegio Manuel Francisco Correa</h1>
+            <p>Bienvenidos a nuestra comunidad educativa</p>
+
+        </header>
+
+        <main>
+            <div class="upload-card">
+                <h2>Subir Matrícula (PDF)</h2>
+                <form action="/upload-matricula" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="documento" accept="application/pdf" required>
+                    <br>
+                    <button type="submit">Subir</button>
+                </form>
+            </div>
+        </main>
+
+
+        <!-- footer -->
+        <%- include('partials/footer') %>
+</body>
+
+</html>

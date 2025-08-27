@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Navbar */
+nav {
+    background: #1e73be;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 15px;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Encabezado */
+header {
+    background: #2d98da;
+    color: #fff;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+}
+
+header p {
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Contenido principal */
+main {
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Tarjeta de subida */
+.upload-card {
+    background: #fff;
+    padding: 25px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.upload-card h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #1e73be;
+}
+
+/* Input File */
+input[type="file"] {
+    display: block;
+    margin: 20px auto;
+    padding: 8px;
+    border: 2px dashed #2d98da;
+    border-radius: 6px;
+    background: #f9fbff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+input[type="file"]:hover {
+    border-color: #1e73be;
+    background: #eef6ff;
+}
+
+/* Botón */
+button {
+    background: #3867d6;
+    color: #fff;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #1e73be;
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    background: #2d98da;
+    color: #fff;
+    text-align: center;
+    padding: 12px 0;
+    margin-top: 40px;
+}
