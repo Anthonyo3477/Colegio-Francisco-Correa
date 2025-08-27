@@ -1,12 +1,14 @@
-const bcrypt = require('bcryptjs');
 const conn = require('../conexion');
+const bcrypt = require('bcryptjs');
 
-// Login
+
+// Login de administrador
+
 exports.login = async (req, res) => {
     const { correo_admin, contrasena_admin } = req.body;
 
     if (!correo_admin || !contrasena_admin) {
-        return res.redirect('/InicioSeccion?error=Campos%20obligatorios');
+        return res.render('InicioSeccion', { error: 'Credenciales incorrectas' });
     }
 
     try {
@@ -21,14 +23,16 @@ exports.login = async (req, res) => {
 
         const admin = resultado[0];
         const isMatch = await bcrypt.compare(contrasena_admin, admin.contrasena_admin);
+
         if (!isMatch) {
             return res.redirect('/InicioSeccion?error=Credenciales%20incorrectas');
         }
 
-        req.session.adminId = admin.id;
+        // Crear sesión
+        req.session.adminId = admin.id_admin; // asegúrate de que tu PK en tabla sea id_admin
         req.session.nombre_admin = admin.nombre_admin;
 
-        res.redirect('/');
+        res.redirect('/home');
 
     } catch (err) {
         console.error('Error en el Login:', err);
@@ -36,9 +40,15 @@ exports.login = async (req, res) => {
     }
 };
 
-// Registrar
+//Registrar administrador
+
 exports.registrar = async (req, res) => {
     const { rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion } = req.body;
+
+    // Validaciones básicas
+    if (!rut_admin || !nombre_admin || !correo_admin || !contrasena_admin) {
+        return res.redirect('/registro?error=Campos%20obligatorios');
+    }
 
     try {
         const hashedPassword = await bcrypt.hash(contrasena_admin, 10);
@@ -48,19 +58,30 @@ exports.registrar = async (req, res) => {
             [rut_admin, nombre_admin, correo_admin, hashedPassword, telefono, direccion]
         );
 
+        // Crear sesión después de registrar
         req.session.adminId = result.insertId;
         req.session.nombre_admin = nombre_admin;
 
-        res.status(200).json({
-            success: true,
-            redirect: '/'
-        });
+        res.redirect('/home');
 
     } catch (err) {
         console.error('Error al registrar:', err);
         const errorMsg = err.code === 'ER_DUP_ENTRY'
             ? 'El correo ya está registrado'
             : 'Error al registrar al Admin';
-        res.status(500).json({ error: errorMsg });
+
+        res.redirect(`/registro?error=${encodeURIComponent(errorMsg)}`);
     }
+};
+
+// Logout de administrador
+exports.logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error al cerrar sesión:', err);
+            return res.redirect('/home?error=No%20se%20pudo%20cerrar%20la%20sesion');
+        }
+        res.clearCookie('connect.sid');
+        res.redirect('/InicioSeccion');
+    });
 };

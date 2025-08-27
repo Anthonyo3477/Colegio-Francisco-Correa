@@ -48,16 +48,16 @@
                                     <input type="password" class="form-control" id="LoginPassword" name="contrasena"
                                         required>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100" id="btnLogin">Ingresar</button>
-                                <!-- Botón de logout -->
-                                <form action="/logout" method="POST" style="text-align:center; margin:20px 0;">
-                                    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
-                                </form>
-                                <!-- boton para volver al home-->
-                                <form action="/" method="GET" style="text-align:center; margin:20px 0;">
-                                    <button type="submit" class="btn btn-secondary">Volver al Inicio</button>
-                                </form>
+                                <div> 
+                                    <a href="/" class="btn btn-secondary" >Ingresar </a>
+                                </div>
+                                <!-- <button type="submit" class="btn btn-primary w-100" id="btnLogin">Ingresar</button> -->
                             </form>
+
+                            <!-- Botón para volver al home -->
+                            <div class="text-center mt-3">
+                                <a href="/" class="btn btn-secondary">Volver al Inicio</a>
+                            </div>
                         </div>
 
                         <!-- Registro -->
@@ -65,21 +65,23 @@
                             <form id="registerForm">
                                 <h2 class="text-center mb-4">Registrarse</h2>
                                 <div class="mb-3">
-                                    <label for="RegisterNombre" class="form-label">Rut</label>
-                                    <input type="text" class="form-control" id="Re" name="nombre" required>
+                                    <label for="RegistrarRut" class="form-label">Rut</label>
+                                    <input type="text" class="form-control" id="RegistrarRut" name="rut_admin" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="RegisterNombre" class="form-label">Nombre Completo</label>
-                                    <input type="text" class="form-control" id="RegisterNombre" name="nombre" required>
+                                    <input type="text" class="form-control" id="RegisterNombre" name="nombre_admin"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="RegisterEmail" class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" id="RegisterEmail" name="correo" required>
+                                    <input type="email" class="form-control" id="RegisterEmail" name="correo_admin"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="RegisterPassword" class="form-label">Contraseña</label>
-                                    <input type="password" class="form-control" id="RegisterPassword" name="contrasena"
-                                        required>
+                                    <input type="password" class="form-control" id="RegisterPassword"
+                                        name="contrasena_admin" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="RegisterTelefono" class="form-label">Teléfono</label>
@@ -93,20 +95,18 @@
                                 </div>
                                 <button type="button" class="btn btn-success w-100"
                                     id="btnRegister">Registrarse</button>
-                                <!-- Botón de logout -->
-                                <form action="/logout" method="POST" style="text-align:center; margin:20px 0;">
-                                    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
-                                </form>
-                                <!-- boton para volver al home-->
-                                <form action="/" method="GET" style="text-align:center; margin:20px 0;">
-                                    <button type="submit" class="btn btn-secondary">Volver al Inicio</button>
-                                </form>
+
+                                <!-- Botón para volver al home -->
+                                <div class="text-center mt-3">
+                                    <a href="/" class="btn btn-secondary">Volver al Inicio</a>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
         <!-- Footer -->
         <footer>
             <%- include('partials/footer') %>
@@ -163,7 +163,6 @@
                     alert('Error de conexión con el servidor.');
                 }
             });
-
         </script>
 </body>
 

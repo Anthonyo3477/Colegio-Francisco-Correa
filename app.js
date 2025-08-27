@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 
@@ -14,11 +13,17 @@ app.use(session({
 }));
 
 // Configuración General
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Middleware para pasar la sesión a las vistas
+app.use((req, res, next) => {
+    res.locals.session = req.session;
+    next();
+});
 
 // Rutas
 const home = require('./routes/apis/home.routes');
@@ -34,7 +39,7 @@ app.get('/documentosAlumnos', (req, res) => {
 });
 
 app.get('/InicioSeccion', (req, res) => {
-    res.render('InicioSeccion');
+    res.render('InicioSeccion', { error: null });
 });
 
 // Manejo de errores

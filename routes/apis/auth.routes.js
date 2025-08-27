@@ -2,21 +2,13 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../../db/controllers/authController.js');
 
-//Prosesar Login
+// Login
 router.post('/login', authController.login);
 
-//Procesar Registro
-router.post('/registrar', authController.registrar);
+// Registro
+router.post('/register', authController.registrar);
 
-// Cierre Sesión (mejor con POST)
-router.post('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            console.error('Error al cerrar la sesion:', err);
-            return res.status(500).send('Error al cerrar su sesion');
-        }
-        res.redirect('/InicioSeccion');
-    });
-});
+// Logout
+router.get('/logout', authController.logout);
 
 module.exports = router;
