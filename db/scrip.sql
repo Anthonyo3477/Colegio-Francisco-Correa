@@ -11,7 +11,9 @@ CREATE TABLE alumno (
     curso VARCHAR(10) NOT NULL,
     fecha_ingreso DATE NOT NULL,
     nacionalidad VARCHAR(100) NOT NULL,
-    orden_llegada INT UNIQUE NOT NULL
+    orden_llegada INT UNIQUE NOT NULL,
+    direcion VARCHAR(500) NOT NULL,
+    comuna VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE apoderados (
@@ -22,6 +24,8 @@ CREATE TABLE apoderados (
     apellido_materno VARCHAR(100) NOT NULL,
     nacionalidad VARCHAR(100) NOT NULL,
     alumno_id INT NOT NULL,
+    telefono INT (12) NOT NULL,
+    corre_apoderado VARCHAR(350) NOT NULL,
     FOREIGN KEY (alumno_id) REFERENCES alumno(id) ON DELETE CASCADE
 );
 
