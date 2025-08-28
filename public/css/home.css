@@ -3,6 +3,9 @@ body {
     background: #f5f6fa;
     margin: 0;
     padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Encabezado */
@@ -46,6 +49,7 @@ nav a:hover {
 main {
     padding: 40px 20px;
     text-align: center;
+    flex: 1;
 }
 
 /* Botón */
@@ -107,9 +111,9 @@ footer {
     color: #fff;
     text-align: center;
     padding: 10px 0;
-    position: fixed;
+    position: relative;
     width: 100%;
-    bottom: 0;
+    margin-top: auto;
 }
 
 
