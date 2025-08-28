@@ -15,4 +15,8 @@ router.post('/upload-matricula', upload.single('documento'), documentoController
 // Ruta para listar los PDF
 router.get('/DocMatricula', documentoController.listarMatriculas);
 
+// Descargar PDF
+// Ojo hay problemas en la ruta
+router.get('/matriculas/descargar/:id', documentoController.descargarMatricula);
+
 module.exports = router;

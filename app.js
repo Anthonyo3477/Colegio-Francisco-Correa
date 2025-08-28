@@ -30,11 +30,13 @@ const home = require('./routes/apis/home.routes');
 const alumnoRoutes = require('./routes/apis/alumno.routes');
 const authRoutes = require('./routes/apis/auth.routes');
 const documentoRoutes = require('./routes/apis/documento.routes');
+const matriculaRoutes = require('./routes/apis/documento.routes');
 
 app.use('/', home);
 app.use('/', alumnoRoutes);
 app.use('/', authRoutes);
 app.use('/', documentoRoutes);
+app.use('/', matriculaRoutes);
 
 // Vista de documentos
 app.get('/documentosAlumnos', (req, res) => {

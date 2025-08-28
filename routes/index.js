@@ -11,7 +11,6 @@ routes.use('/', indexRoutes);
 routes.use('/', alumnoRoutes);
 app.use('/', authRoutes);
 
-
 routes.post('/auth/login', auth.login);
 routes.post('/auth/registrar', auth.registrar);
 
