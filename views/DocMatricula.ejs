@@ -1,37 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
+    <title>Gestión de Matrículas</title>
+    <meta name="description" content="Subida y gestión de matrículas en PDF">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Estilos -->
     <link rel="stylesheet" href="/css/DocumentoMatricula.css">
 </head>
 
 <body>
     <!-- Navbar -->
     <%- include('partials/navbar') %>
+
+        <!-- Encabezado -->
         <header>
             <h1>Colegio Manuel Francisco Correa</h1>
             <p>Bienvenidos a nuestra comunidad educativa</p>
-
         </header>
 
+        <!-- Contenido principal -->
         <main>
-            <div class="upload-card">
+            <!-- Formulario de subida -->
+            <section class="upload-card">
                 <h2>Subir Matrícula (PDF)</h2>
                 <form action="/upload-matricula" method="POST" enctype="multipart/form-data">
                     <input type="file" name="documento" accept="application/pdf" required>
                     <br>
                     <button type="submit">Subir</button>
                 </form>
-            </div>
+            </section>
+
+            <!-- Tabla de matrículas -->
+            <section class="tabla-matriculas">
+                <h2>Listado de Matrículas</h2>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre Archivo</th>
+                            <th scope="col">Documento</th>
+                            <th scope="col">Fecha Subida</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td> 2025-08-28</td>
+                            <td>
+                                <a href="#" class="btn-accion btn-descargar">⬇ Descargar</a>
+                                <a href="#" class="btn-accion btn-eliminar">🗑 Eliminar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
         </main>
 
 
-        <!-- footer -->
+        <!-- Footer -->
         <%- include('partials/footer') %>
 </body>
 

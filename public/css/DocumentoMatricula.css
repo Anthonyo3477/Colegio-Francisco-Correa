@@ -57,7 +57,93 @@ header p {
 main {
     padding: 50px 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+/* Contenedor de la tabla */
+.tabla-matriculas {
+    max-width: 90%;
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Título */
+.tabla-matriculas h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #333;
+}
+
+/* Tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+/* Cabecera */
+.table thead {
+    background-color: #2a4d69;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.table th, 
+.table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Filas alternadas */
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover */
+.table tbody tr:hover {
+    background-color: #e8f0fe;
+    transition: background 0.3s ease;
+}
+
+/* Botones de acción */
+.btn-accion {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 2px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+    transition: background 0.3s ease;
+}
+
+.btn-ver {
+    background-color: #4caf50;
+}
+.btn-ver:hover {
+    background-color: #45a049;
+}
+
+.btn-descargar {
+    background-color: #2196f3;
+}
+.btn-descargar:hover {
+    background-color: #1976d2;
+}
+
+.btn-eliminar {
+    background-color: #f44336;
+}
+.btn-eliminar:hover {
+    background-color: #d32f2f;
 }
 
 /* Tarjeta de subida */
@@ -117,5 +203,5 @@ footer {
     color: #fff;
     text-align: center;
     padding: 12px 0;
-    margin-top: 40px;
+    margin-top: 700px;
 }
