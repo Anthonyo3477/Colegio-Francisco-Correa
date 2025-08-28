@@ -12,4 +12,7 @@ const upload = multer({ storage: storage });
 // Ruta para subir PDF directo a la base de datos
 router.post('/upload-matricula', upload.single('documento'), documentoController.subirDocumento);
 
+// Ruta para listar los PDF
+router.get('/DocMatricula', documentoController.listarMatriculas);
+
 module.exports = router;

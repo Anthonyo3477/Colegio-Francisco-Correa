@@ -26,3 +26,13 @@ exports.subirDocumento = async (req, res) => {
         res.status(500).json({ error: 'Error al guardar en la base de datos' });
     }
 };
+
+exports.listarMatriculas = async (req, res) => {
+    try {
+        const [rows] = await conn.execute('SELECT * FROM matriculas ORDER BY fecha_subida DESC');
+        res.render('DocMatricula', { matriculas: rows }); // pasar datos a la vista
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al listar matrículas');
+    }
+};

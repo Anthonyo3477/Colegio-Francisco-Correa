@@ -48,16 +48,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td> 2025-08-28</td>
-                            <td>
-                                <a href="#" class="btn-accion btn-descargar">⬇ Descargar</a>
-                                <a href="#" class="btn-accion btn-eliminar">🗑 Eliminar</a>
-                            </td>
-                        </tr>
+                        <% if (matriculas.length> 0) { %>
+                            <% matriculas.forEach(m=> { %>
+                                <tr>
+                                    <td>
+                                        <%= m.id %>
+                                    </td>
+                                    <td>
+                                        <%= m.nombre_archivo %>
+                                    </td>
+                                    <td><a href="/<%= m.ruta_archivo %>" target="_blank">📄 Ver PDF</a></td>
+                                    <td>
+                                        <%= m.fecha_subida.toISOString().slice(0,10) %>
+                                    </td>
+                                    <td>
+                                        <a href="/descargar/<%= m.id %>" class="btn-accion btn-descargar">⬇ Descargar</a>
+                                        <a href="/eliminar/<%= m.id %>" class="btn-accion btn-eliminar">🗑 Eliminar</a>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="5">No hay matrículas cargadas</td>
+                                        </tr>
+                                        <% } %>
                     </tbody>
                 </table>
             </section>
