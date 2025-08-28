@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-const multer = require('multer');
 
 const app = express();
 
@@ -26,35 +25,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Configuración de multer (guardar en carpeta 'uploads')
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // carpeta donde se guardan los PDFs
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname)); // nombre único
-    }
-});
-
-// Solo aceptar PDFs
-const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'application/pdf') {
-        cb(null, true);
-    } else {
-        cb(new Error('Solo se permiten archivos PDF.'), false);
-    }
-};
-
-const upload = multer({ storage: storage, fileFilter: fileFilter });
-
-// Ruta para subir PDF de matrícula
-app.post('/upload-matricula', upload.single('documento'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No se subió ningún archivo.');
-    }
-    res.send(`Archivo subido correctamente: ${req.file.filename}`);
-});
-
 // Rutas
 const home = require('./routes/apis/home.routes');
 const alumnoRoutes = require('./routes/apis/alumno.routes');
@@ -72,10 +42,9 @@ app.get('/documentosAlumnos', (req, res) => {
 });
 
 // Vista de matricula
-app.get('/DocMatricula', (req, res) =>{
+app.get('/DocMatricula', (req, res) => {
     res.render('DocMatricula');
 });
-
 
 // Vista de inicio de sesión
 app.get('/InicioSeccion', (req, res) => {

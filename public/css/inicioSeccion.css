@@ -9,13 +9,8 @@ body {
 header {
     background: #2d98da;
     color: #fff;
-    padding: 40px;
+    padding: 20px;
     text-align: center;
-    margin: 0; /* evita huecos */
-}
-
-header h1 {
-    margin: 0; /* elimina espacio extra del h1 */
 }
 
 /* Navbar */
@@ -23,13 +18,12 @@ nav {
     background: #1e73be;
     color: #fff;
     padding: 10px 20px;
-    margin: 0; /* sin hueco debajo */
 }
 
 nav ul {
     list-style: none;
     padding: 0;
-    margin: 0; /* elimina espacio arriba/abajo del ul */
+    margin: 0;
     display: flex;
     gap: 15px;
 }
@@ -62,7 +56,7 @@ main {
     background-color: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
     width: 350px;
     text-align: center;
 }
@@ -76,12 +70,13 @@ main {
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* separación automática entre inputs y botones */
+    gap: 15px;
+    /* separación automática entre inputs y botones */
 }
 
 /* Inputs */
-input[type="text"], 
-input[type="email"], 
+input[type="text"],
+input[type="email"],
 input[type="password"] {
     width: 100%;
     padding: 12px;
@@ -91,7 +86,7 @@ input[type="password"] {
 }
 
 /* Botones */
-button, 
+button,
 input[type="submit"] {
     width: 100%;
     background-color: #3498db;
@@ -104,7 +99,7 @@ input[type="submit"] {
     transition: background 0.3s ease;
 }
 
-button:hover, 
+button:hover,
 input[type="submit"]:hover {
     background-color: #2980b9;
 }

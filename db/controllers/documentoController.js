@@ -1,16 +1,28 @@
-const path = require('path');
+// const path = require('path');
+const conn = require('../conexion')
 
 // Subir PDF de matrícula
-exports.subirDocumento = (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No se subió ningún archivo' });
-    }
+exports.subirDocumento = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No se subió ningún archivo' });
+        }
 
-    // Aquí podrías guardar en DB (ejemplo: nombre archivo + rut alumno)
-    // Por ahora solo confirmamos subida
-    res.status(200).json({
-        success: true,
-        mensaje: 'Archivo subido correctamente',
-        archivo: req.file.filename
-    });
+        const nombreArchivo = req.file.originalname;
+        const documento = req.file.buffer;
+
+        await conn.execute(
+            "INSERT INTO matriculas (nombre_archivo, documento) VALUES (?, ?)",
+            [nombreArchivo, documento]
+        );
+
+        res.status(200).json({
+            success: true,
+            mensaje: 'Archivo guardado en la base de datos correctamente',
+            archivo: nombreArchivo
+        });
+    } catch (error) {
+        console.error("Error al guardar el documento:", error);
+        res.status(500).json({ error: 'Error al guardar en la base de datos' });
+    }
 };
