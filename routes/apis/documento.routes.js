@@ -1,4 +1,4 @@
-// routes/documento/documento.route.js
+// routes/documento/documento.routes.js
 const express = require('express');
 const multer = require('multer');
 const documentoController = require('../../db/controllers/documentoController');
@@ -16,10 +16,9 @@ router.post('/upload-matricula', upload.single('documento'), documentoController
 router.get('/DocMatricula', documentoController.listarMatriculas);
 
 // Descargar PDF
-// Ojo hay problemas en la ruta
 router.get('/matricula/descargar/:id', documentoController.descargarMatricula);
 
-// Eliminar PDF
-// router.get('/matriculas/eliminar/:id', documentoController.eliminarMatricula);
+// Generar PDF automáticamente desde los datos de alumno/apoderado
+router.get('/matricula/generar/:idAlumno', documentoController.generarMatriculaPDF);
 
 module.exports = router;
