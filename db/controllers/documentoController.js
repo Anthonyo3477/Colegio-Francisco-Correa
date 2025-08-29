@@ -1,5 +1,5 @@
 const conn = require('../conexion');
-const PDFDocument = require('pdfkit'); // 👈 necesario para generar PDFs
+const PDFDocument = require('pdfkit');
 
 // Subir PDF de matrícula (archivo manual desde formulario)
 exports.subirDocumento = async (req, res) => {

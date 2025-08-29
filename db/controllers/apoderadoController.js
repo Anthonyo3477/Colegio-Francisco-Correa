@@ -4,10 +4,10 @@ const TABLA = 'apoderados';
 
 // Crear apoderado
 async function createApoderado(apoderado) {
-    const { rut_apoderado, nombre, apellido_paterno, apellido_materno, telefono, direccion, email } = apoderado;
+    const { rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, telefono, corre_apoderado, alumno_id } = apoderado;
 
-    const sql = `INSERT INTO ${TABLA} (rut_apoderado, nombre, apellido_paterno, apellido_materno, telefono, direccion, email) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-    const valores = [rut_apoderado, nombre, apellido_paterno, apellido_materno, telefono, direccion, email];
+    const sql = `INSERT INTO ${TABLA} (rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, telefono, corre_apoderado, alumno_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    const valores = [rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, telefono, corre_apoderado, alumno_id];
 
     const [result] = await conn.query(sql, valores);
     return result;
@@ -15,7 +15,7 @@ async function createApoderado(apoderado) {
 
 // Obtener todos los apoderados
 async function getAllApoderados() {
-    const sql = `SELECT id, rut_apoderado, nombre, apellido_paterno, apellido_materno, telefono, direccion, email FROM ${TABLA}`;
+    const sql = `SELECT id, rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, telefono, corre_apoderado, alumno_id FROM ${TABLA}`;
     const [rows] = await conn.query(sql);
     return rows;
 }
@@ -30,9 +30,9 @@ async function getApoderadoById(id) {
 
 // Actualizar apoderado por ID
 async function updateApoderado(id, apoderado) {
-    const { rut_apoderado, nombre, apellido_paterno, apellido_materno, telefono, direccion, email } = apoderado;
-    const sql = `UPDATE ${TABLA} SET rut_apoderado=?, nombre=?, apellido_paterno=?, apellido_materno=?, telefono=?, direccion=?, email=? WHERE id=?`;
-    const valores = [rut_apoderado, nombre, apellido_paterno, apellido_materno, telefono, direccion, email, id];
+    const { rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, telefono, corre_apoderado, alumno_id } = apoderado;
+    const sql = `UPDATE ${TABLA} SET rut_apoderado=?, nombre_apoderado=?, apellido_paterno=?, apellido_materno=?, nacionalidad=?, telefono=?, corre_apoderado=?, alumno_id=? WHERE id=?`;
+    const valores = [rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, telefono, corre_apoderado, alumno_id, id];
     const [result] = await conn.query(sql, valores);
     return result;
 }
