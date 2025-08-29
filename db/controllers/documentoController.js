@@ -30,7 +30,7 @@ exports.subirDocumento = async (req, res) => {
 exports.listarMatriculas = async (req, res) => {
     try {
         const [rows] = await conn.execute('SELECT * FROM matriculas ORDER BY fecha_subida DESC');
-        res.render('DocMatricula', { matriculas: rows }); // pasar datos a la vista
+        res.render('DocMatricula', { matriculas: rows });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al listar matrículas');

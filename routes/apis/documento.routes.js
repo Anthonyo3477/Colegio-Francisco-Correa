@@ -17,6 +17,9 @@ router.get('/DocMatricula', documentoController.listarMatriculas);
 
 // Descargar PDF
 // Ojo hay problemas en la ruta
-router.get('/matriculas/descargar/:id', documentoController.descargarMatricula);
+router.get('/matricula/descargar/:id', documentoController.descargarMatricula);
+
+// Eliminar PDF
+// router.get('/matriculas/eliminar/:id', documentoController.eliminarMatricula);
 
 module.exports = router;
