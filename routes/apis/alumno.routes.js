@@ -22,9 +22,9 @@ router.get('/nuevo', (req, res) => {
 // Procesar creación
 router.post('/insert', async (req, res) => {
     try {
-        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada } = req.body;
+        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna } = req.body;
 
-        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim()) {
+        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direcion?.trim() || !comuna?.trim() ) {
             return res.status(400).render('alumno', {
                 title: 'Registrar Nuevo Alumno',
                 error: 'Todos los campos son obligatorios',
@@ -40,7 +40,10 @@ router.post('/insert', async (req, res) => {
             curso: curso.trim(),
             fecha_ingreso,
             nacionalidad: nacionalidad.trim(),
-            orden_llegada: orden_llegada ? parseInt(orden_llegada) : null
+            orden_llegada: orden_llegada ? parseInt(orden_llegada) : null,
+            direcion: direcion.trim(),
+            comuna: comuna.trim()
+
         });
 
         console.log("Alumno creado correctamente:", rut_alumnos);

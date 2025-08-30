@@ -11,10 +11,10 @@ function formatDate(date) {
 
 // Crear alumno
 async function createAlumno(alumno) {
-    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = alumno;
+    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna } = alumno;
 
-    const sql = `INSERT INTO ${TABLA} (rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const valores = [rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, formatDate(fecha_ingreso), nacionalidad, orden_llegada, direccion, comuna ];
+    const sql = `INSERT INTO ${TABLA} (rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const valores = [rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, formatDate(fecha_ingreso), nacionalidad, orden_llegada, direcion, comuna ];
 
     const [result] = await conn.query(sql, valores);
     return result;
@@ -22,7 +22,7 @@ async function createAlumno(alumno) {
 
 // Obtener todos los alumnos
 async function getAllAlumnos() {
-    const sql = `SELECT id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna FROM ${TABLA}`;
+    const sql = `SELECT id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna FROM ${TABLA}`;
     const [rows] = await conn.query(sql);
     return rows;
 }
@@ -48,9 +48,9 @@ async function getAlumnoById(id) {
 
 // Actualizar alumno por ID
 async function updateAlumno(id, alumno) {
-    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = alumno;
-    const sql = `UPDATE ${TABLA} SET rut_alumnos=?, nombre=?, apellido_paterno=?, apellido_materno=?, curso=?, fecha_ingreso=?, nacionalidad=?, orden_llegada=?, direccion=?, comuna=? WHERE id=?`;
-    const valores = [rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, formatDate(fecha_ingreso), nacionalidad, orden_llegada, direccion, comuna, id];
+    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna } = alumno;
+    const sql = `UPDATE ${TABLA} SET rut_alumnos=?, nombre=?, apellido_paterno=?, apellido_materno=?, curso=?, fecha_ingreso=?, nacionalidad=?, orden_llegada=?, direcion=?, comuna=? WHERE id=?`;
+    const valores = [rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, formatDate(fecha_ingreso), nacionalidad, orden_llegada, direcion, comuna, id];
     const [result] = await conn.query(sql, valores);
     return result;
 }
