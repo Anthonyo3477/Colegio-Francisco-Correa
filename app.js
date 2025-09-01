@@ -9,7 +9,7 @@ app.use(session({
     secret: 'unSecretoMuySeguro12345',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 } // expira en 1 hora
+    cookie: { maxAge: 1000 * 60 * 60 } // Dura 1 hora la seccion
 }));
 
 // Configuración General
@@ -31,12 +31,14 @@ const alumnoRoutes = require('./routes/apis/alumno.routes');
 const authRoutes = require('./routes/apis/auth.routes');
 const documentoRoutes = require('./routes/apis/documento.routes');
 const matriculaRoutes = require('./routes/apis/documento.routes');
+const apoderadoRoutes = require('./routes/apis/apoderado.routes');
 
 app.use('/', home);
 app.use('/', alumnoRoutes);
 app.use('/', authRoutes);
 app.use('/', documentoRoutes);
 app.use('/', matriculaRoutes);
+app.use('/', apoderadoRoutes);
 
 // Vista de documentos
 app.get('/documentosAlumnos', (req, res) => {

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Colegio Manuel Francisco Correa - Registro Alumno</title>
+    <link rel="stylesheet" href="/css/alumno.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+        <header>
+            <h1>Colegio Manuel Francisco Correa</h1>
+            <p>Bienvenidos a nuestra comunidad educativa</p>
+        </header>
+        <main>
+            <h2 style="text-align:right;">Registro de Apoderados</h2>
+            <div class="formularios">
+                <!--Formulario para ingresar datos del apoderado -->
+                <form action="/insertApoderado" method="POST">
+                    <input type="hidden" name="alumno_id" value="<%= alumnoId %>">
+
+                    <label for="rut_apoderado">Rut Apoderado:</label>
+                    <input type="text" id="rut_apoderado" name="rut_apoderado" maxlength="12" required>
+
+                    <label for="nombre_apoderado">Nombre Apoderado:</label>
+                    <input type="text" id="nombre_apoderado" name="nombre_apoderado" maxlength="100" required>
+
+                    <label for="apellido_paterno_apoderado">Apellido Paterno Apoderado:</label>
+                    <input type="text" id="apellido_paterno_apoderado" name="apellido_paterno_apoderado" maxlength="100" required>
+
+                    <label for="apellido_materno_apoderado">Apellido Materno Apoderado:</label>
+                    <input type="text" id="apellido_materno_apoderado" name="apellido_materno_apoderado" maxlength="100" required>
+
+                    <label for="nacionalidad">Nacionalidad:</label>
+                    <input type="text" id="nacionalidad" name="nacionalidad" maxlength="100" required>
+
+                    <label for="Telefono">Telefono:</label>
+                    <input type="text" id="Telefono" name="Telefono" maxlength="13" required>
+
+                    <label for="Correo">Correo Electronico:</label>
+                    <input type="text" id="Correo" name="Correo" maxlength="100" required>
+
+                    <button type="submit">Registrar Apoderado</button>
+                    <button type="button" onclick="window.history.back()" style="margin-left:10px;">Volver</button>
+                </form>
+
+                <script src="" async defer></script>
+            </div>
+        </main>
+        <!-- Footer -->
+        <%- include('partials/footer') %>
+</body>
+
+</html>

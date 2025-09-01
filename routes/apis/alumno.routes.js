@@ -24,7 +24,7 @@ router.post('/insert', async (req, res) => {
     try {
         const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna } = req.body;
 
-        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direcion?.trim() || !comuna?.trim() ) {
+        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direcion?.trim() || !comuna?.trim()) {
             return res.status(400).render('alumno', {
                 title: 'Registrar Nuevo Alumno',
                 error: 'Todos los campos son obligatorios',
@@ -32,7 +32,8 @@ router.post('/insert', async (req, res) => {
             });
         }
 
-        await alumnoController.createAlumno({
+        // 🔹 Aquí guardamos el alumno y recibimos el ID
+        const result = await alumnoController.createAlumno({
             rut_alumnos: rut_alumnos.trim(),
             nombre: nombre.trim(),
             apellido_paterno: apellido_paterno.trim(),
@@ -43,12 +44,11 @@ router.post('/insert', async (req, res) => {
             orden_llegada: orden_llegada ? parseInt(orden_llegada) : null,
             direcion: direcion.trim(),
             comuna: comuna.trim()
-
         });
 
-        console.log("Alumno creado correctamente:", rut_alumnos);
-        res.redirect('/listaAlumnos');
+        console.log("Alumno creado correctamente:", rut_alumnos, "ID:", result.insertId);
 
+        res.redirect(`/nuevo-apoderado/${result.insertId}`);
     } catch (error) {
         console.error('Error al crear alumno:', error);
         res.status(500).render('alumno', {
@@ -58,6 +58,7 @@ router.post('/insert', async (req, res) => {
         });
     }
 });
+
 
 /* ==================================================
    LISTAR ALUMNOS
