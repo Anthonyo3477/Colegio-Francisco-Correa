@@ -25,7 +25,7 @@ CREATE TABLE apoderados (
     nacionalidad VARCHAR(100) NOT NULL,
     alumno_id INT NOT NULL,
     telefono INT (12) NOT NULL,
-    corre_apoderado VARCHAR(350) NOT NULL,
+    correo_apoderado VARCHAR(350) NOT NULL,
     FOREIGN KEY (alumno_id) REFERENCES alumno(id) ON DELETE CASCADE
 );
 

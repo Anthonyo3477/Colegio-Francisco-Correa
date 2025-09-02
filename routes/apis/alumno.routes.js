@@ -24,6 +24,7 @@ router.post('/insert', async (req, res) => {
     try {
         const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna } = req.body;
 
+        // Validación de campos requeridos
         if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direcion?.trim() || !comuna?.trim()) {
             return res.status(400).render('alumno', {
                 title: 'Registrar Nuevo Alumno',
@@ -32,7 +33,7 @@ router.post('/insert', async (req, res) => {
             });
         }
 
-        // 🔹 Aquí guardamos el alumno y recibimos el ID
+        // Guardar alumno y recibir el ID
         const result = await alumnoController.createAlumno({
             rut_alumnos: rut_alumnos.trim(),
             nombre: nombre.trim(),
@@ -48,7 +49,9 @@ router.post('/insert', async (req, res) => {
 
         console.log("Alumno creado correctamente:", rut_alumnos, "ID:", result.insertId);
 
+        // Redirigimos al formulario del apoderado
         res.redirect(`/nuevo-apoderado/${result.insertId}`);
+
     } catch (error) {
         console.error('Error al crear alumno:', error);
         res.status(500).render('alumno', {
@@ -58,6 +61,7 @@ router.post('/insert', async (req, res) => {
         });
     }
 });
+
 
 
 /* ==================================================

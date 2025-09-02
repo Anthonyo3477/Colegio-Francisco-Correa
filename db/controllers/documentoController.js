@@ -124,7 +124,7 @@ exports.generarMatriculaPDF = async (req, res) => {
             doc.fontSize(12).text(`Nombre: ${apoderado.nombre_apoderado} ${apoderado.apellido_paterno} ${apoderado.apellido_materno}`);
             doc.text(`RUT: ${apoderado.rut_apoderado}`);
             doc.text(`Teléfono: ${apoderado.telefono}`);
-            doc.text(`Correo: ${apoderado.corre_apoderado}`);
+            doc.text(`Correo: ${apoderado.correo_apoderado}`);
         } else {
             doc.fontSize(14).text("⚠ Este alumno aún no tiene apoderado registrado");
         }

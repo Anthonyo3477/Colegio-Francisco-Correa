@@ -6,11 +6,13 @@ const apoderadoController = require('../../db/controllers/apoderadoController');
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
-// Formulario para crear apoderado después de crear un alumno
+/* ==================================================
+   FORMULARIO NUEVO APODERADO
+================================================== */
 router.get('/nuevo-apoderado/:id', (req, res) => {
     const alumnoId = req.params.id;
 
-    res.render('apoderado', {
+    res.render('apoderadoForm', {
         title: 'Registrar Nuevo Apoderado',
         error: null,
         valores: {},
@@ -18,21 +20,24 @@ router.get('/nuevo-apoderado/:id', (req, res) => {
     });
 });
 
-
-// Ruta Insert
+/* ==================================================
+   INSERTAR APODERADO
+================================================== */
 router.post('/insertApoderado', async (req, res) => {
     try {
         const { rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, alumno_id, telefono, correo_apoderado } = req.body;
 
-        if (!rut_apoderado?.trim() || !nombre_apoderado?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !nacionalidad?.trim() || !alumno_id || !telefono?.trim() || !correo_apoderado?.trim()
-        ) {
-            return res.status(400).render('apoderado', {
+        // Validar campos
+        if (!rut_apoderado?.trim() || !nombre_apoderado?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !nacionalidad?.trim() || !alumno_id || !telefono?.trim() || !correo_apoderado?.trim()) {
+            return res.status(400).render('apoderadoForm', {
                 title: 'Registrar Nuevo Apoderado',
                 error: 'Todos los campos son obligatorios',
-                valores: req.body
+                valores: req.body,
+                alumnoId: alumno_id
             });
         }
 
+        // Crear apoderado
         await apoderadoController.createApoderado({
             rut_apoderado: rut_apoderado.trim(),
             nombre_apoderado: nombre_apoderado.trim(),
@@ -45,21 +50,22 @@ router.post('/insertApoderado', async (req, res) => {
         });
 
         console.log("Apoderado creado correctamente:", rut_apoderado);
-        res.redirect('/listaAlumnos'); // O a donde quieras redirigir
+
+        // IMPORTANTE: return aquí también
+        return res.redirect('/listaAlumnos');
+
     } catch (error) {
         console.error("Error al guardar apoderado:", error);
-        res.status(500).render('apoderado', {
-            title: 'Registrar nuevo apoderado',
-            error: 'Error al guardar apoderado',
-            valores: req.body
+
+        // IMPORTANTE: return aquí también
+        return res.status(500).render('apoderadoForm', {
+            title: 'Registrar Nuevo Apoderado',
+            error: 'Error interno al guardar apoderado',
+            valores: req.body,
+            alumnoId: req.body.alumno_id
         });
     }
 });
 
-// Ruta Listar
 
-// Ruta Listar con su alumno correspondiente
-
-// Ruta Modificar
-
-// Ruta Eliminar
+module.exports = router;
