@@ -87,15 +87,12 @@ router.get('/listaAlumnos', async (req, res) => {
     try {
         const cursoSeleccionado = req.query.curso || "";
 
-        // Traer alumnos filtrados (si hay curso, filtrar)
-        let alumnos;
-        if (cursoSeleccionado) {
-            alumnos = await alumnoController.getAlumnosByCurso(cursoSeleccionado);
-        } else {
-            alumnos = await alumnoController.getAllAlumnos();
-        }
+        // Nueva funcion con filtro
+        const alumnos = await alumnoController.getAlumnosConApoderados({
+            curso: cursoSeleccionado || undefined
+        });
 
-        // Obtener lista única de cursos
+        // Obtener solo la lista de cursos
         const cursos = await alumnoController.getAllCursos();
 
         res.render('listaAlumnos', {

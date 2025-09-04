@@ -32,8 +32,9 @@
                         <th>Fecha Ingreso</th>
                         <th>Nacionalidad</th>
                         <th>Orden Llegada</th>
-                        <th>Direcion</th>
+                        <th>Dirección</th>
                         <th>Comuna</th>
+                        <th>Apoderados</th> <!-- Nueva columno, aca deberia de verse el nombre del apoderado -->
                         <th>Opciones</th>
                     </tr>
                 </thead>
@@ -57,8 +58,7 @@
                                     <%= alumno.curso %>
                                 </td>
                                 <td>
-                                    <%= alumno.fecha_ingreso instanceof Date ?
-                                        alumno.fecha_ingreso.toISOString().split('T')[0] : alumno.fecha_ingreso %>
+                                    <%= alumno.fecha_ingreso %>
                                 </td>
                                 <td>
                                     <%= alumno.nacionalidad %>
@@ -72,23 +72,46 @@
                                 <td>
                                     <%= alumno.comuna %>
                                 </td>
+
+                                <!-- Lista apoderado -->
                                 <td>
-                                    <!-- Botón para editar -->
+                                    <% if (alumno.apoderados && alumno.apoderados.length) { %>
+                                        <ul style="margin:0; padding-left:18px;">
+                                            <% alumno.apoderados.forEach(ap=> { %>
+                                                <li>
+                                                    <strong>
+                                                        <%= ap.nombre_apoderado %>
+                                                    </strong>
+                                                    <small>
+                                                        <%= ap.apellido_paterno %>
+                                                            <%= ap.apellido_materno %> |
+                                                                Tel: <%= ap.telefono %>
+                                                                    <% if (ap.correo) { %> | <%= ap.correo %>
+                                                                            <% } %>
+                                                    </small>
+                                                </li>
+                                                <% }) %>
+                                        </ul>
+                                        <% } else { %>
+                                            <em>Sin apoderados</em>
+                                            <% } %>
+                                </td>
+
+                                <td>
                                     <a href="/editar/<%= alumno.id %>" class="btn btn-sm btn-warning">Modificar</a>
-                                    <!-- Botón para eliminar -->
                                     <form action="/eliminar/<%= alumno.id %>" method="POST" style="display:inline;">
                                         <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                                     </form>
-
                                 </td>
                             </tr>
                             <% }) %>
                                 <% } else { %>
                                     <tr>
-                                        <td colspan="9" style="text-align:center;">No hay alumnos registrados</td>
+                                        <td colspan="12" style="text-align:center;">No hay alumnos registrados</td>
                                     </tr>
                                     <% } %>
                 </tbody>
+
             </table>
 
             <button type="button" onclick="window.history.back()" class="btn-volver">Volver</button>
