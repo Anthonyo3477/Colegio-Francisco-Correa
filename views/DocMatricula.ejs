@@ -55,7 +55,8 @@
                                     <td>
                                         <%= m.nombre_archivo %>
                                     </td>
-                                    <td><a href="/<%= m.ruta_archivo %>" target="_blank">📄 Ver PDF</a></td>
+                                    <!-- Ruta para poder visualizar el documento, pero el PDF no se visualiza, de hecho me lleva al home -->
+                                    <td><a href="/matricula/ver/<%= m.id %>" target="_blank">📄 Ver PDF</a></td>
                                     <td>
                                         <%= m.fecha_subida.toISOString().slice(0,10) %>
                                     </td>
