@@ -128,4 +128,27 @@ async function deleteAlumno(id) {
     return result;
 }
 
-module.exports = { createAlumno, getAllAlumnos, getAlumnoById, getAlumnosConApoderados, getAllCursos, getAlumnosByCurso, updateAlumno, deleteAlumno };
+async function guardarDocumento(nombreArchivo, buffer) {
+    const sql = `INSERT INTO ${TABLA} (nombre_archivo, documento) VALUES (?, ?)`;
+    const [result] = await conn.query(sql, [nombreArchivo, buffer]);
+    return result.insertId; // devuelve el id del documento
+}
+
+async function obtenerDocumento(id) {
+    const sql = `SELECT * FROM ${TABLA} WHERE id = ?`;
+    const [rows] = await conn.query(sql, [id]);
+    return rows[0] || null;
+}
+
+module.exports = { 
+    guardarDocumento,
+    obtenerDocumento,
+
+    createAlumno, 
+    getAllAlumnos, 
+    getAlumnoById, 
+    getAlumnosConApoderados, 
+    getAllCursos, 
+    getAlumnosByCurso, 
+    updateAlumno, 
+    deleteAlumno };

@@ -1,10 +1,61 @@
 const express = require('express');
 const router = express.Router();
+const PDFDocument = require('pdfkit');
 const alumnoController = require('../../db/controllers/alumnoController');
 
 // Middleware para parsear body
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
+
+/* ================================================
+    Convertir Datos a PDF 
+==================================================*/
+
+router.post('/generar-pdf', async (req, res) => {
+    try {
+        const datos = req.body;
+
+        const doc = new PDFDocument();
+        const chunks = [];
+
+        doc.on('data', chunk => chunks.push(chunk));
+        doc.on('end', async () => {
+            const pdfBuffer = Buffer.concat(chunks);
+
+            await documentoController.guardarDocumento(
+                `Ficha_${datos.rut_alumnos}.pdf`,
+                pdfBuffer
+            );
+
+            res.redirect('/documento-matricula');
+        });
+
+        // Contenido del PDF
+        doc.fontSize(18).text("Ficha de Alumno y Apoderado", { align: 'center' });
+        doc.moveDown();
+
+        doc.fontSize(14).text("Datos del Alumno:");
+        doc.fontSize(12).text(`RUT: ${datos.rut_alumnos}`);
+        doc.text(`Nombre: ${datos.nombre} ${datos.apellido_paterno} ${datos.apellido_materno}`);
+        doc.text(`Curso: ${datos.curso}`);
+        doc.text(`Fecha de Ingreso: ${datos.fecha_ingreso}`);
+        doc.text(`Nacionalidad: ${datos.nacionalidad}`);
+        doc.text(`Dirección: ${datos.direcion}, ${datos.comuna}`);
+        doc.moveDown();
+
+        doc.fontSize(14).text("Datos del Apoderado:");
+        doc.fontSize(12).text(`RUT: ${datos.rut_apoderado}`);
+        doc.text(`Nombre: ${datos.nombre_apoderado} ${datos.apellido_paterno_ap} ${datos.apellido_materno_ap}`);
+        doc.text(`Teléfono: ${datos.telefono}`);
+        doc.text(`Correo: ${datos.correo_apoderado}`);
+
+        doc.end();
+
+    } catch (error) {
+        console.error("Error al generar PDF:", error);
+        res.status(500).send("Error al generar PDF");
+    }
+});
 
 /* ==================================================
    CREAR ALUMNO
@@ -62,20 +113,6 @@ router.post('/insert', async (req, res) => {
     }
 });
 
-/* ==================================================
-   LISTAR ALUMNOS
-================================================== */
-
-/*router.get('/listaAlumnos', async (req, res) => {
-    try {
-        const alumnos = await alumnoController.getAllAlumnos();
-        console.log("Alumnos cargados:", alumnos.length);
-        res.render('listaAlumnos', { alumnos });
-    } catch (error) {
-        console.error('Error al obtener alumnos:', error);
-        res.status(500).render('error', { message: 'Error al cargar alumnos' });
-    }
-});*/
 
 /* ==================================================
    LISTAR ALUMNOS con FILTRO

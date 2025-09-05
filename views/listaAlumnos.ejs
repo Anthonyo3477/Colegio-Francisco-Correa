@@ -103,6 +103,7 @@
                                     <form action="/eliminar/<%= alumno.id %>" method="POST" style="display:inline;">
                                         <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                                     </form>
+                                    <a href="/alumnos/<%= alumno.id %>/pdf" class="btn btn-sm btn-info">📄 Generar PDF</a>
                                 </td>
                             </tr>
                             <% }) %>

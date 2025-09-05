@@ -1,7 +1,9 @@
 const conn = require('../conexion');
 const PDFDocument = require('pdfkit');
 
-// Subir PDF de matrícula (archivo manual desde formulario)
+/* =====================================================
+   📂 SUBIR PDF MANUAL (desde formulario)
+===================================================== */
 exports.subirDocumento = async (req, res) => {
     try {
         if (!req.file) {
@@ -16,29 +18,34 @@ exports.subirDocumento = async (req, res) => {
             [nombreArchivo, documento]
         );
 
-        res.status(200).json({
-            success: true,
-            mensaje: 'Archivo guardado en la base de datos correctamente',
-            archivo: nombreArchivo
-        });
+        console.log("Matrícula subida:", nombreArchivo);
+
+        // 🔹 Redirigir de nuevo a la vista de listado
+        res.redirect('/DocMatricula');
     } catch (error) {
         console.error("Error al guardar el documento:", error);
         res.status(500).json({ error: 'Error al guardar en la base de datos' });
     }
 };
 
-// Listar PDFs guardados en la BD
+/* =====================================================
+   📄 LISTAR MATRÍCULAS
+===================================================== */
 exports.listarMatriculas = async (req, res) => {
     try {
-        const [rows] = await conn.execute('SELECT * FROM matriculas ORDER BY fecha_subida DESC');
+        const [rows] = await conn.execute(
+            'SELECT * FROM matriculas ORDER BY fecha_subida DESC'
+        );
         res.render('DocMatricula', { matriculas: rows });
     } catch (error) {
-        console.error(error);
+        console.error("Error al listar matrículas:", error);
         res.status(500).send('Error al listar matrículas');
     }
 };
 
-// Descargar PDF desde la BD
+/* =====================================================
+   ⬇ DESCARGAR PDF
+===================================================== */
 exports.descargarMatricula = async (req, res) => {
     try {
         const { id } = req.params;
@@ -65,7 +72,37 @@ exports.descargarMatricula = async (req, res) => {
     }
 };
 
-// Generar PDF de alumno y apoderado, guardarlo en la BD
+/* =====================================================
+   👀 VISUALIZAR PDF EN EL NAVEGADOR
+===================================================== */
+exports.verMatricula = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [rows] = await conn.execute(
+            "SELECT documento, nombre_archivo FROM matriculas WHERE id = ?",
+            [id]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).send("Matrícula no encontrada");
+        }
+
+        const pdfBuffer = rows[0].documento;
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+            "Content-Disposition",
+            `inline; filename="${rows[0].nombre_archivo}"`
+        );
+        res.send(pdfBuffer); // El navegador abre el PDF en una nueva pestaña
+    } catch (error) {
+        console.error("Error al mostrar PDF:", error);
+        res.status(500).send("Error al mostrar PDF");
+    }
+};
+
+/* =====================================================
+   📝 GENERAR PDF (Alumno + Apoderado)
+===================================================== */
 exports.generarMatriculaPDF = async (req, res) => {
     try {
         const { idAlumno } = req.params;
@@ -100,7 +137,7 @@ exports.generarMatriculaPDF = async (req, res) => {
                 [nombreArchivo, pdfData]
             );
 
-            // Enviar el PDF al navegador para descargar
+            // Enviar el PDF al navegador
             res.setHeader('Content-Disposition', `attachment; filename="${nombreArchivo}"`);
             res.setHeader('Content-Type', 'application/pdf');
             res.send(pdfData);
