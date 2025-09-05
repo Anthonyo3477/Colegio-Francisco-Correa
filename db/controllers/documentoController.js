@@ -20,7 +20,6 @@ exports.subirDocumento = async (req, res) => {
 
         console.log("Matrícula subida:", nombreArchivo);
 
-        // 🔹 Redirigir de nuevo a la vista de listado
         res.redirect('/DocMatricula');
     } catch (error) {
         console.error("Error al guardar el documento:", error);
@@ -93,7 +92,7 @@ exports.verMatricula = async (req, res) => {
             "Content-Disposition",
             `inline; filename="${rows[0].nombre_archivo}"`
         );
-        res.send(pdfBuffer); // El navegador abre el PDF en una nueva pestaña
+        res.send(pdfBuffer); // El navegador abre una pestaña nueva, con el PDF que esta en la base de datos
     } catch (error) {
         console.error("Error al mostrar PDF:", error);
         res.status(500).send("Error al mostrar PDF");
@@ -131,7 +130,7 @@ exports.generarMatriculaPDF = async (req, res) => {
 
             const nombreArchivo = `matricula_${alumno.rut_alumnos}.pdf`;
 
-            // Guardar en la tabla `matriculas`
+            // Guardar en la tabla matricula
             await conn.execute(
                 "INSERT INTO matriculas (nombre_archivo, documento) VALUES (?, ?)",
                 [nombreArchivo, pdfData]

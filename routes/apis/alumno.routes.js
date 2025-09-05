@@ -4,7 +4,6 @@ const PDFDocument = require('pdfkit');
 const alumnoController = require('../../db/controllers/alumnoController');
 const documentoController = require('../../db/controllers/documentoController');
 
-// Middleware para parsear body
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
@@ -76,7 +75,6 @@ router.post('/insert', async (req, res) => {
     try {
         const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna } = req.body;
 
-        // Validación de campos requeridos
         if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direcion?.trim() || !comuna?.trim()) {
             return res.status(400).render('alumno', {
                 title: 'Registrar Nuevo Alumno',
@@ -153,7 +151,6 @@ router.get('/editar/:id', async (req, res) => {
     console.log("Solicitud GET /editar con ID:", id);
 
     try {
-        // Promesa con timeout opcional de 5 segundos
         const alumno = await Promise.race([
             alumnoController.getAlumnoById(id),
             new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout DB')), 5000))
