@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const PDFDocument = require('pdfkit');
 const alumnoController = require('../../db/controllers/alumnoController');
+const documentoController = require('../../db/controllers/documentoController');
 
 // Middleware para parsear body
 router.use(express.urlencoded({ extended: true }));

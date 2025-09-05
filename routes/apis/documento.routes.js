@@ -1,4 +1,3 @@
-// routes/documento/documento.routes.js
 const express = require('express');
 const multer = require('multer');
 const documentoController = require('../../db/controllers/documentoController');
@@ -10,7 +9,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // ==============================
-// 📂 SUBIDA DE PDF
+//  SUBIDA DE PDF
 // ==============================
 router.post(
     '/upload-matricula',
@@ -19,22 +18,22 @@ router.post(
 );
 
 // ==============================
-// 📄 LISTADO DE MATRÍCULAS
+// LISTADO DE MATRÍCULAS
 // ==============================
 router.get('/DocMatricula', documentoController.listarMatriculas);
 
 // ==============================
-// ⬇ DESCARGAR PDF
+// DESCARGAR PDF
 // ==============================
 router.get('/matricula/descargar/:id', documentoController.descargarMatricula);
 
 // ==============================
-// 📝 GENERAR PDF desde alumno/apoderado
+// GENERAR PDF desde alumno/apoderado
 // ==============================
 router.get('/matricula/generar/:idAlumno', documentoController.generarMatriculaPDF);
 
 // ==============================
-// 👀 VISUALIZAR PDF en navegador
+// VISUALIZAR PDF en navegador
 // ==============================
 router.get('/matricula/ver/:id', documentoController.verMatricula);
 

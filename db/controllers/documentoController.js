@@ -2,7 +2,7 @@ const conn = require('../conexion');
 const PDFDocument = require('pdfkit');
 
 /* =====================================================
-   📂 SUBIR PDF MANUAL (desde formulario)
+   SUBIR PDF MANUAL (desde formulario)
 ===================================================== */
 exports.subirDocumento = async (req, res) => {
     try {
@@ -29,7 +29,7 @@ exports.subirDocumento = async (req, res) => {
 };
 
 /* =====================================================
-   📄 LISTAR MATRÍCULAS
+   LISTAR MATRÍCULAS
 ===================================================== */
 exports.listarMatriculas = async (req, res) => {
     try {
@@ -44,7 +44,7 @@ exports.listarMatriculas = async (req, res) => {
 };
 
 /* =====================================================
-   ⬇ DESCARGAR PDF
+   DESCARGAR PDF
 ===================================================== */
 exports.descargarMatricula = async (req, res) => {
     try {
@@ -73,7 +73,7 @@ exports.descargarMatricula = async (req, res) => {
 };
 
 /* =====================================================
-   👀 VISUALIZAR PDF EN EL NAVEGADOR
+   VISUALIZAR PDF EN EL NAVEGADOR
 ===================================================== */
 exports.verMatricula = async (req, res) => {
     try {
@@ -101,13 +101,13 @@ exports.verMatricula = async (req, res) => {
 };
 
 /* =====================================================
-   📝 GENERAR PDF (Alumno + Apoderado)
+   GENERAR PDF (Alumno + Apoderado)
 ===================================================== */
 exports.generarMatriculaPDF = async (req, res) => {
     try {
         const { idAlumno } = req.params;
 
-        // 1. Buscar alumno
+        //  Buscar alumno
         const [alumnos] = await conn.execute(
             `SELECT * FROM alumno WHERE id = ?`, [idAlumno]
         );
@@ -116,13 +116,13 @@ exports.generarMatriculaPDF = async (req, res) => {
         }
         const alumno = alumnos[0];
 
-        // 2. Buscar apoderado
+        //  Buscar apoderado
         const [apoderados] = await conn.execute(
             `SELECT * FROM apoderados WHERE alumno_id = ?`, [idAlumno]
         );
         const apoderado = apoderados.length > 0 ? apoderados[0] : null;
 
-        // 3. Crear PDF en memoria
+        //  Crear PDF en memoria
         const doc = new PDFDocument();
         let buffers = [];
         doc.on('data', buffers.push.bind(buffers));
@@ -143,8 +143,8 @@ exports.generarMatriculaPDF = async (req, res) => {
             res.send(pdfData);
         });
 
-        // 4. Escribir contenido en el PDF
-        doc.fontSize(20).text("📑 Ficha de Matrícula", { align: "center" });
+        //  Escribir contenido en el PDF
+        doc.fontSize(20).text("Ficha de Matrícula", { align: "center" });
         doc.moveDown();
 
         doc.fontSize(14).text("Datos del Alumno");
@@ -163,7 +163,7 @@ exports.generarMatriculaPDF = async (req, res) => {
             doc.text(`Teléfono: ${apoderado.telefono}`);
             doc.text(`Correo: ${apoderado.correo_apoderado}`);
         } else {
-            doc.fontSize(14).text("⚠ Este alumno aún no tiene apoderado registrado");
+            doc.fontSize(14).text("Este alumno aún no tiene apoderado registrado");
         }
 
         doc.end();
