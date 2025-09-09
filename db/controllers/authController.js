@@ -8,7 +8,7 @@ exports.login = async (req, res) => {
     const { correo_usuario, contrasena_usuario } = req.body;
 
     if (!correo_usuario || !contrasena_usuario) {
-        return res.render('InicioSeccion', { error: 'Credenciales incorrectas' });
+        return res.redirect('/InicioSeccion?error=Credenciales%20incorrectas');
     }
 
     try {
@@ -31,13 +31,14 @@ exports.login = async (req, res) => {
         // Crear sesión
         req.session.usuarioId = usuario.id;
         req.session.nombre_usuario = usuario.nombre_usuario;
-        req.session.es_admin = usuario.es_admin; // 1 o 0
+        req.session.rol = usuario.rol;
 
-        res.redirect('/home');
+        // Redirigir con mensaje de éxito
+        return res.redirect('/home?success=Inicio%20de%20sesión%20correcto');
 
     } catch (err) {
         console.error('Error en el Login:', err);
-        res.redirect('/InicioSeccion?error=Error%20en%20el%20servidor');
+        return res.redirect('/InicioSeccion?error=Error%20en%20el%20servidor');
     }
 };
 
@@ -45,25 +46,29 @@ exports.login = async (req, res) => {
 // Registrar usuario
 // ========================
 exports.registrar = async (req, res) => {
-    const { rut_usuario, nombre_usuario, correo_usuario, contrasena_usuario, telefono, direccion, es_admin } = req.body;
+    let { rut_usuario, nombre_usuario, correo_usuario, contrasena_usuario, telefono, direccion, rol } = req.body;
 
     if (!rut_usuario || !nombre_usuario || !correo_usuario || !contrasena_usuario) {
         return res.redirect('/registro?error=Campos%20obligatorios');
     }
 
+    telefono = telefono || null;
+    direccion = direccion || null;
+    rol = rol || 'Usuario';
+
     try {
         const hashedPassword = await bcrypt.hash(contrasena_usuario, 10);
 
         const [result] = await conn.execute(
-            'INSERT INTO usuario (rut_usuario, nombre_usuario, correo_usuario, contrasena_usuario, telefono, direccion, es_admin) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [rut_usuario, nombre_usuario, correo_usuario, hashedPassword, telefono, direccion, es_admin || 0]
+            'INSERT INTO usuario (rut_usuario, nombre_usuario, correo_usuario, contrasena_usuario, telefono, direccion, rol) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [rut_usuario, nombre_usuario, correo_usuario, hashedPassword, telefono, direccion, rol]
         );
 
         req.session.usuarioId = result.insertId;
         req.session.nombre_usuario = nombre_usuario;
-        req.session.es_admin = es_admin || 0;
+        req.session.rol = rol;
 
-        res.redirect('/home');
+        return res.redirect('/home?success=Usuario%20registrado%20correctamente');
 
     } catch (err) {
         console.error('Error al registrar:', err);
@@ -71,7 +76,7 @@ exports.registrar = async (req, res) => {
             ? 'El correo o rut ya está registrado'
             : 'Error al registrar al usuario';
 
-        res.redirect(`/registro?error=${encodeURIComponent(errorMsg)}`);
+        return res.redirect(`/registro?error=${encodeURIComponent(errorMsg)}`);
     }
 };
 
@@ -85,6 +90,6 @@ exports.logout = (req, res) => {
             return res.redirect('/home?error=No%20se%20pudo%20cerrar%20la%20sesion');
         }
         res.clearCookie('connect.sid');
-        res.redirect('/InicioSeccion');
+        return res.redirect('/InicioSeccion?success=Cerraste%20sesion%20correctamente');
     });
 };

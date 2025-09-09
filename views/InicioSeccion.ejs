@@ -44,8 +44,8 @@
                                     <label for="LoginPassword" class="form-label">Contraseña</label>
                                     <input type="password" class="form-control" id="LoginPassword" name="contrasena" required>
                                 </div>
-                                <div> 
-                                    <a href="/" class="btn btn-secondary" >Ingresar </a>
+                                <div>
+                                    <a href="/" class="btn btn-secondary">Ingresar </a>
                                 </div>
                                 <!-- <button type="submit" class="btn btn-primary w-100" id="btnLogin">Ingresar</button> -->
                             </form>
@@ -84,7 +84,15 @@
                                     <label for="RegisterDireccion" class="form-label">Dirección</label>
                                     <textarea class="form-control" id="RegisterDireccion" name="direccion" rows="2" required></textarea>
                                 </div>
-                                <button type="button" class="btn btn-success w-100" id="btnRegister">Registrarse</button>
+                                <div class="mb-3">
+                                    <label for="RegisterRol" class="form-label">Rol</label>
+                                    <select class="form-control" id="RegisterRol" name="rol" required>
+                                        <option value="Usuario">Usuario normal</option>
+                                        <option value="Administrador">Administrador</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-success w-100"
+                                    id="btnRegister">Registrarse</button>
 
                                 <!-- Botón para volver al home -->
                                 <div class="text-center mt-3">
@@ -107,16 +115,6 @@
 
         <!-- Validaciones -->
         <script>
-            document.getElementById('btnLogin').addEventListener('click', function (e) {
-                const email = document.getElementById('LoginEmail').value.trim();
-                const contrasena = document.getElementById('LoginPassword').value.trim();
-
-                if (!email || !contrasena) {
-                    e.preventDefault();
-                    alert('Por favor complete ambos campos.');
-                }
-            });
-
             document.getElementById('btnRegister').addEventListener('click', async function (e) {
                 e.preventDefault();
 
@@ -133,19 +131,18 @@
                 }
 
                 try {
-                    const res = await fetch('/auth/registrar', {
+                    const res = await fetch('/register', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ rut_usuario, nombre_usuario, correo_usuario, contrasena_admin, telefono, direccion })
+                        body: JSON.stringify({ rut_usuario, nombre_usuario, correo_usuario, contrasena_usuario, telefono, direccion })
                     });
-
-                    const data = await res.json();
 
                     if (res.ok) {
                         alert('Registro exitoso. Ahora puede iniciar sesión.');
                         document.getElementById('registerForm').reset();
                         document.getElementById('login-tab').click();
                     } else {
+                        const data = await res.json();
                         alert(data.error || 'Error al registrar.');
                     }
                 } catch (err) {

@@ -10,7 +10,7 @@ CREATE TABLE usuario (
     contrasena_usuario VARCHAR(100) NOT NULL,    
     telefono VARCHAR(15),
     direccion VARCHAR(255),
-    es_admin BOOLEAN NOT NULL DEFAULT 0 -- 1 = Admin, 0 = Usuario normal
+    rol VARCHAR(50) NOT NULL 
 );
 
 -- Alumnos (NO entran al sistema, solo se gestionan)
