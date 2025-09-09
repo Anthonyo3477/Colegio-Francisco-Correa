@@ -1,36 +1,37 @@
 const conn = require('../conexion');
 const bcrypt = require('bcryptjs');
 
-
-// Login de administrador
-
+// ========================
+// Login de usuario
+// ========================
 exports.login = async (req, res) => {
-    const { correo_admin, contrasena_admin } = req.body;
+    const { correo_usuario, contrasena_usuario } = req.body;
 
-    if (!correo_admin || !contrasena_admin) {
+    if (!correo_usuario || !contrasena_usuario) {
         return res.render('InicioSeccion', { error: 'Credenciales incorrectas' });
     }
 
     try {
         const [resultado] = await conn.execute(
-            'SELECT * FROM admin WHERE correo_admin = ?',
-            [correo_admin]
+            'SELECT * FROM usuario WHERE correo_usuario = ?',
+            [correo_usuario]
         );
 
         if (resultado.length === 0) {
             return res.redirect('/InicioSeccion?error=Credenciales%20incorrectas');
         }
 
-        const admin = resultado[0];
-        const isMatch = await bcrypt.compare(contrasena_admin, admin.contrasena_admin);
+        const usuario = resultado[0];
+        const isMatch = await bcrypt.compare(contrasena_usuario, usuario.contrasena_usuario);
 
         if (!isMatch) {
             return res.redirect('/InicioSeccion?error=Credenciales%20incorrectas');
         }
 
         // Crear sesión
-        req.session.adminId = admin.id_admin; // asegúrate de que tu PK en tabla sea id_admin
-        req.session.nombre_admin = admin.nombre_admin;
+        req.session.usuarioId = usuario.id;
+        req.session.nombre_usuario = usuario.nombre_usuario;
+        req.session.es_admin = usuario.es_admin; // 1 o 0
 
         res.redirect('/home');
 
@@ -40,41 +41,43 @@ exports.login = async (req, res) => {
     }
 };
 
-//Registrar administrador
-
+// ========================
+// Registrar usuario
+// ========================
 exports.registrar = async (req, res) => {
-    const { rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion } = req.body;
+    const { rut_usuario, nombre_usuario, correo_usuario, contrasena_usuario, telefono, direccion, es_admin } = req.body;
 
-    // Validaciones básicas
-    if (!rut_admin || !nombre_admin || !correo_admin || !contrasena_admin) {
+    if (!rut_usuario || !nombre_usuario || !correo_usuario || !contrasena_usuario) {
         return res.redirect('/registro?error=Campos%20obligatorios');
     }
 
     try {
-        const hashedPassword = await bcrypt.hash(contrasena_admin, 10);
+        const hashedPassword = await bcrypt.hash(contrasena_usuario, 10);
 
         const [result] = await conn.execute(
-            'INSERT INTO admin (rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?)',
-            [rut_admin, nombre_admin, correo_admin, hashedPassword, telefono, direccion]
+            'INSERT INTO usuario (rut_usuario, nombre_usuario, correo_usuario, contrasena_usuario, telefono, direccion, es_admin) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [rut_usuario, nombre_usuario, correo_usuario, hashedPassword, telefono, direccion, es_admin || 0]
         );
 
-        // Crear sesión después de registrar
-        req.session.adminId = result.insertId;
-        req.session.nombre_admin = nombre_admin;
+        req.session.usuarioId = result.insertId;
+        req.session.nombre_usuario = nombre_usuario;
+        req.session.es_admin = es_admin || 0;
 
         res.redirect('/home');
 
     } catch (err) {
         console.error('Error al registrar:', err);
         const errorMsg = err.code === 'ER_DUP_ENTRY'
-            ? 'El correo ya está registrado'
-            : 'Error al registrar al Admin';
+            ? 'El correo o rut ya está registrado'
+            : 'Error al registrar al usuario';
 
         res.redirect(`/registro?error=${encodeURIComponent(errorMsg)}`);
     }
 };
 
-// Logout de administrador
+// ========================
+// Logout de usuario
+// ========================
 exports.logout = (req, res) => {
     req.session.destroy((err) => {
         if (err) {

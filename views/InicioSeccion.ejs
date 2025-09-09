@@ -24,12 +24,10 @@
                     <!-- Tabs -->
                     <ul class="nav nav-tabs mb-3" id="authTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
-                                type="button" role="tab">Iniciar Sesión</button>
+                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Iniciar Sesión</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register"
-                                type="button" role="tab">Registrarse</button>
+                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Registrarse</button>
                         </li>
                     </ul>
 
@@ -44,8 +42,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="LoginPassword" class="form-label">Contraseña</label>
-                                    <input type="password" class="form-control" id="LoginPassword" name="contrasena"
-                                        required>
+                                    <input type="password" class="form-control" id="LoginPassword" name="contrasena" required>
                                 </div>
                                 <div> 
                                     <a href="/" class="btn btn-secondary" >Ingresar </a>
@@ -65,35 +62,29 @@
                                 <h2 class="text-center mb-4">Registrarse</h2>
                                 <div class="mb-3">
                                     <label for="RegistrarRut" class="form-label">Rut</label>
-                                    <input type="text" class="form-control" id="RegistrarRut" name="rut_admin" required>
+                                    <input type="text" class="form-control" id="RegistrarRut" name="rut_usuario" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="RegisterNombre" class="form-label">Nombre Completo</label>
-                                    <input type="text" class="form-control" id="RegisterNombre" name="nombre_admin"
-                                        required>
+                                    <input type="text" class="form-control" id="RegisterNombre" name="nombre_usuario" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="RegisterEmail" class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" id="RegisterEmail" name="correo_admin"
-                                        required>
+                                    <input type="email" class="form-control" id="RegisterEmail" name="correo_usuario" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="RegisterPassword" class="form-label">Contraseña</label>
-                                    <input type="password" class="form-control" id="RegisterPassword"
-                                        name="contrasena_admin" required>
+                                    <input type="password" class="form-control" id="RegisterPassword" name="contrasena_usuario" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="RegisterTelefono" class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control" id="RegisterTelefono" name="telefono"
-                                        required pattern="[0-9]{9,15}">
+                                    <input type="text" class="form-control" id="RegisterTelefono" name="telefono" required pattern="[0-9]{9,15}">
                                 </div>
                                 <div class="mb-3">
                                     <label for="RegisterDireccion" class="form-label">Dirección</label>
-                                    <textarea class="form-control" id="RegisterDireccion" name="direccion" rows="2"
-                                        required></textarea>
+                                    <textarea class="form-control" id="RegisterDireccion" name="direccion" rows="2" required></textarea>
                                 </div>
-                                <button type="button" class="btn btn-success w-100"
-                                    id="btnRegister">Registrarse</button>
+                                <button type="button" class="btn btn-success w-100" id="btnRegister">Registrarse</button>
 
                                 <!-- Botón para volver al home -->
                                 <div class="text-center mt-3">
@@ -129,14 +120,14 @@
             document.getElementById('btnRegister').addEventListener('click', async function (e) {
                 e.preventDefault();
 
-                const rut_admin = document.getElementById('RegistrarRut').value.trim();
-                const nombre_admin = document.getElementById('RegisterNombre').value.trim();
-                const correo_admin = document.getElementById('RegisterEmail').value.trim();
-                const contrasena_admin = document.getElementById('RegisterPassword').value.trim();
+                const rut_usuario = document.getElementById('RegistrarRut').value.trim();
+                const nombre_usuario = document.getElementById('RegisterNombre').value.trim();
+                const correo_usuario = document.getElementById('RegisterEmail').value.trim();
+                const contrasena_usuario = document.getElementById('RegisterPassword').value.trim();
                 const telefono = document.getElementById('RegisterTelefono').value.trim();
                 const direccion = document.getElementById('RegisterDireccion').value.trim();
 
-                if (!rut_admin || !nombre_admin || !correo_admin || !contrasena_admin || !telefono || !direccion) {
+                if (!rut_usuario || !nombre_usuario || !correo_usuario || !contrasena_usuario || !telefono || !direccion) {
                     alert('Por favor, complete todos los campos.');
                     return;
                 }
@@ -145,7 +136,7 @@
                     const res = await fetch('/auth/registrar', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion })
+                        body: JSON.stringify({ rut_usuario, nombre_usuario, correo_usuario, contrasena_admin, telefono, direccion })
                     });
 
                     const data = await res.json();
