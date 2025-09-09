@@ -58,7 +58,9 @@
                                     <!-- Ruta para poder visualizar el documento, pero el PDF no se visualiza, de hecho me lleva al home -->
                                     <td>
                                         <a href="/matricula/ver/<%= m.id %>" target="_blank">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-pdf-fill" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 4px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-file-pdf-fill" viewBox="0 0 16 16"
+                                                style="vertical-align: middle; margin-right: 4px;">
                                                 <path d="M5.523 10.424q...Z" />
                                                 <path fill-rule="evenodd" d="M4 0h8...Z" />
                                             </svg>
@@ -85,6 +87,11 @@
                     </tbody>
                 </table>
             </section>
+            <!-- Botón Volver -->
+            <div class="boton-volver">
+                <button onclick="window.history.back()">Volver</button>
+            </div>
+
         </main>
         <!-- Footer -->
         <%- include('partials/footer') %>

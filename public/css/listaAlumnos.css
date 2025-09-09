@@ -1,4 +1,3 @@
-/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     background: #f5f6fa;
@@ -11,7 +10,7 @@ body {
 
 /* Encabezado */
 header {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -19,7 +18,7 @@ header {
 
 /* Navbar */
 nav {
-    background: #1e73be;
+    background: #120077;
     color: #fff;
     padding: 10px 20px;
 }
@@ -44,6 +43,7 @@ nav a {
 
 nav a:hover {
     text-decoration: underline;
+    color: #FFF642;
 }
 
 main {
@@ -55,7 +55,7 @@ main {
 .btn-volver {
     margin: 30px auto 0 auto;
     display: block;
-    background: #2d98da;
+    background: #120077;
     color: white;
     padding: 10px 24px;
     border: none;
@@ -68,12 +68,13 @@ main {
 }
 
 .btn-volver:hover {
-    background: #2275a5;
+    background: #8C9292;
+    color: #FFF642;
 }
 
 .btn-filtrar {
     margin-left: 10px;
-    background: #2d98da;
+    background: #120077;
     color: white;
     padding: 8px 18px;
     border: none;
@@ -140,7 +141,7 @@ td {
 }
 
 th {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     font-size: 1.1em;
     letter-spacing: 1px;
@@ -161,12 +162,12 @@ caption {
     font-size: 1.3em;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #3867d6;
+    color: #8C9292;
 }
 
 /* Footer */
 footer {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     text-align: center;
     padding: 10px 0;

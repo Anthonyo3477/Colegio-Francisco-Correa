@@ -8,9 +8,27 @@ body {
     flex-direction: column;
 }
 
+/* Encabezado */
+header {
+    background: #120077;
+    color: #fff;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+}
+
+header p {
+    margin: 0;
+    font-size: 16px;
+}
+
 /* Navbar */
 nav {
-    background: #1e73be;
+    background: #120077;
     color: #fff;
     padding: 10px 20px;
 }
@@ -37,23 +55,6 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* Encabezado */
-header {
-    background: #2d98da;
-    color: #fff;
-    padding: 30px 20px;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0 0 10px 0;
-    font-size: 28px;
-}
-
-header p {
-    margin: 0;
-    font-size: 16px;
-}
 
 /* Contenido principal */
 main {
@@ -91,7 +92,7 @@ main {
 
 /* Cabecera */
 .table thead {
-    background-color: #2a4d69;
+    background-color: #120077;
     color: #ffffff;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -138,11 +139,12 @@ main {
 }
 
 .btn-descargar {
-    background-color: #2196f3;
+    background-color: #120077;
+    color: #FFF642;
 }
 
 .btn-descargar:hover {
-    background-color: #1976d2;
+    background-color: #8C9292;
 }
 
 .btn-eliminar {
@@ -167,7 +169,7 @@ main {
 .upload-card h2 {
     font-size: 22px;
     margin-bottom: 20px;
-    color: #1e73be;
+    color: #120077;
 }
 
 /* Input File */
@@ -175,7 +177,7 @@ input[type="file"] {
     display: block;
     margin: 20px auto;
     padding: 8px;
-    border: 2px dashed #2d98da;
+    border: 2px dashed #120077;
     border-radius: 6px;
     background: #f9fbff;
     cursor: pointer;
@@ -183,14 +185,14 @@ input[type="file"] {
 }
 
 input[type="file"]:hover {
-    border-color: #1e73be;
+    border-color: #8C9292;
     background: #eef6ff;
 }
 
 /* Botón */
 button {
-    background: #3867d6;
-    color: #fff;
+    background: #120077;
+    color: #FFF642;
     border: none;
     padding: 10px 25px;
     border-radius: 6px;
@@ -200,13 +202,13 @@ button {
 }
 
 button:hover {
-    background: #1e73be;
+    background: #8C9292;
     transform: scale(1.05);
 }
 
 /* Footer */
 footer {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     text-align: center;
     padding: 10px 0;

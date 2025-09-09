@@ -1,4 +1,3 @@
-/* Estilos generales para el fondo y fuente */
 body {
     font-family: Arial, sans-serif;
     background: #f5f6fa;
@@ -11,7 +10,7 @@ body {
 
 /* Encabezado */
 header {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -19,7 +18,7 @@ header {
 
 /* Navbar */
 nav {
-    background: #1e73be;
+    background: #120077;
     color: #fff;
     padding: 10px 20px;
 }
@@ -44,64 +43,153 @@ nav a {
 
 nav a:hover {
     text-decoration: underline;
+    color: #FFF642;
 }
 
-/* Main */
 main {
-    padding: 40px 10px 60px 10px;
+    padding: 40px 20px;
+    text-align: center;
+    flex: 1;
 }
 
-/* Formulario (ya lo tienes, solo agrego detalles extra) */
-form {
-    max-width: 500px;
-    margin: 30px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-form label {
+.btn-volver {
+    margin: 30px auto 0 auto;
     display: block;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-form input,
-form select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-form button {
-    margin-top: 20px;
-    background: #2d98da;
+    background: #120077;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 24px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-form button:hover {
+.btn-volver:hover {
+    background: #8C9292;
+    color: #FFF642;
+}
+
+.btn-filtrar {
+    margin-left: 10px;
+    background: #120077;
+    color: white;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-filtrar:hover {
     background: #2275a5;
+}
+
+/* Botón modificar */
+.btn-warning {
+    background-color: #f0ad4e;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.btn-warning:hover {
+    background-color: #ec971f;
+}
+
+/* Botón eliminar */
+.btn-danger {
+    background-color: #d9534f;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+/* Tabla de alumnos */
+table {
+    width: 90%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 1em;
+}
+
+th {
+    background: #120077;
+    color: #fff;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+}
+
+tr:nth-child(even) {
+    background: #f5f6fa;
+}
+
+tr:hover {
+    background: #e1ecf7;
+    transition: background 0.2s;
+}
+
+caption {
+    caption-side: top;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #8C9292;
 }
 
 /* Footer */
 footer {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     text-align: center;
-    padding: 12px 0;
-    position: fixed;
+    padding: 10px 0;
+    position: relative;
     width: 100%;
-    bottom: 0;
-    font-size: 15px;
+    margin-top: 460px;
+}
+
+/* Responsividad */
+@media (max-width: 800px) {
+    table {
+        width: 100%;
+        font-size: 0.95em;
+    }
+
+    th,
+    td {
+        padding: 7px 4px;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 8px 0;
+    }
 }

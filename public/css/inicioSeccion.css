@@ -10,7 +10,7 @@ body {
 
 /* Encabezado */
 header {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -18,7 +18,7 @@ header {
 
 /* Navbar */
 nav {
-    background: #1e73be;
+    background: #120077;
     color: #fff;
     padding: 10px 20px;
 }
@@ -43,6 +43,7 @@ nav a {
 
 nav a:hover {
     text-decoration: underline;
+    color: #FFF642;
 }
 
 /* Contenido principal */
@@ -74,7 +75,6 @@ form {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    /* separación automática entre inputs y botones */
 }
 
 /* Inputs */
@@ -109,11 +109,11 @@ input[type="submit"]:hover {
 
 /* Footer */
 footer {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     text-align: center;
     padding: 10px 0;
-    position: fixed;
+    position: relative;
     width: 100%;
-    bottom: 0;
+    margin-top: 100px;
 }

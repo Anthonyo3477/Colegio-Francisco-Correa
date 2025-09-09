@@ -1,4 +1,3 @@
-/* Estilos generales para el fondo y fuente */
 body {
     font-family: Arial, sans-serif;
     background: #f5f6fa;
@@ -11,7 +10,7 @@ body {
 
 /* Encabezado */
 header {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -19,7 +18,7 @@ header {
 
 /* Navbar */
 nav {
-    background: #1e73be;
+    background: #120077;
     color: #fff;
     padding: 10px 20px;
 }
@@ -44,6 +43,7 @@ nav a {
 
 nav a:hover {
     text-decoration: underline;
+    color: #FFF642;
 }
 
 /* Main en columna: título arriba y formularios abajo */
@@ -70,18 +70,14 @@ main h2 {
     justify-content: center;
     align-items: flex-start;
     gap: 30px;
-    /* espacio entre tarjetas */
     flex-wrap: wrap;
-    /* en pantallas pequeñas se apilan */
     width: 100%;
     max-width: 1100px;
-    /* límite de ancho */
 }
 
 /* Formulario */
 form {
     flex: 1 1 400px;
-    /* se ajusta con mínimo 400px */
     max-width: 500px;
     margin: 0;
     padding: 20px;
@@ -108,8 +104,8 @@ form select {
 
 form button {
     margin-top: 20px;
-    background: #2d98da;
-    color: white;
+    background: #120077;
+    color: #FFF642;
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -120,12 +116,12 @@ form button {
 }
 
 form button:hover {
-    background: #2275a5;
+    background: #8C9292;
 }
 
 /* Footer */
 footer {
-    background: #2d98da;
+    background: #120077;
     color: #fff;
     text-align: center;
     padding: 10px 0;
