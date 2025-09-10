@@ -11,10 +11,17 @@ function formatDate(date) {
 
 // Crear alumno
 async function createAlumno(alumno) {
-    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna } = alumno;
+    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = alumno;
 
-    const sql = `INSERT INTO ${TABLA} (rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const valores = [rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, formatDate(fecha_ingreso), nacionalidad, orden_llegada, direcion, comuna];
+    const sql = `
+        INSERT INTO ${TABLA} 
+        (rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const valores = [
+        rut_alumnos, nombre, apellido_paterno, apellido_materno, curso,
+        formatDate(fecha_ingreso), nacionalidad, orden_llegada, direccion, comuna
+    ];
 
     const [result] = await conn.query(sql, valores);
     return result;
@@ -22,7 +29,12 @@ async function createAlumno(alumno) {
 
 // Obtener todos los alumnos
 async function getAllAlumnos() {
-    const sql = `SELECT id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna FROM ${TABLA}`;
+    const sql = `
+        SELECT id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, 
+               DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso, 
+               nacionalidad, orden_llegada, direccion, comuna 
+        FROM ${TABLA}
+    `;
     const [rows] = await conn.query(sql);
     return rows;
 }
@@ -35,13 +47,13 @@ async function getAlumnoById(id) {
     return rows[0] || null;
 }
 
-//  Listado alumno Con apoderado
+// Listado alumno con apoderado
 async function getAlumnosConApoderados({ curso } = {}) {
     let sql = `
         SELECT 
             a.id AS alumno_id, a.rut_alumnos, a.nombre, a.apellido_paterno, a.apellido_materno,
             a.curso, DATE_FORMAT(a.fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso,
-            a.nacionalidad, a.orden_llegada, a.direcion, a.comuna,
+            a.nacionalidad, a.orden_llegada, a.direccion, a.comuna,
             ap.id AS apoderado_id, ap.rut_apoderado, ap.nombre_apoderado,
             ap.apellido_paterno AS apoderado_apellido_paterno,
             ap.apellido_materno AS apoderado_apellido_materno,
@@ -60,7 +72,7 @@ async function getAlumnosConApoderados({ curso } = {}) {
 
     const [rows] = await conn.query(sql, valores);
 
-    //  Agrupar los apoderados por alumno
+    // Agrupar los apoderados por alumno
     const alumnos = {};
     for (const row of rows) {
         if (!alumnos[row.alumno_id]) {
@@ -74,7 +86,7 @@ async function getAlumnosConApoderados({ curso } = {}) {
                 fecha_ingreso: row.fecha_ingreso,
                 nacionalidad: row.nacionalidad,
                 orden_llegada: row.orden_llegada,
-                direcion: row.direcion,
+                direccion: row.direccion,
                 comuna: row.comuna,
                 apoderados: []
             };
@@ -97,26 +109,31 @@ async function getAlumnosConApoderados({ curso } = {}) {
     return Object.values(alumnos);
 }
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-// Obtienes Alumnos filtrdos
-// este apartado esta de momento en proceso , aunque se planea que se pueda realizar este filtro
+// Obtiene alumnos filtrados por curso
 async function getAlumnosByCurso(curso) {
     const [rows] = await conn.query("SELECT * FROM alumno WHERE curso = ?", [curso]);
     return rows;
 }
 
+// Obtiene todos los cursos distintos
 async function getAllCursos() {
     const [rows] = await conn.query("SELECT DISTINCT curso FROM alumno ORDER BY curso ASC");
     return rows.map(r => r.curso);
 }
-//////////////////////////////////////////////////////////////////////////////////////////////
 
 // Actualizar alumno por ID
 async function updateAlumno(id, alumno) {
-    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna } = alumno;
-    const sql = `UPDATE ${TABLA} SET rut_alumnos=?, nombre=?, apellido_paterno=?, apellido_materno=?, curso=?, fecha_ingreso=?, nacionalidad=?, orden_llegada=?, direcion=?, comuna=? WHERE id=?`;
-    const valores = [rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, formatDate(fecha_ingreso), nacionalidad, orden_llegada, direcion, comuna, id];
+    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = alumno;
+    const sql = `
+        UPDATE ${TABLA} 
+        SET rut_alumnos=?, nombre=?, apellido_paterno=?, apellido_materno=?, curso=?, 
+            fecha_ingreso=?, nacionalidad=?, orden_llegada=?, direccion=?, comuna=? 
+        WHERE id=?
+    `;
+    const valores = [
+        rut_alumnos, nombre, apellido_paterno, apellido_materno, curso,
+        formatDate(fecha_ingreso), nacionalidad, orden_llegada, direccion, comuna, id
+    ];
     const [result] = await conn.query(sql, valores);
     return result;
 }
@@ -128,12 +145,14 @@ async function deleteAlumno(id) {
     return result;
 }
 
+// Guardar documento
 async function guardarDocumento(nombreArchivo, buffer) {
     const sql = `INSERT INTO ${TABLA} (nombre_archivo, documento) VALUES (?, ?)`;
     const [result] = await conn.query(sql, [nombreArchivo, buffer]);
-    return result.insertId; // devuelve el id del documento
+    return result.insertId;
 }
 
+// Obtener documento por ID
 async function obtenerDocumento(id) {
     const sql = `SELECT * FROM ${TABLA} WHERE id = ?`;
     const [rows] = await conn.query(sql, [id]);
@@ -143,7 +162,6 @@ async function obtenerDocumento(id) {
 module.exports = { 
     guardarDocumento,
     obtenerDocumento,
-
     createAlumno, 
     getAllAlumnos, 
     getAlumnoById, 
@@ -151,4 +169,5 @@ module.exports = {
     getAllCursos, 
     getAlumnosByCurso, 
     updateAlumno, 
-    deleteAlumno };
+    deleteAlumno 
+};

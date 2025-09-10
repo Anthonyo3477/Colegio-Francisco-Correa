@@ -12,7 +12,7 @@ router.use(express.json());
     Convertir Datos a PDF 
 ==================================================*/
 
-router.post('/generar-pdf', async (req, res) => {
+router.post('/generar-pdf', isAdmin, async (req, res) => {
     try {
         const datos = req.body;
 
@@ -41,7 +41,7 @@ router.post('/generar-pdf', async (req, res) => {
         doc.text(`Curso: ${datos.curso}`);
         doc.text(`Fecha de Ingreso: ${datos.fecha_ingreso}`);
         doc.text(`Nacionalidad: ${datos.nacionalidad}`);
-        doc.text(`Dirección: ${datos.direcion}, ${datos.comuna}`);
+        doc.text(`Dirección: ${datos.direccion}, ${datos.comuna}`);
         doc.moveDown();
 
         doc.fontSize(14).text("Datos del Apoderado:");
@@ -63,7 +63,7 @@ router.post('/generar-pdf', async (req, res) => {
 ================================================== */
 
 // Mostrar formulario de creación
-router.get('/nuevo', (req, res) => {
+router.get('/nuevo', isAuthenticated, isAdmin, (req, res) => {
     res.render('alumno', {
         title: 'Registrar Nuevo Alumno',
         error: null,
@@ -74,9 +74,9 @@ router.get('/nuevo', (req, res) => {
 // Procesar creación
 router.post('/insert', async (req, res) => {
     try {
-        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direcion, comuna } = req.body;
+        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = req.body;
 
-        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direcion?.trim() || !comuna?.trim()) {
+        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direccion?.trim() || !comuna?.trim()) {
             return res.status(400).render('alumno', {
                 title: 'Registrar Nuevo Alumno',
                 error: 'Todos los campos son obligatorios',
@@ -94,7 +94,7 @@ router.post('/insert', async (req, res) => {
             fecha_ingreso,
             nacionalidad: nacionalidad.trim(),
             orden_llegada: orden_llegada ? parseInt(orden_llegada) : null,
-            direcion: direcion.trim(),
+            direccion: direccion.trim(),
             comuna: comuna.trim()
         });
 
@@ -118,7 +118,7 @@ router.post('/insert', async (req, res) => {
    LISTAR ALUMNOS con FILTRO
 ================================================== */
 
-router.get('/listaAlumnos', async (req, res) => {
+router.get('/listaAlumnos', isAuthenticated,  async (req, res) => {
     try {
         const cursoSeleccionado = req.query.curso || "";
 
@@ -179,9 +179,9 @@ router.get('/editar/:id', async (req, res) => {
 router.post('/actualizar/:id', async (req, res) => {
     const id = req.params.id;
     try {
-        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada } = req.body;
+        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = req.body;
 
-        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim()) {
+        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direccion?.trim() || !comuna?.trim() ) {
             return res.status(400).render('EditarAlumnos', {
                 title: `Editar Alumno`,
                 error: 'Todos los campos son obligatorios',
@@ -197,7 +197,9 @@ router.post('/actualizar/:id', async (req, res) => {
             curso: curso.trim(),
             fecha_ingreso,
             nacionalidad: nacionalidad.trim(),
-            orden_llegada: orden_llegada ? parseInt(orden_llegada) : null
+            orden_llegada: orden_llegada ? parseInt(orden_llegada) : null,
+            direccion: direccion.trim(),
+            comuna: comuna.trim()
         });
 
         console.log("Alumno actualizado correctamente:", id);

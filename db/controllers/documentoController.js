@@ -152,7 +152,7 @@ exports.generarMatriculaPDF = async (req, res) => {
         doc.text(`Curso: ${alumno.curso}`);
         doc.text(`Fecha ingreso: ${alumno.fecha_ingreso}`);
         doc.text(`Nacionalidad: ${alumno.nacionalidad}`);
-        doc.text(`Dirección: ${alumno.direcion}, ${alumno.comuna}`);
+        doc.text(`Dirección: ${alumno.direccion}, ${alumno.comuna}`);
         doc.moveDown();
 
         if (apoderado) {
