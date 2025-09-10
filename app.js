@@ -4,20 +4,15 @@ const session = require('express-session');
 
 const app = express();
 
+// ==========================
 // Configuración de Sesiones
+// ==========================
 app.use(session({
     secret: 'unSecretoMuySeguro12345',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 } // Dura 1 hora la seccion
+    cookie: { maxAge: 1000 * 60 * 60 } // 1 hora de sesion
 }));
-
-// Configuración General
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware para pasar la sesión a las vistas
 app.use((req, res, next) => {
@@ -25,7 +20,28 @@ app.use((req, res, next) => {
     next();
 });
 
+// ==========================
+// Configuración General
+// ==========================
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ==========================
+// Middleware de autenticación
+// ==========================
+function requireLogin(req, res, next) {
+    if (!req.session.usuarioId) {
+        return res.redirect('/InicioSeccion?error=No%20has%20iniciado%20sesion');
+    }
+    next();
+}
+
+// ==========================
 // Rutas
+// ==========================
 const home = require('./routes/apis/home.routes');
 const alumnoRoutes = require('./routes/apis/alumno.routes');
 const authRoutes = require('./routes/apis/auth.routes');
@@ -55,7 +71,20 @@ app.get('/InicioSeccion', (req, res) => {
     res.render('InicioSeccion', { error: null });
 });
 
+// ==========================
+// Vista Home (protegida)
+// ==========================
+app.get('/home', requireLogin, (req, res) => {
+    res.render('home', {
+        nombre: req.session.nombre_usuario,
+        rol: req.session.rol,
+        success: req.query.success || null
+    });
+});
+
+// ==========================
 // Manejo de errores
+// ==========================
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Algo salió mal en el servidor!');
@@ -66,7 +95,9 @@ app.use((req, res) => {
     res.status(404).send('Página no encontrada');
 });
 
+// ==========================
 // Iniciar servidor
+// ==========================
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);

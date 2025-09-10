@@ -3,6 +3,7 @@ const router = express.Router();
 const PDFDocument = require('pdfkit');
 const alumnoController = require('../../db/controllers/alumnoController');
 const documentoController = require('../../db/controllers/documentoController');
+const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware');
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());

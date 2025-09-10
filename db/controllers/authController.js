@@ -6,8 +6,10 @@ const bcrypt = require('bcryptjs');
 // ========================
 exports.login = async (req, res) => {
     const { correo_usuario, contrasena_usuario } = req.body;
+    console.log("Datos recibidos en login:", req.body);
 
     if (!correo_usuario || !contrasena_usuario) {
+        console.log("Faltan credenciales");
         return res.redirect('/InicioSeccion?error=Credenciales%20incorrectas');
     }
 
@@ -17,36 +19,51 @@ exports.login = async (req, res) => {
             [correo_usuario]
         );
 
+        console.log("Resultado de la consulta:", resultado);
+
         if (resultado.length === 0) {
+            console.log("Usuario no encontrado:", correo_usuario);
             return res.redirect('/InicioSeccion?error=Credenciales%20incorrectas');
         }
 
         const usuario = resultado[0];
         const isMatch = await bcrypt.compare(contrasena_usuario, usuario.contrasena_usuario);
 
+        console.log("Contraseña correcta?", isMatch);
+
         if (!isMatch) {
+            console.log("Contraseña incorrecta para:", correo_usuario);
             return res.redirect('/InicioSeccion?error=Credenciales%20incorrectas');
         }
 
         // Crear sesión
         req.session.usuarioId = usuario.id;
         req.session.nombre_usuario = usuario.nombre_usuario;
+        req.session.rut_usuario = usuario.rut_usuario;
         req.session.rol = usuario.rol;
 
-        // Redirigir con mensaje de éxito
+        console.log("Sesión creada para:", {
+            id: req.session.usuarioId,
+            nombre: req.session.nombre_usuario,
+            rut: req.session.rut_usuario,
+            rol: req.session.rol
+        });
+
         return res.redirect('/home?success=Inicio%20de%20sesión%20correcto');
 
     } catch (err) {
-        console.error('Error en el Login:', err);
+        console.error("Error en el Login:", err);
         return res.redirect('/InicioSeccion?error=Error%20en%20el%20servidor');
     }
 };
+
 
 // ========================
 // Registrar usuario
 // ========================
 exports.registrar = async (req, res) => {
     let { rut_usuario, nombre_usuario, correo_usuario, contrasena_usuario, telefono, direccion, rol } = req.body;
+    console.log("Datos recibidos en registrar:", req.body);
 
     if (!rut_usuario || !nombre_usuario || !correo_usuario || !contrasena_usuario) {
         return res.redirect('/registro?error=Campos%20obligatorios');
@@ -68,7 +85,8 @@ exports.registrar = async (req, res) => {
         req.session.nombre_usuario = nombre_usuario;
         req.session.rol = rol;
 
-        return res.redirect('/home?success=Usuario%20registrado%20correctamente');
+        return res.redirect('/InicioSeccion?success=Usuario%20registrado%20correctamente');
+
 
     } catch (err) {
         console.error('Error al registrar:', err);

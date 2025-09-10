@@ -47,6 +47,19 @@ nav a:hover {
     color: #FFF642;
 }
 
+.btn-logout {
+    background: #e74c3c;
+    color: #fff !important;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: #c0392b;
+}
+
 /* ------------------ Main ------------------ */
 main {
     padding: 40px 20px;
