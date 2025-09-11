@@ -4,6 +4,7 @@ const PDFDocument = require('pdfkit');
 const alumnoController = require('../../db/controllers/alumnoController');
 const documentoController = require('../../db/controllers/documentoController');
 const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware');
+const { formatDate } = require('../../db/controllers/alumnoController');
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
@@ -11,7 +12,6 @@ router.use(express.json());
 /* ================================================
     Convertir Datos a PDF 
 ==================================================*/
-
 router.post('/generar-pdf', isAdmin, async (req, res) => {
     try {
         const datos = req.body;
@@ -23,6 +23,7 @@ router.post('/generar-pdf', isAdmin, async (req, res) => {
         doc.on('end', async () => {
             const pdfBuffer = Buffer.concat(chunks);
 
+            // Guardar documento en BD
             await documentoController.guardarDocumento(
                 `Ficha_${datos.rut_alumnos}.pdf`,
                 pdfBuffer
@@ -61,8 +62,7 @@ router.post('/generar-pdf', isAdmin, async (req, res) => {
 /* ==================================================
    CREAR ALUMNO
 ================================================== */
-
-// Mostrar formulario de creación
+// Mostrar formulario
 router.get('/nuevo', isAuthenticated, isAdmin, (req, res) => {
     res.render('alumno', {
         title: 'Registrar Nuevo Alumno',
@@ -84,23 +84,20 @@ router.post('/insert', async (req, res) => {
             });
         }
 
-        // Guardar alumno y recibir el ID
         const result = await alumnoController.createAlumno({
             rut_alumnos: rut_alumnos.trim(),
             nombre: nombre.trim(),
             apellido_paterno: apellido_paterno.trim(),
             apellido_materno: apellido_materno.trim(),
             curso: curso.trim(),
-            fecha_ingreso,
+            fecha_ingreso: formatDate(fecha_ingreso),
             nacionalidad: nacionalidad.trim(),
-            orden_llegada: orden_llegada ? parseInt(orden_llegada) : null,
+            orden_llegada: orden_llegada && !isNaN(parseInt(orden_llegada)) ? parseInt(orden_llegada) : null,
             direccion: direccion.trim(),
             comuna: comuna.trim()
         });
 
         console.log("Alumno creado correctamente:", rut_alumnos, "ID:", result.insertId);
-
-        // Redirigimos al formulario del apoderado
         res.redirect(`/nuevo-apoderado/${result.insertId}`);
 
     } catch (error) {
@@ -113,21 +110,17 @@ router.post('/insert', async (req, res) => {
     }
 });
 
-
 /* ==================================================
    LISTAR ALUMNOS con FILTRO
 ================================================== */
-
-router.get('/listaAlumnos', isAuthenticated,  async (req, res) => {
+router.get('/listaAlumnos', isAuthenticated, async (req, res) => {
     try {
         const cursoSeleccionado = req.query.curso || "";
 
-        // Nueva funcion con filtro
         const alumnos = await alumnoController.getAlumnosConApoderados({
             curso: cursoSeleccionado || undefined
         });
 
-        // Obtener solo la lista de cursos
         const cursos = await alumnoController.getAllCursos();
 
         res.render('listaAlumnos', {
@@ -156,8 +149,6 @@ router.get('/editar/:id', async (req, res) => {
             new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout DB')), 5000))
         ]);
 
-        console.log("Alumno encontrado:", alumno);
-
         if (!alumno) {
             return res.status(404).render('error', { message: 'Alumno no encontrado' });
         }
@@ -180,7 +171,7 @@ router.post('/actualizar/:id', async (req, res) => {
     try {
         const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = req.body;
 
-        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direccion?.trim() || !comuna?.trim() ) {
+        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direccion?.trim() || !comuna?.trim()) {
             return res.status(400).render('EditarAlumnos', {
                 title: `Editar Alumno`,
                 error: 'Todos los campos son obligatorios',
@@ -194,15 +185,15 @@ router.post('/actualizar/:id', async (req, res) => {
             apellido_paterno: apellido_paterno.trim(),
             apellido_materno: apellido_materno.trim(),
             curso: curso.trim(),
-            fecha_ingreso,
+            fecha_ingreso: formatDate(fecha_ingreso),
             nacionalidad: nacionalidad.trim(),
-            orden_llegada: orden_llegada ? parseInt(orden_llegada) : null,
+            orden_llegada: orden_llegada && !isNaN(parseInt(orden_llegada)) ? parseInt(orden_llegada) : null,
             direccion: direccion.trim(),
             comuna: comuna.trim()
         });
 
         console.log("Alumno actualizado correctamente:", id);
-        res.redirect('/listaAlumnos');
+        res.redirect('/listaAlumnos?success=1');
 
     } catch (error) {
         console.error('Error al actualizar alumno:', error);
@@ -217,7 +208,6 @@ router.post('/actualizar/:id', async (req, res) => {
 /* ==================================================
    ELIMINAR ALUMNO
 ================================================== */
-
 router.post('/eliminar/:id', async (req, res) => {
     const id = req.params.id;
     console.log("Solicitud POST /eliminar con ID:", id);
@@ -225,7 +215,7 @@ router.post('/eliminar/:id', async (req, res) => {
     try {
         await alumnoController.deleteAlumno(id);
         console.log("Alumno eliminado correctamente:", id);
-        res.redirect('/listaAlumnos');
+        res.redirect('/listaAlumnos?deleted=1');
     } catch (error) {
         console.error('Error al eliminar alumno:', error);
         res.status(500).render('error', { message: 'Error al eliminar alumno' });

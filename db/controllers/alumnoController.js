@@ -1,11 +1,22 @@
 const conn = require('../conexion');
 const TABLA = 'alumno';
 
-// Helper: normalizar fecha a YYYY-MM-DD
+// Este apartado es solo para probar al final lo que deberia de hacer es entregarme la fecha asi dd-mm-aaaa
 function formatDate(date) {
     if (!date) return null;
-    if (typeof date === 'string') return date.split('T')[0];
-    if (date instanceof Date) return date.toISOString().split('T')[0];
+    if (/^\d{2}-\d{2}-\d{4}$/.test(date)) {
+        const [day, month, year] = date.split("-");
+        return `${year}-${month}-${day}`;
+    }
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return date;
+    }
+    if (date instanceof Date) {
+        return date.toISOString().split("T")[0];
+    }
+    if (typeof date === "string" && date.includes("T")) {
+        return date.split("T")[0];
+    }
     return date;
 }
 
