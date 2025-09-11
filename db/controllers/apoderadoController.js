@@ -34,17 +34,23 @@ async function getApoderadoById(id) {
     return rows[0] || null;
 }
 
+// Obtener apoderado por ID de Alumno
+async function getByAlumnoId(alumnoId) {
+    if (!alumnoId) return null;
+    const sql = `SELECT * FROM ${TABLA} WHERE alumno_id = ?`;
+    const [rows] = await conn.query(sql, [alumnoId]);
+    return rows[0] || null;
+}
+
 // Actualizar apoderado por ID
 async function updateApoderado(id, apoderado) {
     const { rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, alumno_id, telefono, correo_apoderado } = apoderado;
-
     const sql = `
         UPDATE ${TABLA} 
         SET rut_apoderado=?, nombre_apoderado=?, apellido_paterno=?, apellido_materno=?, nacionalidad=?, alumno_id=?, telefono=?, correo_apoderado=? 
         WHERE id=?
     `;
     const valores = [rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, alumno_id, telefono, correo_apoderado, id];
-
     const [result] = await conn.query(sql, valores);
     return result;
 }
@@ -56,4 +62,4 @@ async function deleteApoderado(id) {
     return result;
 }
 
-module.exports = { createApoderado, getAllApoderados, getApoderadoById, updateApoderado, deleteApoderado };
+module.exports = { createApoderado, getAllApoderados, getApoderadoById, getByAlumnoId, updateApoderado, deleteApoderado };

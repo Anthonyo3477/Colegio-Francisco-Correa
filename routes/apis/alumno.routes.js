@@ -145,7 +145,6 @@ router.get('/listaAlumnos', isAuthenticated,  async (req, res) => {
 /* ==================================================
    MODIFICAR ALUMNO
 ================================================== */
-
 // Formulario edición
 router.get('/editar/:id', async (req, res) => {
     const id = req.params.id;
