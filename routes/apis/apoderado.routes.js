@@ -2,18 +2,13 @@ const express = require('express');
 const router = express.Router();
 const apoderadoController = require('../../db/controllers/apoderadoController');
 
-// Middleware para parsear body
-router.use(express.urlencoded({ extended: true }));
-router.use(express.json());
-
 /* ==================================================
    FORMULARIO NUEVO APODERADO
 ================================================== */
-router.get('/nuevo-apoderado/:id', (req, res) => {
-    const alumnoId = req.params.id;
-
+router.get('/nuevo-apoderado/:alumnoId', (req, res) => {
+    const { alumnoId } = req.params;
     res.render('apoderadoForm', {
-        title: 'Registrar Nuevo Apoderado',
+        title: 'Registrar Apoderado',
         error: null,
         valores: {},
         alumnoId
@@ -23,13 +18,15 @@ router.get('/nuevo-apoderado/:id', (req, res) => {
 /* ==================================================
    INSERTAR APODERADO
 ================================================== */
-router.post('/insertApoderado', async (req, res) => {
+router.post('/insert', async (req, res) => {
     try {
-        const { rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, alumno_id, telefono, correo_apoderado } = req.body;
+        const { rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno,
+                nacionalidad, alumno_id, telefono, correo_apoderado } = req.body;
 
-        if ( !rut_apoderado?.trim() || !nombre_apoderado?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || 
-        !nacionalidad?.trim() || !alumno_id || !telefono?.trim() || !correo_apoderado?.trim()
-        ) {
+        if (!rut_apoderado?.trim() || !nombre_apoderado?.trim() || !apellido_paterno?.trim() || 
+            !apellido_materno?.trim() || !nacionalidad?.trim() || !alumno_id || 
+            !telefono?.trim() || !correo_apoderado?.trim()) {
+            
             return res.status(400).render('apoderadoForm', {
                 title: 'Registrar Nuevo Apoderado',
                 error: 'Todos los campos son obligatorios',
@@ -64,9 +61,8 @@ router.post('/insertApoderado', async (req, res) => {
 });
 
 /* ==================================================
-   Actualizar Apoderado
+   FORMULARIO EDITAR APODERADO
 ================================================== */
-// Formulario de actualizar
 router.get('/editar/:alumnoId', async (req, res) => {
     try {
         const { alumnoId } = req.params;
@@ -89,7 +85,9 @@ router.get('/editar/:alumnoId', async (req, res) => {
     }
 });
 
-// Proceso De Actualizar el apoderado
+/* ==================================================
+   PROCESO ACTUALIZAR APODERADO
+================================================== */
 router.post('/actualizar/:id', async (req, res) => {
     try {
         const { id } = req.params;

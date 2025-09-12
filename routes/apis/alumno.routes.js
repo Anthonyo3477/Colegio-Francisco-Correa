@@ -4,10 +4,21 @@ const PDFDocument = require('pdfkit');
 const alumnoController = require('../../db/controllers/alumnoController');
 const documentoController = require('../../db/controllers/documentoController');
 const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware');
-const { formatDate } = require('../../db/controllers/alumnoController');
+// const { formatDate } = require('../../db/controllers/alumnoController');
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
+
+// Función para dar formato a la fecha en YYYY-MM-DD
+function formatDate(date) {
+    if (!date) return null;
+    const d = new Date(date);
+    if (isNaN(d)) return null;
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 
 /* ================================================
     Convertir Datos a PDF 

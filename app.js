@@ -54,7 +54,7 @@ app.use('/', alumnoRoutes);
 app.use('/', authRoutes);
 app.use('/', documentoRoutes);
 app.use('/', matriculaRoutes);
-app.use('/apoderados', apoderadoRoutes);
+app.use('/', apoderadoRoutes);
 
 // Vista de documentos
 app.get('/documentosAlumnos', (req, res) => {
