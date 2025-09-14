@@ -18,7 +18,7 @@ router.get('/nuevo-apoderado/:alumnoId', (req, res) => {
 /* ==================================================
    INSERTAR APODERADO
 ================================================== */
-router.post('/insert', async (req, res) => {
+router.post('/insertApoderado', async (req, res) => {
     try {
         const { rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno,
                 nacionalidad, alumno_id, telefono, correo_apoderado } = req.body;
