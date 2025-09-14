@@ -204,7 +204,7 @@ router.post('/actualizar/:id', async (req, res) => {
         });
 
         console.log("Alumno actualizado correctamente:", id);
-        res.redirect('/listaAlumnos?success=1');
+        res.redirect(`/apoderado/editar/${id}`);
 
     } catch (error) {
         console.error('Error al actualizar alumno:', error);

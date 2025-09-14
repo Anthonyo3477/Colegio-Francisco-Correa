@@ -44,13 +44,41 @@ async function getByAlumnoId(alumnoId) {
 
 // Actualizar apoderado por ID
 async function updateApoderado(id, apoderado) {
-    const { rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, alumno_id, telefono, correo_apoderado } = apoderado;
+    const {
+        rut_apoderado,
+        nombre_apoderado,
+        apellido_paterno,
+        apellido_materno,
+        nacionalidad,
+        alumno_id,
+        telefono,
+        correo_apoderado
+    } = apoderado;
+
+    // Si no viene alumno_id, recuperamos el actual desde la BD
+    let alumnoIdToUpdate = alumno_id;
+    if (!alumnoIdToUpdate) {
+        const sqlSelect = `SELECT alumno_id FROM ${TABLA} WHERE id = ?`;
+        const [rows] = await conn.query(sqlSelect, [id]);
+        alumnoIdToUpdate = rows.length > 0 ? rows[0].alumno_id : null;
+    }
+
     const sql = `
         UPDATE ${TABLA} 
         SET rut_apoderado=?, nombre_apoderado=?, apellido_paterno=?, apellido_materno=?, nacionalidad=?, alumno_id=?, telefono=?, correo_apoderado=? 
         WHERE id=?
     `;
-    const valores = [rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, alumno_id, telefono, correo_apoderado, id];
+    const valores = [
+        rut_apoderado,
+        nombre_apoderado,
+        apellido_paterno,
+        apellido_materno,
+        nacionalidad,
+        alumnoIdToUpdate,
+        telefono,
+        correo_apoderado,
+        id
+    ];
     const [result] = await conn.query(sql, valores);
     return result;
 }

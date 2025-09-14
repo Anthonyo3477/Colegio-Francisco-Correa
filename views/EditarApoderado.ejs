@@ -24,8 +24,11 @@
         <% } %>
 
         <div class="card shadow-sm p-4">
-            <form action="/actualizar/<%= apoderado.id %>" method="POST" class="row g-3">
+            <form action="/apoderado/actualizar/<%= apoderado.id %>" method="POST">
                 
+                <!-- IMPORTANTE: Mantener la relación con el alumno -->
+                <input type="hidden" name="alumno_id" value="<%= apoderado.alumno_id %>">
+
                 <div class="col-md-6">
                     <label class="form-label">RUT Apoderado</label>
                     <input type="text" class="form-control" name="rut_apoderado" value="<%= apoderado.rut_apoderado %>" readonly>
@@ -72,7 +75,8 @@
             </form>
         </div>
     </main>
-      <%- include('partials/footer') %>
+
+    <%- include('partials/footer') %>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
