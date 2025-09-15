@@ -42,14 +42,14 @@ CREATE TABLE apoderados (
     FOREIGN KEY (alumno_id) REFERENCES alumno(id) ON DELETE CASCADE
 );
 
--- Documentos de matrícula
 CREATE TABLE matriculas (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    alumno_id INT UNIQUE,
     nombre_archivo VARCHAR(255) NOT NULL,
     documento LONGBLOB NOT NULL,
-    fecha_subida TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    fecha_subida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (alumno_id) REFERENCES alumno(id) ON DELETE CASCADE
 );
-
 
 INSERT INTO admin (id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada) 
 VALUES (1, '21.222.347-6', 'Antonio', 'Verdugo', 'Díaz', '4 Medio', '2025-08-13', '55');

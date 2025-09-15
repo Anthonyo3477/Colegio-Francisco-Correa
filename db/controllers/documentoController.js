@@ -12,14 +12,14 @@ exports.subirDocumento = async (req, res) => {
 
         const nombreArchivo = req.file.originalname;
         const documento = req.file.buffer;
-
+        
+        // Guardar en la base de datos
         await conn.execute(
             "INSERT INTO matriculas (nombre_archivo, documento) VALUES (?, ?)",
             [nombreArchivo, documento]
         );
 
-        console.log("Matrícula subida:", nombreArchivo);
-
+        console.log("Matrícula manual subida:", nombreArchivo);
         res.redirect('/DocMatricula');
     } catch (error) {
         console.error("Error al guardar el documento:", error);
@@ -33,7 +33,11 @@ exports.subirDocumento = async (req, res) => {
 exports.listarMatriculas = async (req, res) => {
     try {
         const [rows] = await conn.execute(
-            'SELECT * FROM matriculas ORDER BY fecha_subida DESC'
+            `SELECT m.id, m.nombre_archivo, m.fecha_subida, 
+                    a.nombre AS alumno_nombre, a.apellido_paterno, a.apellido_materno
+             FROM matriculas m
+             LEFT JOIN alumno a ON m.alumno_id = a.id
+             ORDER BY m.fecha_subida DESC`
         );
         res.render('DocMatricula', { matriculas: rows });
     } catch (error) {
@@ -62,7 +66,6 @@ exports.descargarMatricula = async (req, res) => {
 
         res.setHeader('Content-Disposition', `attachment; filename="${nombre_archivo}"`);
         res.setHeader('Content-Type', 'application/pdf');
-
         res.send(documento);
 
     } catch (error) {
@@ -92,7 +95,7 @@ exports.verMatricula = async (req, res) => {
             "Content-Disposition",
             `inline; filename="${rows[0].nombre_archivo}"`
         );
-        res.send(pdfBuffer); // El navegador abre una pestaña nueva, con el PDF que esta en la base de datos
+        res.send(pdfBuffer);
     } catch (error) {
         console.error("Error al mostrar PDF:", error);
         res.status(500).send("Error al mostrar PDF");
@@ -100,13 +103,13 @@ exports.verMatricula = async (req, res) => {
 };
 
 /* =====================================================
-   GENERAR PDF (Alumno + Apoderado)
+   GENERAR O REEMPLAZAR PDF (Alumno + Apoderado)
 ===================================================== */
 exports.generarMatriculaPDF = async (req, res) => {
     try {
         const { idAlumno } = req.params;
 
-        //  Buscar alumno
+        // Buscar alumno
         const [alumnos] = await conn.execute(
             `SELECT * FROM alumno WHERE id = ?`, [idAlumno]
         );
@@ -115,25 +118,29 @@ exports.generarMatriculaPDF = async (req, res) => {
         }
         const alumno = alumnos[0];
 
-        //  Buscar apoderado
+        // Buscar apoderado
         const [apoderados] = await conn.execute(
             `SELECT * FROM apoderados WHERE alumno_id = ?`, [idAlumno]
         );
         const apoderado = apoderados.length > 0 ? apoderados[0] : null;
 
-        //  Crear PDF en memoria
+        // Crear PDF en memoria
         const doc = new PDFDocument();
         let buffers = [];
         doc.on('data', buffers.push.bind(buffers));
         doc.on('end', async () => {
             const pdfData = Buffer.concat(buffers);
-
             const nombreArchivo = `matricula_${alumno.rut_alumnos}.pdf`;
 
-            // Guardar en la tabla matricula
+            // Guardar o reemplazar en la tabla matriculas
             await conn.execute(
-                "INSERT INTO matriculas (nombre_archivo, documento) VALUES (?, ?)",
-                [nombreArchivo, pdfData]
+                `INSERT INTO matriculas (alumno_id, nombre_archivo, documento) 
+                 VALUES (?, ?, ?) 
+                 ON DUPLICATE KEY UPDATE 
+                   nombre_archivo = VALUES(nombre_archivo), 
+                   documento = VALUES(documento), 
+                   fecha_subida = CURRENT_TIMESTAMP`,
+                [alumno.id, nombreArchivo, pdfData]
             );
 
             // Enviar el PDF al navegador
@@ -142,7 +149,7 @@ exports.generarMatriculaPDF = async (req, res) => {
             res.send(pdfData);
         });
 
-        //  Escribir contenido en el PDF
+        // Escribir contenido en el PDF
         doc.fontSize(20).text("Ficha de Matrícula", { align: "center" });
         doc.moveDown();
 
@@ -170,5 +177,18 @@ exports.generarMatriculaPDF = async (req, res) => {
     } catch (error) {
         console.error("Error al generar PDF:", error);
         res.status(500).send("Error en el servidor");
+    }
+};
+
+/* =====================================================
+   REGENERAR PDF (endpoint independiente)
+===================================================== */
+exports.regenerarMatricula = async (req, res) => {
+    try {
+        const { idAlumno } = req.params;
+        return exports.generarMatriculaPDF(req, res);
+    } catch (error) {
+        console.error("Error al regenerar PDF:", error);
+        res.status(500).send("Error al regenerar PDF");
     }
 };
