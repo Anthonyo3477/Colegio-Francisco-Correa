@@ -10,26 +10,251 @@
 <body>
   <div class="container mt-5">
     <h2>Editar PDF (ID: <%= documentoId %>)</h2>
+
     <form action="/editarPDF" method="POST">
       <input type="hidden" name="documentoId" value="<%= documentoId %>">
 
-      <div class="mb-3">
-        <label class="form-label">Nombre completo</label>
-        <input type="text" name="nombreCompleto" class="form-control">
+      <!-- ================= DATOS DEL ALUMNO ================= -->
+      <h4 class="mt-4">Datos del Alumno</h4>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombre completo</label>
+          <input type="text" name="nombreCompleto" class="form-control" value="<%= datos?.nombreCompleto %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Sexo</label>
+          <input type="text" name="sexoAlumno" class="form-control" value="<%= datos?.sexoAlumno %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">RUT</label>
+          <input type="text" name="rutAlumnos" class="form-control" value="<%= datos?.rutAlumnos %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Fecha Nacimiento</label>
+          <input type="date" name="fechaNacimientoAlumno" class="form-control" value="<%= datos?.fechaNacimientoAlumno %>">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">Edad</label>
+          <input type="number" name="edadAlumno" class="form-control" value="<%= datos?.edadAlumno %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Domicilio</label>
+          <input type="text" name="domicilioAlumno" class="form-control" value="<%= datos?.domicilioAlumno %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Comuna</label>
+          <input type="text" name="comunaAlumno" class="form-control" value="<%= datos?.comunaAlumno %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Vive con</label>
+          <input type="text" name="viviendaAlumno" class="form-control" value="<%= datos?.viviendaAlumno %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Nacionalidad</label>
+          <input type="text" name="nacionalidadAlumno" class="form-control" value="<%= datos?.nacionalidadAlumno %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Año ingreso a Chile</label>
+          <input type="text" name="ingresoChile" class="form-control" value="<%= datos?.ingresoChile %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Pueblo originario</label>
+          <input type="text" name="puebloOriginario" class="form-control" value="<%= datos?.puebloOriginario %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Cuál pueblo</label>
+          <input type="text" name="quePuebloOriginario" class="form-control" value="<%= datos?.quePuebloOriginario %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Enfermedad</label>
+          <input type="text" name="cualEnfermedad" class="form-control" value="<%= datos?.cualEnfermedad %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Alergias</label>
+          <input type="text" name="cualesAlergias" class="form-control" value="<%= datos?.cualesAlergias %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Medicamentos</label>
+          <input type="text" name="recibeMedicamentos" class="form-control" value="<%= datos?.recibeMedicamentos %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Peso</label>
+          <input type="text" name="pesoAlumno" class="form-control" value="<%= datos?.pesoAlumno %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Talla</label>
+          <input type="text" name="tallaAlumno" class="form-control" value="<%= datos?.tallaAlumno %>">
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">RUT</label>
-        <input type="text" name="rut" class="form-control">
+      <!-- ================= SOCIO ACADÉMICO ================= -->
+      <h4 class="mt-4">Datos Socio-Académicos</h4>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Último curso aprobado</label>
+          <input type="text" name="UltimoCurso" class="form-control" value="<%= datos?.UltimoCurso %>">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">Año</label>
+          <input type="text" name="añoCursado" class="form-control" value="<%= datos?.añoCursado %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Colegio de procedencia</label>
+          <input type="text" name="colegioProcedencia" class="form-control" value="<%= datos?.colegioProcedencia %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Curso reprobado</label>
+          <input type="text" name="cursoReprobado" class="form-control" value="<%= datos?.cursoReprobado %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Beca</label>
+          <input type="text" name="cualBeca" class="form-control" value="<%= datos?.cualBeca %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Programa protección infancia</label>
+          <input type="text" name="perteneceProgramaProteccionInfantil" class="form-control" value="<%= datos?.perteneceProgramaProteccionInfantil %>">
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Dirección</label>
-        <input type="text" name="direccion" class="form-control">
+      <!-- ================= ANTECEDENTES FAMILIARES ================= -->
+      <h4 class="mt-4">Antecedentes Familiares</h4>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombre padre</label>
+          <input type="text" name="nombrePadre" class="form-control" value="<%= datos?.nombrePadre %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">RUT padre</label>
+          <input type="text" name="rutPadre" class="form-control" value="<%= datos?.rutPadre %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Fecha nacimiento padre</label>
+          <input type="date" name="fechaNacimientoPadre" class="form-control" value="<%= datos?.fechaNacimientoPadre %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Nacionalidad padre</label>
+          <input type="text" name="nacionalidadPadre" class="form-control" value="<%= datos?.nacionalidadPadre %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Nivel educacional padre</label>
+          <input type="text" name="nivelEducacional" class="form-control" value="<%= datos?.nivelEducacional %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Trabajo padre</label>
+          <input type="text" name="trabajoPadre" class="form-control" value="<%= datos?.trabajoPadre %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Correo padre</label>
+          <input type="email" name="correoPadre" class="form-control" value="<%= datos?.correoPadre %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Dirección padre</label>
+          <input type="text" name="direccionPadre" class="form-control" value="<%= datos?.direccionPadre %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Teléfono padre</label>
+          <input type="text" name="telefonoPadre" class="form-control" value="<%= datos?.telefonoPadre %>">
+        </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Guardar</button>
+      <!-- ================= DATOS APODERADO ================= -->
+      <h4 class="mt-4">Apoderado Principal</h4>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombre apoderado</label>
+          <input type="text" name="nombreApoderado" class="form-control" value="<%= datos?.nombreApoderado %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Parentesco</label>
+          <input type="text" name="parentescoApoderado" class="form-control" value="<%= datos?.parentescoApoderado %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">RUT</label>
+          <input type="text" name="rutApoderado" class="form-control" value="<%= datos?.rutApoderado %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Fecha nacimiento</label>
+          <input type="date" name="fechaNacimientoApoderado" class="form-control" value="<%= datos?.fechaNacimientoApoderado %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Teléfono</label>
+          <input type="text" name="telefonoApoderado" class="form-control" value="<%= datos?.telefonoApoderado %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Correo</label>
+          <input type="email" name="correoApoderado" class="form-control" value="<%= datos?.correoApoderado %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Trabajo</label>
+          <input type="text" name="trabajoApoderado" class="form-control" value="<%= datos?.trabajoApoderado %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nivel educacional</label>
+          <input type="text" name="nivelEducacionalApoderado" class="form-control" value="<%= datos?.nivelEducacionalApoderado %>">
+        </div>
+      </div>
+
+      <!-- ================= APODERADO SUPLENTE ================= -->
+      <h4 class="mt-4">Apoderado Suplente</h4>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombre apoderado</label>
+          <input type="text" name="nombreApoderado2" class="form-control" value="<%= datos?.nombreApoderado2 %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Parentesco</label>
+          <input type="text" name="parentescoApoderado2" class="form-control" value="<%= datos?.parentescoApoderado2 %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">RUT</label>
+          <input type="text" name="rutApoderado2" class="form-control" value="<%= datos?.rutApoderado2 %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Fecha nacimiento</label>
+          <input type="date" name="fechaNacimientoApoderado2" class="form-control" value="<%= datos?.fechaNacimientoApoderado2 %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Teléfono</label>
+          <input type="text" name="telefonoApoderado2" class="form-control" value="<%= datos?.telefonoApoderado2 %>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Correo</label>
+          <input type="email" name="correoApoderado2" class="form-control" value="<%= datos?.correoApoderado2 %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Trabajo</label>
+          <input type="text" name="trabajoApoderado2" class="form-control" value="<%= datos?.trabajoApoderado2 %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nivel educacional</label>
+          <input type="text" name="nivelEducacionalApoderado2" class="form-control" value="<%= datos?.nivelEducacionalApoderado2 %>">
+        </div>
+      </div>
+
+      <!-- ================= PERSONA AUTORIZADA ================= -->
+      <h4 class="mt-4">Autorización Retiro</h4>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" name="nombreRetiro" class="form-control" value="<%= datos?.nombreRetiro %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">RUT</label>
+          <input type="text" name="rutRetirado" class="form-control" value="<%= datos?.rutRetirado %>">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Parentesco</label>
+          <input type="text" name="parentescoRetiro" class="form-control" value="<%= datos?.parentescoRetiro %>">
+        </div>
+      </div>
+
+      <!-- ================= BOTONES ================= -->
+      <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="/DocMatricula" class="btn btn-secondary">Cancelar</a>
+      </div>
     </form>
   </div>
 </body>
+
 </html>
