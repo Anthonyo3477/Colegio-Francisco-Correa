@@ -15,6 +15,16 @@ exports.mostrarFormulario = async (req, res) => {
       return res.status(404).send('Documento no encontrado');
     }
 
+    // Cargar PDF desde DB
+    const pdfDoc = await PDFDocument.load(rows[0].documento);
+    const form = pdfDoc.getForm();
+
+    // Listar campos en consola
+    form.getFields().forEach(f => {
+      console.log('Campo encontrado en el PDF:', f.getName());
+    });
+
+    // Renderizar vista normalmente
     res.render('editarPDF', {
       documentoId,
       datos: rows[0]
@@ -25,20 +35,24 @@ exports.mostrarFormulario = async (req, res) => {
   }
 };
 
+
 // Procesar edición
 exports.editarPDF = async (req, res) => {
   try {
     const {documentoId, nombreCompleto, sexoAlumno, rutAlumnos, fechaNacimientoAlumno, domicilioAlumno,
       edadAlumno, comunaAlumno, viviendaAlumno, nacionalidadAlumno, ingresoChile, puebloOriginario,
       quePuebloOriginario, cualEnfermedad, cualesAlergias, recibeMedicamentos, pesoAlumno, tallaAlumno,
+
       UltimoCurso, añoCursado, colegioProcedencia, cursoReprobado, cualBeca, perteneceProgramaProteccionInfantil,
       nombrePadre, rutPadre, fechaNacimientoPadre, nacionalidadPadre, nivelEducacional, trabajoPadre,
       correoPadre, direccionPadre, telefonoPadre, nombreMadre, rutMadre, fechaNacimientoMadre,
-      nacionalidadMadre, trabajoMadre, correoMadre, direccionMadre, telefonoMadre, nombreApoderado,
-      parentescoApoderado, rutApoderado, fechaNacimientoApoderado, telefonoApoderado, correoApoderado, trabajoApoderado,
+      nacionalidadMadre, trabajoMadre, correoMadre, direccionMadre, telefonoMadre, 
+      
+      nombreApoderado,parentescoApoderado, rutApoderado, fechaNacimientoApoderado, telefonoApoderado, correoApoderado, trabajoApoderado,
       nivelEducacionalApoderado, nombreApoderado2, parentescoApoderado2, rutApoderado2, fechaNacimientoApoderado2,
-      telefonoApoderado2, correoApoderado2, trabajoApoderado2, nivelEducacionalApoderado2,nombreRetiro,
-      rutRetirado, parentescoRetiro } = req.body;
+      telefonoApoderado2, correoApoderado2, trabajoApoderado2, nivelEducacionalApoderado2,
+      
+      nombreRetiro, rutRetirado, parentescoRetiro } = req.body;
 
     // Recuperamos el PDF de la base de datos
     const [rows] = await conn.execute(
