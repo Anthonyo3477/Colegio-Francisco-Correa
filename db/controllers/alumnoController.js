@@ -22,16 +22,23 @@ function formatDate(date) {
 
 // Crear alumno
 async function createAlumno(alumno) {
-    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = alumno;
+    const { 
+        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, 
+        puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso, 
+        fecha_ingreso, añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon 
+    } = alumno;
 
     const sql = `
         INSERT INTO ${TABLA} 
-        (rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, 
+         puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso, fecha_ingreso, 
+         añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const valores = [
-        rut_alumnos, nombre, apellido_paterno, apellido_materno, curso,
-        formatDate(fecha_ingreso), nacionalidad, orden_llegada, direccion, comuna
+        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, 
+        puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso,
+        formatDate(fecha_ingreso), añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon
     ];
 
     const [result] = await conn.query(sql, valores);
@@ -41,9 +48,10 @@ async function createAlumno(alumno) {
 // Obtener todos los alumnos
 async function getAllAlumnos() {
     const sql = `
-        SELECT id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, 
+        SELECT id, nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, 
+               puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso, 
                DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso, 
-               nacionalidad, orden_llegada, direccion, comuna 
+               añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon 
         FROM ${TABLA}
     `;
     const [rows] = await conn.query(sql);
@@ -62,15 +70,17 @@ async function getAlumnoById(id) {
 async function getAlumnosConApoderados({ curso } = {}) {
     let sql = `
         SELECT 
-            a.id AS alumno_id, a.rut_alumnos, a.nombre, a.apellido_paterno, a.apellido_materno,
+            a.id AS alumno_id, a.nombreCompleto_alumno, a.sexo, a.rut_alumnos, a.fechaNacimiento_alumno,
+            a.edadAlumno, a.puebloOriginario, a.quePueblo, a.enfermedad, a.alergias, a.medicamentos,
             a.curso, DATE_FORMAT(a.fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso,
-            a.nacionalidad, a.orden_llegada, a.direccion, a.comuna,
+            a.añoIngresoChile, a.nacionalidad, a.orden_llegada, a.direccion, a.comuna, a.viveCon,
+
             ap.id AS apoderado_id, ap.rut_apoderado, ap.nombre_apoderado,
-            ap.apellido_paterno AS apoderado_apellido_paterno,
-            ap.apellido_materno AS apoderado_apellido_materno,
-            ap.nacionalidad AS apoderado_nacionalidad,
+            ap.parentesco_apoderado, ap.fechaNacimiento_apoderado,
             ap.telefono AS apoderado_telefono,
-            ap.correo_apoderado AS apoderado_correo
+            ap.correo_apoderado,
+            ap.trabajo_apoderado,
+            ap.nivelEducacional_apoderado
         FROM alumno a
         LEFT JOIN apoderados ap ON a.id = ap.alumno_id
     `;
@@ -90,15 +100,17 @@ async function getAlumnosConApoderados({ curso } = {}) {
             alumnos[row.alumno_id] = {
                 id: row.alumno_id,
                 rut_alumnos: row.rut_alumnos,
-                nombre: row.nombre,
-                apellido_paterno: row.apellido_paterno,
-                apellido_materno: row.apellido_materno,
+                nombreCompleto_alumno: row.nombreCompleto_alumno,
+                sexo: row.sexo,
+                fechaNacimiento_alumno: row.fechaNacimiento_alumno,
+                edadAlumno: row.edadAlumno,
                 curso: row.curso,
                 fecha_ingreso: row.fecha_ingreso,
                 nacionalidad: row.nacionalidad,
                 orden_llegada: row.orden_llegada,
                 direccion: row.direccion,
                 comuna: row.comuna,
+                viveCon: row.viveCon,
                 apoderados: []
             };
         }
@@ -108,11 +120,12 @@ async function getAlumnosConApoderados({ curso } = {}) {
                 id: row.apoderado_id,
                 rut_apoderado: row.rut_apoderado,
                 nombre_apoderado: row.nombre_apoderado,
-                apellido_paterno: row.apoderado_apellido_paterno,
-                apellido_materno: row.apoderado_apellido_materno,
-                nacionalidad: row.apoderado_nacionalidad,
+                parentesco_apoderado: row.parentesco_apoderado,
+                fechaNacimiento_apoderado: row.fechaNacimiento_apoderado,
                 telefono: row.apoderado_telefono,
-                correo_apoderado: row.apoderado_correo
+                correo_apoderado: row.correo_apoderado,
+                trabajo_apoderado: row.trabajo_apoderado,
+                nivelEducacional_apoderado: row.nivelEducacional_apoderado
             });
         }
     }
@@ -134,17 +147,25 @@ async function getAllCursos() {
 
 // Actualizar alumno por ID
 async function updateAlumno(id, alumno) {
-    const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = alumno;
+    const { 
+        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, 
+        puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso, 
+        fecha_ingreso, añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon 
+    } = alumno;
+
     const sql = `
         UPDATE ${TABLA} 
-        SET rut_alumnos=?, nombre=?, apellido_paterno=?, apellido_materno=?, curso=?, 
-            fecha_ingreso=?, nacionalidad=?, orden_llegada=?, direccion=?, comuna=? 
+        SET nombreCompleto_alumno=? , sexo=?, rut_alumnos=?, fechaNacimiento_alumno=?, edadAlumno=?, puebloOriginario=?,
+            quePueblo=?, enfermedad=?, alergias=?, medicamentos=?, curso=?, 
+            fecha_ingreso=?, añoIngresoChile=?, nacionalidad=?, orden_llegada=?, direccion=?, comuna=?, viveCon=? 
         WHERE id=?
     `;
     const valores = [
-        rut_alumnos, nombre, apellido_paterno, apellido_materno, curso,
-        formatDate(fecha_ingreso), nacionalidad, orden_llegada, direccion, comuna, id
+        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario, 
+        quePueblo, enfermedad, alergias, medicamentos, curso,
+        formatDate(fecha_ingreso), añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon, id
     ];
+    
     const [result] = await conn.query(sql, valores);
     return result;
 }
@@ -156,23 +177,7 @@ async function deleteAlumno(id) {
     return result;
 }
 
-// Guardar documento
-async function guardarDocumento(nombreArchivo, buffer) {
-    const sql = `INSERT INTO ${TABLA} (nombre_archivo, documento) VALUES (?, ?)`;
-    const [result] = await conn.query(sql, [nombreArchivo, buffer]);
-    return result.insertId;
-}
-
-// Obtener documento por ID
-async function obtenerDocumento(id) {
-    const sql = `SELECT * FROM ${TABLA} WHERE id = ?`;
-    const [rows] = await conn.query(sql, [id]);
-    return rows[0] || null;
-}
-
 module.exports = { 
-    guardarDocumento,
-    obtenerDocumento,
     createAlumno, 
     getAllAlumnos, 
     getAlumnoById, 

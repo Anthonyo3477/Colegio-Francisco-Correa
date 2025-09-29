@@ -4,7 +4,6 @@ const PDFDocument = require('pdfkit');
 const alumnoController = require('../../db/controllers/alumnoController');
 const documentoController = require('../../db/controllers/documentoController');
 const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware');
-// const { formatDate } = require('../../db/controllers/alumnoController');
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
@@ -49,7 +48,7 @@ router.post('/generar-pdf', isAdmin, async (req, res) => {
 
         doc.fontSize(14).text("Datos del Alumno:");
         doc.fontSize(12).text(`RUT: ${datos.rut_alumnos}`);
-        doc.text(`Nombre: ${datos.nombre} ${datos.apellido_paterno} ${datos.apellido_materno}`);
+        doc.text(`Nombre Completo: ${datos.nombreCompleto_alumno}`);
         doc.text(`Curso: ${datos.curso}`);
         doc.text(`Fecha de Ingreso: ${datos.fecha_ingreso}`);
         doc.text(`Nacionalidad: ${datos.nacionalidad}`);
@@ -58,7 +57,8 @@ router.post('/generar-pdf', isAdmin, async (req, res) => {
 
         doc.fontSize(14).text("Datos del Apoderado:");
         doc.fontSize(12).text(`RUT: ${datos.rut_apoderado}`);
-        doc.text(`Nombre: ${datos.nombre_apoderado} ${datos.apellido_paterno_ap} ${datos.apellido_materno_ap}`);
+        doc.text(`Nombre: ${datos.nombre_apoderado}`);
+        doc.text(`Parentesco: ${datos.parentesco_apoderado}`);
         doc.text(`Teléfono: ${datos.telefono}`);
         doc.text(`Correo: ${datos.correo_apoderado}`);
 
@@ -85,27 +85,40 @@ router.get('/nuevo', isAuthenticated, isAdmin, (req, res) => {
 // Procesar creación
 router.post('/insert', async (req, res) => {
     try {
-        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = req.body;
+        const { nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario,
+            quePueblo, enfermedad, alergias, medicamentos, curso, fecha_ingreso, añoIngresoChile, nacionalidad,
+            orden_llegada, direccion, comuna, viveCon } = req.body;
 
-        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direccion?.trim() || !comuna?.trim()) {
+        if (!nombreCompleto_alumno?.trim() || !sexo?.trim() || !rut_alumnos?.trim() || !fechaNacimiento_alumno?.trim()
+            || !edadAlumno?.trim() || !enfermedad?.trim() || !alergias?.trim()
+            || !medicamentos?.trim() || !curso?.trim() || !fecha_ingreso?.trim() || !añoIngresoChile?.trim() || !nacionalidad?.trim()
+            || !orden_llegada?.trim() || !direccion?.trim() || !comuna?.trim() || !viveCon?.trim()) {
             return res.status(400).render('alumno', {
                 title: 'Registrar Nuevo Alumno',
-                error: 'Todos los campos son obligatorios',
+                error: 'Todos los campos obligatorios deben estar completos',
                 valores: req.body
             });
         }
 
         const result = await alumnoController.createAlumno({
+            nombreCompleto_alumno: nombreCompleto_alumno.trim(),
+            sexo: sexo.trim(),
             rut_alumnos: rut_alumnos.trim(),
-            nombre: nombre.trim(),
-            apellido_paterno: apellido_paterno.trim(),
-            apellido_materno: apellido_materno.trim(),
+            fechaNacimiento_alumno: fechaNacimiento_alumno.trim(),
+            edadAlumno: edadAlumno.trim(),
+            puebloOriginario: puebloOriginario?.trim() || null,
+            quePueblo: quePueblo?.trim() || null,
+            enfermedad: enfermedad.trim(),
+            alergias: alergias.trim(),
+            medicamentos: medicamentos.trim(),
             curso: curso.trim(),
             fecha_ingreso: formatDate(fecha_ingreso),
+            añoIngresoChile: añoIngresoChile.trim(),
             nacionalidad: nacionalidad.trim(),
             orden_llegada: orden_llegada && !isNaN(parseInt(orden_llegada)) ? parseInt(orden_llegada) : null,
             direccion: direccion.trim(),
-            comuna: comuna.trim()
+            comuna: comuna.trim(),
+            viveCon: viveCon.trim()
         });
 
         console.log("Alumno creado correctamente:", rut_alumnos, "ID:", result.insertId);
@@ -165,7 +178,7 @@ router.get('/editar/:id', async (req, res) => {
         }
 
         res.render('EditarAlumnos', {
-            title: `Editar ${alumno.nombre}`,
+            title: `Editar ${alumno.nombreCompleto_alumno}`,
             alumno,
             error: null
         });
@@ -180,27 +193,40 @@ router.get('/editar/:id', async (req, res) => {
 router.post('/actualizar/:id', async (req, res) => {
     const id = req.params.id;
     try {
-        const { rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada, direccion, comuna } = req.body;
+        const { nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario,
+            quePueblo, enfermedad, alergias, medicamentos, curso, fecha_ingreso, añoIngresoChile, nacionalidad,
+            orden_llegada, direccion, comuna, viveCon } = req.body;
 
-        if (!rut_alumnos?.trim() || !nombre?.trim() || !apellido_paterno?.trim() || !apellido_materno?.trim() || !curso?.trim() || !fecha_ingreso || !nacionalidad?.trim() || !direccion?.trim() || !comuna?.trim()) {
+        if (!nombreCompleto_alumno?.trim() || !sexo?.trim() || !rut_alumnos?.trim() || !fechaNacimiento_alumno?.trim()
+            || !edadAlumno?.trim() || !enfermedad?.trim() || !alergias?.trim()
+            || !medicamentos?.trim() || !curso?.trim() || !fecha_ingreso?.trim() || !añoIngresoChile?.trim() || !nacionalidad?.trim()
+            || !orden_llegada?.trim() || !direccion?.trim() || !comuna?.trim() || !viveCon?.trim()) {
             return res.status(400).render('EditarAlumnos', {
                 title: `Editar Alumno`,
-                error: 'Todos los campos son obligatorios',
+                error: 'Todos los campos obligatorios deben estar completos',
                 alumno: { id, ...req.body }
             });
         }
 
         await alumnoController.updateAlumno(id, {
+            nombreCompleto_alumno: nombreCompleto_alumno.trim(),
+            sexo: sexo.trim(),
             rut_alumnos: rut_alumnos.trim(),
-            nombre: nombre.trim(),
-            apellido_paterno: apellido_paterno.trim(),
-            apellido_materno: apellido_materno.trim(),
+            fechaNacimiento_alumno: fechaNacimiento_alumno.trim(),
+            edadAlumno: edadAlumno.trim(),
+            puebloOriginario: puebloOriginario?.trim() || null,
+            quePueblo: quePueblo?.trim() || null,
+            enfermedad: enfermedad.trim(),
+            alergias: alergias.trim(),
+            medicamentos: medicamentos.trim(),
             curso: curso.trim(),
             fecha_ingreso: formatDate(fecha_ingreso),
+            añoIngresoChile: añoIngresoChile.trim(),
             nacionalidad: nacionalidad.trim(),
             orden_llegada: orden_llegada && !isNaN(parseInt(orden_llegada)) ? parseInt(orden_llegada) : null,
             direccion: direccion.trim(),
-            comuna: comuna.trim()
+            comuna: comuna.trim(),
+            viveCon: viveCon.trim()
         });
 
         console.log("Alumno actualizado correctamente:", id);
