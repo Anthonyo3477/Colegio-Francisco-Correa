@@ -28,17 +28,17 @@ const insertarAlumnoYApoderado = async (obj) => {
         // Inserta alumno
         const [resA] = await conn.execute(
             `INSERT INTO alumno
-       (rut_alumnos, nombre, apellido_paterno, apellido_materno,
-        curso, fecha_ingreso, nacionalidad, orden_llegada)
+       (rut_alumnos, nombre, parentesco_apoderado, fechaNacimiento_apoderado,
+        curso, fecha_ingreso, trabajo_apoderado, orden_llegada)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 alumno.rut,
                 alumno.nombre,
-                alumno.apellido_paterno,
-                alumno.apellido_materno,
+                alumno.parentesco_apoderado,
+                alumno.fechaNacimiento_apoderado,
                 alumno.curso || 'SIN CURSO',
                 alumno.fecha_ingreso || new Date(),
-                alumno.nacionalidad || 'Chilena',
+                alumno.trabajo_apoderado || 'Chilena',
                 null 
             ]
         );
@@ -53,15 +53,15 @@ const insertarAlumnoYApoderado = async (obj) => {
         if (!yaApo.length) {
             await conn.execute(
                 `INSERT INTO apoderados
-         (rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno,
-          nacionalidad, alumno_id)
+         (rut_apoderado, nombre_apoderado, parentesco_apoderado, fechaNacimiento_apoderado,
+          trabajo_apoderado, alumno_id)
          VALUES (?, ?, ?, ?, ?, ?)`,
                 [
                     apoderado.rut || null,
                     apoderado.nombre || '',
-                    apoderado.apellido_paterno || '',
-                    apoderado.apellido_materno || '',
-                    apoderado.nacionalidad || 'Chilena',
+                    apoderado.parentesco_apoderado || '',
+                    apoderado.fechaNacimiento_apoderado || '',
+                    apoderado.trabajo_apoderado || 'Chilena',
                     alumnoId
                 ]
             );

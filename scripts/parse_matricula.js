@@ -59,7 +59,7 @@ const extraerCampos = (textoPlano) => {
         alumnoFNac: /FECHA\s*DE\s*NACIMIENTO\s*:\s*([0-9\/\-]{8,10})/im,
         direccion: /DIRECCI[ÓO]N\s*:\s*([^\n]+)$/im,
         comuna: /\bCOMUNA\s*:\s*([^\n]+)$/im,
-        nacionalidad: /NACIONALIDAD\s*:\s*([^\n]+)$/im,
+        trabajo_apoderado: /trabajo_apoderado\s*:\s*([^\n]+)$/im,
         curso: /\bCURSO(?:\s*AL\s*QUE\s*(?:INGRESA|POSTULA))?\s*:\s*([^\n]+)$/im,
         viveCon: /VIVE\s*CON\s*:\s*([^\n]+)$/im,
 
@@ -68,7 +68,7 @@ const extraerCampos = (textoPlano) => {
         apoRUT: /RUT\s*APODERAD[OA]\s*:\s*([0-9.\-Kk]+)/im,
         apoFono: /TEL[ÉE]FONO\s*:\s*([0-9 +\-]+)/im,
         apoCorreo: /CORREO(?:\s*ELECTR[ÓO]NICO)?\s*:\s*([^\s\n]+)$/im,
-        apoNac: /NACIONALIDAD\s*APODERAD[OA]\s*:\s*([^\n]+)$/im
+        apoNac: /trabajo_apoderado\s*APODERAD[OA]\s*:\s*([^\n]+)$/im
     };
 
 
@@ -84,12 +84,12 @@ const extraerCampos = (textoPlano) => {
     const alumno = {
         rut: normalizaRUT(cap(rx.alumnoRUT)),
         nombre,
-        apellido_paterno: apP,
-        apellido_materno: apM,
+        parentesco_apoderado: apP,
+        fechaNacimiento_apoderado: apM,
         curso: cap(rx.curso),
         fecha_nacimiento: aISO(cap(rx.alumnoFNac)),             // si la quieres
         fecha_ingreso: dayjs().format('YYYY-MM-DD'),            // o ajusta según tu PDF
-        nacionalidad: cap(rx.nacionalidad) || 'Chilena',
+        trabajo_apoderado: cap(rx.trabajo_apoderado) || 'Chilena',
         direccion: cap(rx.direccion),
         comuna: cap(rx.comuna),
         vive_con: cap(rx.viveCon) || ''
@@ -101,11 +101,11 @@ const extraerCampos = (textoPlano) => {
     const apoderado = {
         rut: normalizaRUT(cap(rx.apoRUT)),
         nombre: apo.nombre || apoderadoNombreCompleto,
-        apellido_paterno: apo.apP,
-        apellido_materno: apo.apM,
+        parentesco_apoderado: apo.apP,
+        fechaNacimiento_apoderado: apo.apM,
         telefono: cap(rx.apoFono),
         correo: cap(rx.apoCorreo),
-        nacionalidad: cap(rx.apoNac) || 'Chilena'
+        trabajo_apoderado: cap(rx.apoNac) || 'Chilena'
     };
 
     return { alumno, apoderado, texto: t };

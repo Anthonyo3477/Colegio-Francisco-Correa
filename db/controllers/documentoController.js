@@ -34,7 +34,7 @@ exports.listarMatriculas = async (req, res) => {
     try {
         const [rows] = await conn.execute(
             `SELECT m.id, m.nombre_archivo, m.fecha_subida, 
-                    a.nombre AS alumno_nombre, a.apellido_paterno, a.apellido_materno
+                    a.nombre AS alumno_nombre, a.parentesco_apoderado, a.fechaNacimiento_apoderado
              FROM matriculas m
              LEFT JOIN alumno a ON m.alumno_id = a.id
              ORDER BY m.fecha_subida DESC`
@@ -154,17 +154,17 @@ exports.generarMatriculaPDF = async (req, res) => {
         doc.moveDown();
 
         doc.fontSize(14).text("Datos del Alumno");
-        doc.fontSize(12).text(`Nombre: ${alumno.nombre} ${alumno.apellido_paterno} ${alumno.apellido_materno}`);
+        doc.fontSize(12).text(`Nombre: ${alumno.nombre} ${alumno.parentesco_apoderado} ${alumno.fechaNacimiento_apoderado}`);
         doc.text(`RUT: ${alumno.rut_alumnos}`);
         doc.text(`Curso: ${alumno.curso}`);
         doc.text(`Fecha ingreso: ${alumno.fecha_ingreso}`);
-        doc.text(`Nacionalidad: ${alumno.nacionalidad}`);
+        doc.text(`trabajo_apoderado: ${alumno.trabajo_apoderado}`);
         doc.text(`Dirección: ${alumno.direccion}, ${alumno.comuna}`);
         doc.moveDown();
 
         if (apoderado) {
             doc.fontSize(14).text("Datos del Apoderado");
-            doc.fontSize(12).text(`Nombre: ${apoderado.nombre_apoderado} ${apoderado.apellido_paterno} ${apoderado.apellido_materno}`);
+            doc.fontSize(12).text(`Nombre: ${apoderado.nombre_apoderado} ${apoderado.parentesco_apoderado} ${apoderado.fechaNacimiento_apoderado}`);
             doc.text(`RUT: ${apoderado.rut_apoderado}`);
             doc.text(`Teléfono: ${apoderado.telefono}`);
             doc.text(`Correo: ${apoderado.correo_apoderado}`);

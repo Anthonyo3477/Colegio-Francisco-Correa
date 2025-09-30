@@ -25,15 +25,17 @@
                 <thead>
                     <tr>
                         <th>RUT</th>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>Apellido Materno</th>
+                        <th>Nombre Completo</th>
+                        <th>Sexo</th>
+                        <th>Edad</th>
                         <th>Curso</th>
+                        <th>Fecha Nacimiento del Alumno</th>
                         <th>Fecha Ingreso</th>
                         <th>Nacionalidad</th>
                         <th>Orden Llegada</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
+                        <th>Vive Con</th>
                         <th>Apoderados</th> <!-- Nueva columno, aca deberia de verse el nombre del apoderado -->
                         <th>Opciones</th>
                     </tr>
@@ -46,16 +48,19 @@
                                     <%= alumno.rut_alumnos %>
                                 </td>
                                 <td>
-                                    <%= alumno.nombre %>
+                                    <%= alumno.nombreCompleto_alumno %>
                                 </td>
                                 <td>
-                                    <%= alumno.apellido_paterno %>
+                                    <%= alumno.sexo %>
                                 </td>
                                 <td>
-                                    <%= alumno.apellido_materno %>
+                                    <%= alumno.edadAlumno %>
                                 </td>
                                 <td>
                                     <%= alumno.curso %>
+                                </td>
+                                <td>
+                                    <%= alumno.fechaNacimiento_alumno %>
                                 </td>
                                 <td>
                                     <%= alumno.fecha_ingreso %>
@@ -72,6 +77,9 @@
                                 <td>
                                     <%= alumno.comuna %>
                                 </td>
+                                <td>
+                                    <%= alumno.viveCon %>
+                                </td>
 
                                 <!-- Lista apoderado -->
                                 <td>
@@ -83,8 +91,8 @@
                                                         <%= ap.nombre_apoderado %>
                                                     </strong>
                                                     <small>
-                                                        <%= ap.apellido_paterno %>
-                                                            <%= ap.apellido_materno %> |
+                                                        <%= ap.parentesco_apoderado %>
+                                                            <%= ap.fechaNacimiento_apoderado %> |
                                                                 Tel: <%= ap.telefono %>
                                                                     <% if (ap.apoderado_correo) { %> | <%=
                                                                             ap.apoderado_correo %>

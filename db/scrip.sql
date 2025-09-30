@@ -40,7 +40,7 @@ CREATE TABLE alumno (
 CREATE TABLE datos_academicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ultimo_curso_cursado VARCHAR(100) NOT NULL,
-    anio_cursado INT NOT NULL,
+    año_cursado INT NOT NULL,
     colegio_procedencia VARCHAR(100) NOT NULL,
     cursos_reprobados INT NOT NULL,
     beneficios_beca VARCHAR(100) NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE padre (
     nombre_padre VARCHAR(100) NOT NULL, 
     rut_padre VARCHAR(12) NOT NULL UNIQUE,
     fechaNacimiento_padre DATE NOT NULL,
-    nacionalidad_padre VARCHAR(100) NOT NULL,
+    trabajo_apoderado_padre VARCHAR(100) NOT NULL,
     nivelEducacional_padre VARCHAR(100) NOT NULL,
     trabajo_padre VARCHAR(100) NOT NULL,
     correo_padre VARCHAR(350) NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE madre (
     nombre_madre VARCHAR(100) NOT NULL,
     rut_madre VARCHAR(12) NOT NULL UNIQUE,
     fechaNacimiento_madre DATE NOT NULL,
-    nacionalidad_madre VARCHAR(100) NOT NULL,
+    trabajo_apoderado_madre VARCHAR(100) NOT NULL,
     nivelEducacional_madre VARCHAR(100) NOT NULL,
     trabajo_madre VARCHAR(100) NOT NULL,
     correo_madre VARCHAR(350) NOT NULL,
@@ -99,13 +99,13 @@ CREATE TABLE apoderados (
 -- Apoderado suplente
 CREATE TABLE apoderado_suplente (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombreApoderado_suplente VARCHAR(100) NOT NULL,
-    parentescoApoderado__suplente VARCHAR(100) NOT NULL,
+    nombre_apoderado_suplente VARCHAR(100) NOT NULL,
+    parentesco_apoderado__suplente VARCHAR(100) NOT NULL,
     rut_apoderado_suplente VARCHAR(12) NOT NULL UNIQUE,
     fechaNacimiento_apoderado_suplente DATE NOT NULL,
     telefono_suplente VARCHAR(15) NOT NULL,
-    correoApoderado_suplente VARCHAR(350) NOT NULL,
-    trabajoApoderado_suplente VARCHAR(100) NOT NULL,
+    correo_apoderado_suplente VARCHAR(350) NOT NULL,
+    trabajo_apoderado_suplente VARCHAR(100) NOT NULL,
     nivelEducacional_apoderado_suplente VARCHAR(200) NOT NULL,
     alumno_id INT NOT NULL,
     FOREIGN KEY (alumno_id) REFERENCES alumno(id) ON DELETE CASCADE
@@ -122,10 +122,10 @@ CREATE TABLE matriculas (
 );
 
 
-INSERT INTO alumno (id, rut_alumnos, nombre, apellido_paterno, apellido_materno, curso, fecha_ingreso, nacionalidad, orden_llegada) 
+INSERT INTO alumno (id, rut_alumnos, nombre, parentesco_apoderado, fechaNacimiento_apoderado, curso, fecha_ingreso, trabajo_apoderado, orden_llegada) 
 VALUES (1, '21.222.347-6', 'Antonio', 'Verdugo', 'Díaz', '4 Medio', '2025-08-13', '55');
 
-INSERT INTO apoderados (id, rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno, nacionalidad, alumno_id) 
+INSERT INTO apoderados (id, rut_apoderado, nombre_apoderado, parentesco_apoderado, fechaNacimiento_apoderado, trabajo_apoderado, alumno_id) 
 VALUES (1, '22.355.498-7', 'Celina', 'Vergara', 'Venegas', 'Chilena', 1);
 
 INSERT INTO admin (id, rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion) 

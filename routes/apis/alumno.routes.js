@@ -61,6 +61,7 @@ router.post('/generar-pdf', isAdmin, async (req, res) => {
         doc.text(`Parentesco: ${datos.parentesco_apoderado}`);
         doc.text(`Teléfono: ${datos.telefono}`);
         doc.text(`Correo: ${datos.correo_apoderado}`);
+        doc.text(`Trabajo: ${datos.trabajo_apoderado}`);
 
         doc.end();
 
@@ -141,6 +142,7 @@ router.get('/listaAlumnos', isAuthenticated, async (req, res) => {
     try {
         const cursoSeleccionado = req.query.curso || "";
 
+        // Debe traer datos de alumno + apoderado (nombre, correo, teléfono)
         const alumnos = await alumnoController.getAlumnosConApoderados({
             curso: cursoSeleccionado || undefined
         });

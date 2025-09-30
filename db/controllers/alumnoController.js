@@ -22,10 +22,10 @@ function formatDate(date) {
 
 // Crear alumno
 async function createAlumno(alumno) {
-    const { 
-        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, 
-        puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso, 
-        fecha_ingreso, añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon 
+    const {
+        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno,
+        puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso,
+        fecha_ingreso, añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon
     } = alumno;
 
     const sql = `
@@ -36,7 +36,7 @@ async function createAlumno(alumno) {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const valores = [
-        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, 
+        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno,
         puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso,
         formatDate(fecha_ingreso), añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon
     ];
@@ -70,13 +70,14 @@ async function getAlumnoById(id) {
 async function getAlumnosConApoderados({ curso } = {}) {
     let sql = `
         SELECT 
-            a.id AS alumno_id, a.nombreCompleto_alumno, a.sexo, a.rut_alumnos, a.fechaNacimiento_alumno,
+            a.id AS alumno_id, a.nombreCompleto_alumno, a.sexo, a.rut_alumnos,
+            DATE_FORMAT(a.fechaNacimiento_alumno, '%d-%m-%Y') AS fechaNacimiento_alumno,
             a.edadAlumno, a.puebloOriginario, a.quePueblo, a.enfermedad, a.alergias, a.medicamentos,
             a.curso, DATE_FORMAT(a.fecha_ingreso, '%Y-%m-%d') AS fecha_ingreso,
             a.añoIngresoChile, a.nacionalidad, a.orden_llegada, a.direccion, a.comuna, a.viveCon,
 
             ap.id AS apoderado_id, ap.rut_apoderado, ap.nombre_apoderado,
-            ap.parentesco_apoderado, ap.fechaNacimiento_apoderado,
+            ap.parentesco_apoderado, DATE_FORMAT(ap.fechaNacimiento_apoderado, '%d-%m-%Y') AS fechaNacimiento_apoderado,
             ap.telefono AS apoderado_telefono,
             ap.correo_apoderado,
             ap.trabajo_apoderado,
@@ -147,10 +148,10 @@ async function getAllCursos() {
 
 // Actualizar alumno por ID
 async function updateAlumno(id, alumno) {
-    const { 
-        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, 
-        puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso, 
-        fecha_ingreso, añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon 
+    const {
+        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno,
+        puebloOriginario, quePueblo, enfermedad, alergias, medicamentos, curso,
+        fecha_ingreso, añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon
     } = alumno;
 
     const sql = `
@@ -161,11 +162,11 @@ async function updateAlumno(id, alumno) {
         WHERE id=?
     `;
     const valores = [
-        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario, 
+        nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario,
         quePueblo, enfermedad, alergias, medicamentos, curso,
         formatDate(fecha_ingreso), añoIngresoChile, nacionalidad, orden_llegada, direccion, comuna, viveCon, id
     ];
-    
+
     const [result] = await conn.query(sql, valores);
     return result;
 }
@@ -177,13 +178,13 @@ async function deleteAlumno(id) {
     return result;
 }
 
-module.exports = { 
-    createAlumno, 
-    getAllAlumnos, 
-    getAlumnoById, 
-    getAlumnosConApoderados, 
-    getAllCursos, 
-    getAlumnosByCurso, 
-    updateAlumno, 
-    deleteAlumno 
+module.exports = {
+    createAlumno,
+    getAllAlumnos,
+    getAlumnoById,
+    getAlumnosConApoderados,
+    getAllCursos,
+    getAlumnosByCurso,
+    updateAlumno,
+    deleteAlumno
 };

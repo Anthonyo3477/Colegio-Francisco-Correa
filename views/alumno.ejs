@@ -19,40 +19,96 @@
             <h2 style="text-align:right;">Registro de Alumno</h2>
             <div class="formularios">
 
-                <form action="/insert" method="POST">
-                    <label for="Rut Alumno">Rut Alumno:</label>
-                    <input type="text" id="rut_alumnos" name="rut_alumnos" maxlength="12" required>
+                <form action="/insert" method="POST" class="form-grid">
+                    <!-- ================= DATOS DEL ALUMNO ================= -->
+                    <div class="columna">
+                        <h3>Datos del Alumno</h3>
 
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" maxlength="100" required>
+                        <label for="nombreCompleto_alumno">Nombre Completo:</label>
+                        <input type="text" id="nombreCompleto_alumno" name="nombreCompleto_alumno" required>
 
-                    <label for="apellido_paterno">Apellido Paterno:</label>
-                    <input type="text" id="apellido_paterno" name="apellido_paterno" maxlength="100" required>
+                        <label for="sexo">Género:</label>
+                        <input type="text" id="sexo" name="sexo" required>
 
-                    <label for="apellido_materno">Apellido Materno:</label>
-                    <input type="text" id="apellido_materno" name="apellido_materno" maxlength="100" required>
+                        <label for="rut_alumnos">RUT:</label>
+                        <input type="text" id="rut_alumnos" name="rut_alumnos" required>
 
-                    <label for="curso">Curso:</label>
-                    <input type="text" id="curso" name="curso" maxlength="10" required>
+                        <label for="fechaNacimiento_alumno">Fecha Nacimiento:</label>
+                        <input type="date" id="fechaNacimiento_alumno" name="fechaNacimiento_alumno" required>
 
-                    <label for="fecha_ingreso">Fecha de Ingreso:</label>
-                    <input type="date" id="fecha_ingreso" name="fecha_ingreso" required>
+                        <label for="edadAlumno">Edad:</label>
+                        <input type="number" id="edadAlumno" name="edadAlumno" required>
 
-                    <label for="nacionalidad">Nacionalidad:</label>
-                    <input type="text" id="nacionalidad" name="nacionalidad" maxlength="100" required>
+                        <label for="puebloOriginario">Pueblo Originario:</label>
+                        <input type="text" id="puebloOriginario" name="puebloOriginario">
 
-                    <label for="orden_llegada">Orden de Llegada:</label>
-                    <input type="text" id="orden_llegada" name="orden_llegada" maxlength="100" required>
+                        <label for="quePueblo">Qué Pueblo:</label>
+                        <input type="text" id="quePueblo" name="quePueblo">
 
-                    <label for="direccion">Direccion:</label>
-                    <input type="text" id="direccion" name="direccion" maxlength="100" required>
+                        <label for="enfermedad">Enfermedad:</label>
+                        <input type="text" id="enfermedad" name="enfermedad">
 
-                    <label for="comuna">Comuna:</label>
-                    <input type="text" id="comuna" name="comuna" maxlength="100" required>
+                        <label for="alergias">Alergias:</label>
+                        <input type="text" id="alergias" name="alergias">
 
-                    <button type="submit">Registrar Alumno</button>
-                    <button type="button" onclick="window.history.back()" style="margin-left:10px;">Volver</button>
+                        <label for="medicamentos">Medicamentos:</label>
+                        <input type="text" id="medicamentos" name="medicamentos">
+
+                        <label for="curso">Curso:</label>
+                        <input type="text" id="curso" name="curso" required>
+
+                        <label for="fecha_ingreso">Fecha Ingreso:</label>
+                        <input type="date" id="fecha_ingreso" name="fecha_ingreso" required>
+
+                        <label for="añoIngresoChile">Año Ingreso Chile:</label>
+                        <input type="number" id="añoIngresoChile" name="añoIngresoChile" required>
+
+                        <label for="nacionalidad">Nacionalidad:</label>
+                        <input type="text" id="nacionalidad" name="nacionalidad" required>
+
+                        <label for="orden_llegada">Orden Llegada:</label>
+                        <input type="number" id="orden_llegada" name="orden_llegada" required>
+
+                        <label for="direccion">Dirección:</label>
+                        <input type="text" id="direccion" name="direccion" required>
+
+                        <label for="comuna">Comuna:</label>
+                        <input type="text" id="comuna" name="comuna" required>
+
+                        <label for="viveCon">Vive con:</label>
+                        <input type="text" id="viveCon" name="viveCon" required>
+                    </div>
+
+                    <!-- ================= DATOS ACADÉMICOS ================= -->
+                    <div class="columna">
+                        <h3>Datos Académicos</h3>
+
+                        <label for="ultimo_curso_cursado">Último Curso Aprobado:</label>
+                        <input type="text" id="ultimo_curso_cursado" name="ultimo_curso_cursado" required>
+
+                        <label for="año_cursado">Año Cursado:</label>
+                        <input type="number" id="año_cursado" name="año_cursado" required>
+
+                        <label for="colegio_procedencia">Colegio Procedencia:</label>
+                        <input type="text" id="colegio_procedencia" name="colegio_procedencia" required>
+
+                        <label for="cursos_reprobados">Cursos Reprobados:</label>
+                        <input type="number" id="cursos_reprobados" name="cursos_reprobados" required>
+
+                        <label for="beneficios_beca">Beneficios Beca:</label>
+                        <input type="text" id="beneficios_beca" name="beneficios_beca" required>
+
+                        <label for="proteccion_infantil">Protección a la Infancia:</label>
+                        <input type="text" id="proteccion_infantil" name="proteccion_infantil" required>
+                    </div>
+
+                    <!-- BOTONES -->
+                    <div class="form-buttons">
+                        <button type="submit">Registrar Alumno</button>
+                        <button type="button" onclick="window.history.back()">Volver</button>
+                    </div>
                 </form>
+
             </div>
         </main>
 

@@ -40,17 +40,17 @@ exports.mostrarFormulario = async (req, res) => {
 exports.editarPDF = async (req, res) => {
   try {
     const {documentoId, nombreCompleto, sexoAlumno, rutAlumnos, fechaNacimientoAlumno, domicilioAlumno,
-      edadAlumno, comunaAlumno, viviendaAlumno, nacionalidadAlumno, ingresoChile, puebloOriginario,
+      edadAlumno, comunaAlumno, viviendaAlumno, nacionalidad, ingresoChile, puebloOriginario,
       quePuebloOriginario, cualEnfermedad, cualesAlergias, recibeMedicamentos, pesoAlumno, tallaAlumno,
 
       UltimoCurso, añoCursado, colegioProcedencia, cursoReprobado, cualBeca, perteneceProgramaProteccionInfantil,
-      nombrePadre, rutPadre, fechaNacimientoPadre, nacionalidadPadre, nivelEducacional, trabajoPadre,
+      nombrePadre, rutPadre, fechaNacimientoPadre, trabajo_apoderadoPadre, nivelEducacional, trabajoPadre,
       correoPadre, direccionPadre, telefonoPadre, nombreMadre, rutMadre, fechaNacimientoMadre,
-      nacionalidadMadre, trabajoMadre, correoMadre, direccionMadre, telefonoMadre, 
+      trabajo_apoderadoMadre, trabajoMadre, correoMadre, direccionMadre, telefonoMadre, 
       
-      nombreApoderado,parentescoApoderado, rutApoderado, fechaNacimientoApoderado, telefonoApoderado, correoApoderado, trabajoApoderado,
-      nivelEducacionalApoderado, nombreApoderado2, parentescoApoderado2, rutApoderado2, fechaNacimientoApoderado2,
-      telefonoApoderado2, correoApoderado2, trabajoApoderado2, nivelEducacionalApoderado2,
+      nombre_apoderado,parentesco_apoderado, rut_apoderado, fechaNacimiento_apoderado, telefono, correo_apoderado, trabajo_apoderado,
+      nivelEducacional_apoderado, nombre_apoderado2, parentesco_apoderado2, rut_apoderado2, fechaNacimiento_apoderado2,
+      telefono2, correo_apoderado2, trabajo_apoderado2, nivelEducacional_apoderado2,
       
       nombreRetiro, rutRetirado, parentescoRetiro } = req.body;
 
@@ -79,7 +79,7 @@ exports.editarPDF = async (req, res) => {
     form.getTextField('edadAlumno').setText(edadAlumno || '');
     form.getTextField('comunaAlumno').setText(comunaAlumno || '');
     form.getTextField('viviendaAlumno').setText(viviendaAlumno || '');
-    form.getTextField('nacionalidadAlumno').setText(nacionalidadAlumno || '');
+    form.getTextField('nacionalidad').setText(nacionalidad || '');
     form.getTextField('ingresoChile').setText(ingresoChile || '');
     form.getTextField('puebloOriginario').setText(puebloOriginario || '');
     form.getTextField('quePuebloOriginario').setText(quePuebloOriginario || '');
@@ -101,7 +101,7 @@ exports.editarPDF = async (req, res) => {
     form.getTextField('nombrePadre').setText(nombrePadre || '');
     form.getTextField('rutPadre').setText(rutPadre || '');
     form.getTextField('fechaNacimientoPadre').setText(fechaNacimientoPadre || '');
-    form.getTextField('nacionalidadPadre').setText(nacionalidadPadre || '');
+    form.getTextField('trabajo_apoderadoPadre').setText(trabajo_apoderadoPadre || '');
     form.getTextField('nivelEducacional').setText(nivelEducacional || '');
     form.getTextField('trabajoPadre').setText(trabajoPadre || '');
     form.getTextField('correoPadre').setText(correoPadre || '');
@@ -111,30 +111,30 @@ exports.editarPDF = async (req, res) => {
     form.getTextField('nombreMadre').setText(nombreMadre || '');
     form.getTextField('rutMadre').setText(rutMadre || '');
     form.getTextField('fechaNacimientoMadre').setText(fechaNacimientoMadre || '');
-    form.getTextField('nacionalidadMadre').setText(nacionalidadMadre || '');
+    form.getTextField('trabajo_apoderadoMadre').setText(trabajo_apoderadoMadre || '');
     form.getTextField('trabajoMadre').setText(trabajoMadre || '');
     form.getTextField('correoMadre').setText(correoMadre || '');
     form.getTextField('direccionMadre').setText(direccionMadre || '');
     form.getTextField('telefonoMadre').setText(telefonoMadre || '');
 
     // ================= Datos del Apoderado =================
-    form.getTextField('nombreApoderado').setText(nombreApoderado || '');
-    form.getTextField('parentescoApoderado').setText(parentescoApoderado || '');
-    form.getTextField('rutApoderado').setText(rutApoderado || '');
-    form.getTextField('fechaNacimientoApoderado').setText(fechaNacimientoApoderado || '');
-    form.getTextField('telefonoApoderado').setText(telefonoApoderado || '');
-    form.getTextField('correoApoderado').setText(correoApoderado || '');
-    form.getTextField('trabajoApoderado').setText(trabajoApoderado || '');
-    form.getTextField('nivelEducacionalApoderado').setText(nivelEducacionalApoderado || '');
+    form.getTextField('nombre_apoderado').setText(nombre_apoderado || '');
+    form.getTextField('parentesco_apoderado').setText(parentesco_apoderado || '');
+    form.getTextField('rut_apoderado').setText(rut_apoderado || '');
+    form.getTextField('fechaNacimiento_apoderado').setText(fechaNacimiento_apoderado || '');
+    form.getTextField('telefono').setText(telefono || '');
+    form.getTextField('correo_apoderado').setText(correo_apoderado || '');
+    form.getTextField('trabajo_apoderado').setText(trabajo_apoderado || '');
+    form.getTextField('nivelEducacional_apoderado').setText(nivelEducacional_apoderado || '');
 
-    form.getTextField('nombreApoderado2').setText(nombreApoderado2 || '');
-    form.getTextField('parentescoApoderado2').setText(parentescoApoderado2 || '');
-    form.getTextField('rutApoderado2').setText(rutApoderado2 || '');
-    form.getTextField('fechaNacimientoApoderado2').setText(fechaNacimientoApoderado2 || '');
-    form.getTextField('telefonoApoderado2').setText(telefonoApoderado2 || '');
-    form.getTextField('correoApoderado2').setText(correoApoderado2 || '');
-    form.getTextField('trabajoApoderado2').setText(trabajoApoderado2 || '');
-    form.getTextField('nivelEducacionalApoderado2').setText(nivelEducacionalApoderado2 || '');
+    form.getTextField('nombre_apoderado2').setText(nombre_apoderado2 || '');
+    form.getTextField('parentesco_apoderado2').setText(parentesco_apoderado2 || '');
+    form.getTextField('rut_apoderado2').setText(rut_apoderado2 || '');
+    form.getTextField('fechaNacimiento_apoderado2').setText(fechaNacimiento_apoderado2 || '');
+    form.getTextField('telefono2').setText(telefono2 || '');
+    form.getTextField('correo_apoderado2').setText(correo_apoderado2 || '');
+    form.getTextField('trabajo_apoderado2').setText(trabajo_apoderado2 || '');
+    form.getTextField('nivelEducacional_apoderado2').setText(nivelEducacional_apoderado2 || '');
 
     form.getTextField('nombreRetiro').setText(nombreRetiro || '');
     form.getTextField('rutRetirado').setText(rutRetirado || '');

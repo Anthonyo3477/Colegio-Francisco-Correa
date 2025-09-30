@@ -144,3 +144,48 @@ footer {
     align-items: center;
     gap: 8px;
 }
+
+/* ------------------ Formularios en Dos Columnas ------------------ */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* dos columnas iguales */
+    gap: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.columna {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.columna h3 {
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.form-buttons {
+    grid-column: span 2; /* botones ocupan las dos columnas */
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-buttons button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    background: #007BFF;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.form-buttons button:hover {
+    background: #0056b3;
+}

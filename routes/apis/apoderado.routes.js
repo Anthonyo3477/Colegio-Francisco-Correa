@@ -20,13 +20,19 @@ router.get('/nuevo-apoderado/:alumnoId', (req, res) => {
 ================================================== */
 router.post('/insertApoderado', async (req, res) => {
     try {
-        const { rut_apoderado, nombre_apoderado, apellido_paterno, apellido_materno,
-                nacionalidad, alumno_id, telefono, correo_apoderado } = req.body;
+        const {rut_apoderado,nombre_apoderado,parentesco_apoderado,fechaNacimiento_apoderado,trabajo_apoderado,nivelEducacional_apoderado,alumno_id,telefono,correo_apoderado} = req.body;
 
-        if (!rut_apoderado?.trim() || !nombre_apoderado?.trim() || !apellido_paterno?.trim() || 
-            !apellido_materno?.trim() || !nacionalidad?.trim() || !alumno_id || 
-            !telefono?.trim() || !correo_apoderado?.trim()) {
-            
+        if (
+            !rut_apoderado?.trim() ||
+            !nombre_apoderado?.trim() ||
+            !parentesco_apoderado?.trim() ||
+            !fechaNacimiento_apoderado?.trim() ||
+            !trabajo_apoderado?.trim() ||
+            !nivelEducacional_apoderado?.trim() ||
+            !alumno_id ||
+            !telefono?.trim() ||
+            !correo_apoderado?.trim()
+        ) {
             return res.status(400).render('apoderadoForm', {
                 title: 'Registrar Nuevo Apoderado',
                 error: 'Todos los campos son obligatorios',
@@ -38,9 +44,10 @@ router.post('/insertApoderado', async (req, res) => {
         await apoderadoController.createApoderado({
             rut_apoderado: rut_apoderado.trim(),
             nombre_apoderado: nombre_apoderado.trim(),
-            apellido_paterno: apellido_paterno.trim(),
-            apellido_materno: apellido_materno.trim(),
-            nacionalidad: nacionalidad.trim(),
+            parentesco_apoderado: parentesco_apoderado.trim(),
+            fechaNacimiento_apoderado: fechaNacimiento_apoderado.trim(),
+            trabajo_apoderado: trabajo_apoderado.trim(),
+            nivelEducacional_apoderado: nivelEducacional_apoderado.trim(),
             alumno_id,
             telefono: telefono.trim(),
             correo_apoderado: correo_apoderado.trim()
@@ -63,22 +70,22 @@ router.post('/insertApoderado', async (req, res) => {
 /* ==================================================
    FORMULARIO EDITAR APODERADO
 ================================================== */
-router.get('/editar/:alumnoId', async (req, res) => {
+router.get('/editar-apoderado/:alumnoId', async (req, res) => {
     try {
         const { alumnoId } = req.params;
         const apoderado = await apoderadoController.getByAlumnoId(alumnoId);
 
         if (!apoderado) {
-            return res.render('EditarApoderado', {
+            return res.render('editarApoderado', {
                 error: 'Este alumno no tiene un apoderado asignado',
                 apoderado: { alumno_id: alumnoId }
             });
         }
 
-        res.render('EditarApoderado', { apoderado, error: null });
+        res.render('editarApoderado', { apoderado, error: null });
     } catch (err) {
         console.error("Error al obtener apoderado", err);
-        res.render('EditarApoderado', {
+        res.render('editarApoderado', {
             error: 'Error al cargar apoderado',
             apoderado: null
         });
@@ -88,16 +95,16 @@ router.get('/editar/:alumnoId', async (req, res) => {
 /* ==================================================
    PROCESO ACTUALIZAR APODERADO
 ================================================== */
-router.post('/actualizar/:id', async (req, res) => {
+router.post('/actualizar-apoderado/:id', async (req, res) => {
     try {
         const { id } = req.params;
         await apoderadoController.updateApoderado(id, req.body);
         res.redirect('/listaAlumnos');
     } catch (err) {
         console.error("Error al actualizar apoderado", err);
-        res.render('EditarApoderado', {
+        res.render('editarApoderado', {
             error: 'Error al actualizar el apoderado',
-            apoderado: req.body
+            apoderado: { id, ...req.body }
         });
     }
 });

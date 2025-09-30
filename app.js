@@ -55,7 +55,7 @@ app.use('/', alumnoRoutes);
 app.use('/', authRoutes);
 app.use('/', documentoRoutes);
 app.use('/', matriculaRoutes);
-app.use('/apoderado', apoderadoRoutes);
+app.use('/', apoderadoRoutes);
 app.use('/', nuevoPDFRoutes);
 
 // Vista de documentos
