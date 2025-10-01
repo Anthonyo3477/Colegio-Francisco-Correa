@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const apoderadoController = require('../../db/controllers/apoderadoController');
+const apoderadoSuplenteController = require('../../db/controllers/apoderadoSuplenteController');
 
 /* ==================================================
    FORMULARIO NUEVO APODERADO
@@ -20,7 +21,17 @@ router.get('/nuevo-apoderado/:alumnoId', (req, res) => {
 ================================================== */
 router.post('/insertApoderado', async (req, res) => {
     try {
-        const {rut_apoderado,nombre_apoderado,parentesco_apoderado,fechaNacimiento_apoderado,trabajo_apoderado,nivelEducacional_apoderado,alumno_id,telefono,correo_apoderado} = req.body;
+        const {
+            // Datos Apoderado
+            rut_apoderado,nombre_apoderado,parentesco_apoderado,fechaNacimiento_apoderado,
+            trabajo_apoderado,nivelEducacional_apoderado,alumno_id,telefono,correo_apoderado,
+            
+            // Datos de Apoderado Suplente
+            nombreApoderado_suplente, parentescoApoderado__suplente, rut_apoderado_suplente, 
+            fechaNacimiento_apoderado_suplente, telefono_suplente, correoApoderado_suplente,
+            trabajoApoderado_suplente, nivelEducacional_apoderado_suplente
+        
+        } = req.body;
 
         if (
             !rut_apoderado?.trim() ||
@@ -31,7 +42,15 @@ router.post('/insertApoderado', async (req, res) => {
             !nivelEducacional_apoderado?.trim() ||
             !alumno_id ||
             !telefono?.trim() ||
-            !correo_apoderado?.trim()
+            !correo_apoderado?.trim() ||
+            !nombreApoderado_suplente?.trim() ||
+            !parentescoApoderado__suplente?.trim() ||
+            !rut_apoderado_suplente?.trim() ||
+            !fechaNacimiento_apoderado_suplente?.trim() ||
+            !telefono_suplente?.trim() ||
+            !correoApoderado_suplente?.trim() ||
+            !trabajoApoderado_suplente?.trim() ||
+            !nivelEducacional_apoderado_suplente?.trim()
         ) {
             return res.status(400).render('apoderadoForm', {
                 title: 'Registrar Nuevo Apoderado',
@@ -41,6 +60,7 @@ router.post('/insertApoderado', async (req, res) => {
             });
         }
 
+        // Crear Apoderado Principal
         await apoderadoController.createApoderado({
             rut_apoderado: rut_apoderado.trim(),
             nombre_apoderado: nombre_apoderado.trim(),
@@ -51,6 +71,21 @@ router.post('/insertApoderado', async (req, res) => {
             alumno_id,
             telefono: telefono.trim(),
             correo_apoderado: correo_apoderado.trim()
+        });
+
+        const apoderadoSuplenteId = await resultApoderadoSuplente.insertId
+
+        // Crear Apoderado Suplente
+        await apoderadoSuplenteController.createApoderadoSuplente({
+            nombreApoderado_suplente: nombreApoderado_suplente.trim(),
+            parentescoApoderado_suplente: parentescoApoderado__suplente.trim(),
+            rut_apoderado_suplente: rut_apoderado_suplente.trim(),
+            fechaNacimiento_apoderado_suplente: fechaNacimiento_apoderado_suplente.trim(),
+            telefono_suplente: telefono_suplente.trim(),
+            correoApoderado_suplente: correoApoderado_suplente.trim(),
+            trabajoApoderado_suplente: trabajoApoderado_suplente.trim(),
+            nivelEducacional_apoderado_suplente: nivelEducacional_apoderado_suplente.trim(),
+            alumno_id
         });
 
         console.log("Apoderado creado correctamente:", rut_apoderado);

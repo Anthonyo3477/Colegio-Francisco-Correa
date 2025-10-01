@@ -30,32 +30,67 @@
                         <form action="/insertApoderado" method="POST">
                             <input type="hidden" name="alumno_id" value="<%= alumnoId %>">
 
-                            <label for="rut_apoderado">Rut Apoderado:</label>
-                            <input type="text" id="rut_apoderado" name="rut_apoderado" maxlength="12" required value="<%= valores?.rut_apoderado || '' %>">
+                            <!-- Columna Apoderado Titular -->
+                            <div class="columna">
+                                <h3>Datos del Apoderado</h3>
 
-                            <label for="nombre_apoderado">Nombre Completo del Apoderado:</label>
-                            <input type="text" id="nombre_apoderado" name="nombre_apoderado" maxlength="100" required value="<%= valores?.nombre_apoderado || '' %>">
+                                <label for="nombre_apoderado">Nombre Completo:</label>
+                                <input type="text" id="nombre_apoderado" name="nombre_apoderado" maxlength="100" required value="<%= valores?.nombre_apoderado || '' %>">
 
-                            <label for="parentesco_apoderado">Parentesco con el Apoderado:</label>
-                            <input type="text" id="parentesco_apoderado" name="parentesco_apoderado" maxlength="100" required value="<%= valores?.parentesco_apoderado || '' %>">
+                                <label for="parentesco_apoderado">Parentesco:</label>
+                                <input type="text" id="parentesco_apoderado" name="parentesco_apoderado" maxlength="100" required value="<%= valores?.parentesco_apoderado || '' %>">
 
-                            <label for="fechaNacimiento_apoderado">Fecha de Nacimiento del Apoderado:</label>
-                            <input type="text" id="fechaNacimiento_apoderado" name="fechaNacimiento_apoderado" maxlength="100" required value="<%= valores?.fechaNacimiento_apoderado || '' %>">
+                                <label for="rut_apoderado">RUT:</label>
+                                <input type="text" id="rut_apoderado" name="rut_apoderado" maxlength="12" required value="<%= valores?.rut_apoderado || '' %>">
 
-                            <label for="trabajo_apoderado">Trabajo / Actividad del Apoderado:</label>
-                            <input type="text" id="trabajo_apoderado" name="trabajo_apoderado" maxlength="100" required value="<%= valores?.trabajo_apoderado || '' %>">
+                                <label for="fechaNacimiento_apoderado">Fecha de Nacimiento:</label>
+                                <input type="date" id="fechaNacimiento_apoderado" name="fechaNacimiento_apoderado" required value="<%= valores?.fechaNacimiento_apoderado || '' %>">
 
-                            <label for="telefono">Telefono:</label>
-                            <input type="text" id="telefono" name="telefono" maxlength="13" required  value="<%= valores?.telefono || '' %>">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="text" id="telefono" name="telefono" maxlength="15" required value="<%= valores?.telefono || '' %>">
 
-                            <label for="correo_apoderado">Correo Electronico:</label>
-                            <input type="email" id="correo_apoderado" name="correo_apoderado" maxlength="100" required value="<%= valores?.correo_apoderado || '' %>">
+                                <label for="correo_apoderado">Correo:</label>
+                                <input type="email" id="correo_apoderado" name="correo_apoderado" maxlength="100" required value="<%= valores?.correo_apoderado || '' %>">
 
-                            <label for="correo_apoderado">Nivel Educacional del Apoderado:</label>
-                            <input type="text" id="nivelEducacional_apoderado" name="nivelEducacional_apoderado" maxlength="100" required value="<%= valores?.correo_apoderado || '' %>">
+                                <label for="trabajo_apoderado">Trabajo:</label>
+                                <input type="text" id="trabajo_apoderado" name="trabajo_apoderado" maxlength="100" required value="<%= valores?.trabajo_apoderado || '' %>">
 
-                            <button type="submit">Registrar Apoderado</button>
-                            <button type="button" onclick="window.history.back()" style="margin-left:10px;">Volver</button>
+                                <label for="nivelEducacional_apoderado">Nivel Educacional:</label>
+                                <input type="text" id="nivelEducacional_apoderado" name="nivelEducacional_apoderado" maxlength="200" required value="<%= valores?.nivelEducacional_apoderado || '' %>">
+                            </div>
+
+                            <!-- Columna Apoderado Suplente -->
+                            <div class="columna">
+                                <h3>Datos del Apoderado Suplente</h3>
+
+                                <label for="nombre_apoderado_suplente">Nombre Completo:</label>
+                                <input type="text" id="nombre_apoderado_suplente" name="nombre_apoderado_suplente" maxlength="100" value="<%= valores?.nombre_apoderado_suplente || '' %>">
+
+                                <label for="parentesco_apoderado_suplente">Parentesco:</label>
+                                <input type="text" id="parentesco_apoderado_suplente" name="parentesco_apoderado_suplente" maxlength="100"value="<%= valores?.parentesco_apoderado_suplente || '' %>">
+
+                                <label for="rut_apoderado_suplente">RUT:</label>
+                                <input type="text" id="rut_apoderado_suplente" name="rut_apoderado_suplente" maxlength="12" value="<%= valores?.rut_apoderado_suplente || '' %>">
+
+                                <label for="fechaNacimiento_apoderado_suplente">Fecha de Nacimiento:</label>
+                                <input type="date" id="fechaNacimiento_apoderado_suplente" name="fechaNacimiento_apoderado_suplente" value="<%= valores?.fechaNacimiento_apoderado_suplente || '' %>">
+
+                                <label for="telefono_suplente">Teléfono:</label>
+                                <input type="text" id="telefono_suplente" name="telefono_suplente" maxlength="15" value="<%= valores?.telefono_suplente || '' %>">
+
+                                <label for="correo_apoderado_suplente">Correo:</label>
+                                <input type="email" id="correo_apoderado_suplente" name="correo_apoderado_suplente" maxlength="100" value="<%= valores?.correo_apoderado_suplente || '' %>">
+
+                                <label for="trabajo_apoderado_suplente">Trabajo:</label>
+                                <input type="text" id="trabajo_apoderado_suplente" name="trabajo_apoderado_suplente" maxlength="100" value="<%= valores?.trabajo_apoderado_suplente || '' %>">
+
+                                <label for="nivelEducacional_apoderado_suplente">Nivel Educacional:</label>
+                                <input type="text" id="nivelEducacional_apoderado_suplente" name="nivelEducacional_apoderado_suplente" maxlength="200" value="<%= valores?.nivelEducacional_apoderado_suplente || '' %>">
+                            </div>
+
+                            <!-- Botones -->
+                            <button type="submit">Registrar Apoderados</button>
+                            <button type="button" onclick="window.history.back()"style="margin-left:10px;">Volver</button>
                         </form>
             </div>
         </main>

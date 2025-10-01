@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const PDFDocument = require('pdfkit');
 const alumnoController = require('../../db/controllers/alumnoController');
+const datosAcademicosController = require('../../db/controllers/datosAcademicosController');
 const documentoController = require('../../db/controllers/documentoController');
 const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware');
 
@@ -86,14 +87,23 @@ router.get('/nuevo', isAuthenticated, isAdmin, (req, res) => {
 // Procesar creación
 router.post('/insert', async (req, res) => {
     try {
-        const { nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario,
+        const { 
+            // Datos del Alumno
+            nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario,
             quePueblo, enfermedad, alergias, medicamentos, curso, fecha_ingreso, añoIngresoChile, nacionalidad,
-            orden_llegada, direccion, comuna, viveCon } = req.body;
+            orden_llegada, direccion, comuna, viveCon, 
 
+            // Datos Académicos
+            ultimo_curso_cursado, año_cursado, colegio_procedencia, cursos_reprobados, beneficios_beca, proteccion_infantil
+        
+        } = req.body;
+
+        // Validar SOLO los campos realmente obligatorios
         if (!nombreCompleto_alumno?.trim() || !sexo?.trim() || !rut_alumnos?.trim() || !fechaNacimiento_alumno?.trim()
-            || !edadAlumno?.trim() || !enfermedad?.trim() || !alergias?.trim()
-            || !medicamentos?.trim() || !curso?.trim() || !fecha_ingreso?.trim() || !añoIngresoChile?.trim() || !nacionalidad?.trim()
-            || !orden_llegada?.trim() || !direccion?.trim() || !comuna?.trim() || !viveCon?.trim()) {
+            || !edadAlumno?.trim() || !curso?.trim() || !fecha_ingreso?.trim() || !añoIngresoChile?.trim() 
+            || !nacionalidad?.trim() || !orden_llegada?.trim() || !direccion?.trim() || !comuna?.trim() || !viveCon?.trim()
+            || !ultimo_curso_cursado?.trim() || !año_cursado?.trim() || !colegio_procedencia?.trim()
+            || !cursos_reprobados?.trim() || !beneficios_beca?.trim() || !proteccion_infantil?.trim()) {
             return res.status(400).render('alumno', {
                 title: 'Registrar Nuevo Alumno',
                 error: 'Todos los campos obligatorios deben estar completos',
@@ -101,7 +111,8 @@ router.post('/insert', async (req, res) => {
             });
         }
 
-        const result = await alumnoController.createAlumno({
+        // Crear Alumno
+        const resultAlumno = await alumnoController.createAlumno({
             nombreCompleto_alumno: nombreCompleto_alumno.trim(),
             sexo: sexo.trim(),
             rut_alumnos: rut_alumnos.trim(),
@@ -109,21 +120,34 @@ router.post('/insert', async (req, res) => {
             edadAlumno: edadAlumno.trim(),
             puebloOriginario: puebloOriginario?.trim() || null,
             quePueblo: quePueblo?.trim() || null,
-            enfermedad: enfermedad.trim(),
-            alergias: alergias.trim(),
-            medicamentos: medicamentos.trim(),
+            enfermedad: enfermedad?.trim() || null,
+            alergias: alergias?.trim() || null,
+            medicamentos: medicamentos?.trim() || null,
             curso: curso.trim(),
             fecha_ingreso: formatDate(fecha_ingreso),
             añoIngresoChile: añoIngresoChile.trim(),
             nacionalidad: nacionalidad.trim(),
-            orden_llegada: orden_llegada && !isNaN(parseInt(orden_llegada)) ? parseInt(orden_llegada) : null,
+            orden_llegada: parseInt(orden_llegada) || null,
             direccion: direccion.trim(),
             comuna: comuna.trim(),
             viveCon: viveCon.trim()
         });
 
-        console.log("Alumno creado correctamente:", rut_alumnos, "ID:", result.insertId);
-        res.redirect(`/nuevo-apoderado/${result.insertId}`);
+        const alumnoId = resultAlumno.insertId;
+
+        // Crear Datos Académicos vinculados
+        await datosAcademicosController.createDatosAcademicos({
+            ultimo_curso_cursado: ultimo_curso_cursado.trim(),
+            año_cursado: año_cursado.trim(),
+            colegio_procedencia: colegio_procedencia.trim(),
+            cursos_reprobados: cursos_reprobados.trim(),
+            beneficios_beca: beneficios_beca.trim(),
+            proteccion_infantil: proteccion_infantil.trim(),
+            alumno_id: alumnoId
+        });
+
+        console.log("Alumno y datos académicos creados correctamente:", rut_alumnos, "ID:", alumnoId);
+        res.redirect(`/nuevo-apoderado/${alumnoId}`);
 
     } catch (error) {
         console.error('Error al crear alumno:', error);
@@ -134,6 +158,7 @@ router.post('/insert', async (req, res) => {
         });
     }
 });
+
 
 /* ==================================================
    LISTAR ALUMNOS con FILTRO
@@ -195,9 +220,17 @@ router.get('/editar/:id', async (req, res) => {
 router.post('/actualizar/:id', async (req, res) => {
     const id = req.params.id;
     try {
-        const { nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario,
+        const {
+            // Datos del Alumno 
+            nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario,
             quePueblo, enfermedad, alergias, medicamentos, curso, fecha_ingreso, añoIngresoChile, nacionalidad,
-            orden_llegada, direccion, comuna, viveCon } = req.body;
+            orden_llegada, direccion, comuna, viveCon,
+            
+            //Datos Academicos
+            //ultimo_curso_cursado, año_cursado, colegio_procedencia, 
+            //cursos_reprobados, beneficios_beca, proteccion_infantil
+        
+        } = req.body;
 
         if (!nombreCompleto_alumno?.trim() || !sexo?.trim() || !rut_alumnos?.trim() || !fechaNacimiento_alumno?.trim()
             || !edadAlumno?.trim() || !enfermedad?.trim() || !alergias?.trim()
@@ -229,7 +262,25 @@ router.post('/actualizar/:id', async (req, res) => {
             direccion: direccion.trim(),
             comuna: comuna.trim(),
             viveCon: viveCon.trim()
+            // Datos Académicos
+            //ultimo_curso_cursado: ultimo_curso_cursado.trim(),
+            //año_cursado: año_cursado.trim(),
+            //colegio_procedencia: colegio_procedencia.trim(),
+            //cursos_reprobados: cursos_reprobados.trim(),
+            //beneficios_beca: beneficios_beca.trim(),
+            //proteccion_infantil: proteccion_infantil.trim()
         });
+
+        // Actualizar Datos Académicos vinculados
+
+        //await datosAcademicosController.updateDatosAcademicosByAlumnoId(id, {
+        //    ultimo_curso_cursado: ultimo_curso_cursado.trim(),
+        //    año_cursado: año_cursado.trim(),
+        //    colegio_procedencia: colegio_procedencia.trim(),
+        //    cursos_reprobados: cursos_reprobados.trim(),
+        //    beneficios_beca: beneficios_beca.trim(),
+        //    proteccion_infantil: proteccion_infantil.trim()
+        //});
 
         console.log("Alumno actualizado correctamente:", id);
         res.redirect(`/apoderado/editar/${id}`);

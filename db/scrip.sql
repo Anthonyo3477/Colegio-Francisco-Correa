@@ -99,13 +99,13 @@ CREATE TABLE apoderados (
 -- Apoderado suplente
 CREATE TABLE apoderado_suplente (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_apoderado_suplente VARCHAR(100) NOT NULL,
-    parentesco_apoderado__suplente VARCHAR(100) NOT NULL,
+    nombreApoderado_suplente VARCHAR(100) NOT NULL,
+    parentescoApoderado__suplente VARCHAR(100) NOT NULL,
     rut_apoderado_suplente VARCHAR(12) NOT NULL UNIQUE,
     fechaNacimiento_apoderado_suplente DATE NOT NULL,
     telefono_suplente VARCHAR(15) NOT NULL,
-    correo_apoderado_suplente VARCHAR(350) NOT NULL,
-    trabajo_apoderado_suplente VARCHAR(100) NOT NULL,
+    correoApoderado_suplente VARCHAR(350) NOT NULL,
+    trabajoApoderado_suplente VARCHAR(100) NOT NULL,
     nivelEducacional_apoderado_suplente VARCHAR(200) NOT NULL,
     alumno_id INT NOT NULL,
     FOREIGN KEY (alumno_id) REFERENCES alumno(id) ON DELETE CASCADE

@@ -1,4 +1,4 @@
-/* ------------------ Reset / Base ------------------ */
+/* -------------------- Body -------------------- */
 body {
     margin: 0;
     padding: 0;
@@ -179,7 +179,7 @@ footer {
     margin: 0 10px;
     border: none;
     border-radius: 5px;
-    background: #007BFF;
+    background: #120077;
     color: white;
     font-size: 14px;
     cursor: pointer;
@@ -187,5 +187,5 @@ footer {
 }
 
 .form-buttons button:hover {
-    background: #0056b3;
+    background: #120077;
 }
