@@ -22,17 +22,17 @@ router.get('/nuevo-apoderado/:alumnoId', (req, res) => {
 router.post('/insertApoderado', async (req, res) => {
     try {
         const {
-            // Datos Apoderado
-            rut_apoderado,nombre_apoderado,parentesco_apoderado,fechaNacimiento_apoderado,
-            trabajo_apoderado,nivelEducacional_apoderado,alumno_id,telefono,correo_apoderado,
-            
+            // Datos Apoderado Titular
+            rut_apoderado, nombre_apoderado, parentesco_apoderado, fechaNacimiento_apoderado,
+            trabajo_apoderado, nivelEducacional_apoderado, alumno_id, telefono, correo_apoderado,
+
             // Datos de Apoderado Suplente
-            nombreApoderado_suplente, parentescoApoderado__suplente, rut_apoderado_suplente, 
+            nombreApoderado_suplente, parentescoApoderado_suplente, rut_apoderado_suplente,
             fechaNacimiento_apoderado_suplente, telefono_suplente, correoApoderado_suplente,
             trabajoApoderado_suplente, nivelEducacional_apoderado_suplente
-        
         } = req.body;
 
+        /* ===== VALIDAR APODERADO TITULAR ===== */
         if (
             !rut_apoderado?.trim() ||
             !nombre_apoderado?.trim() ||
@@ -42,26 +42,18 @@ router.post('/insertApoderado', async (req, res) => {
             !nivelEducacional_apoderado?.trim() ||
             !alumno_id ||
             !telefono?.trim() ||
-            !correo_apoderado?.trim() ||
-            !nombreApoderado_suplente?.trim() ||
-            !parentescoApoderado__suplente?.trim() ||
-            !rut_apoderado_suplente?.trim() ||
-            !fechaNacimiento_apoderado_suplente?.trim() ||
-            !telefono_suplente?.trim() ||
-            !correoApoderado_suplente?.trim() ||
-            !trabajoApoderado_suplente?.trim() ||
-            !nivelEducacional_apoderado_suplente?.trim()
+            !correo_apoderado?.trim()
         ) {
             return res.status(400).render('apoderadoForm', {
                 title: 'Registrar Nuevo Apoderado',
-                error: 'Todos los campos son obligatorios',
+                error: 'Debes ingresar todos los datos del apoderado titular',
                 valores: req.body,
                 alumnoId: alumno_id
             });
         }
 
         // Crear Apoderado Principal
-        await apoderadoController.createApoderado({
+        const resultApoderado = await apoderadoController.createApoderado({
             rut_apoderado: rut_apoderado.trim(),
             nombre_apoderado: nombre_apoderado.trim(),
             parentesco_apoderado: parentesco_apoderado.trim(),
@@ -73,26 +65,34 @@ router.post('/insertApoderado', async (req, res) => {
             correo_apoderado: correo_apoderado.trim()
         });
 
-        const apoderadoSuplenteId = await resultApoderadoSuplente.insertId
+        console.log("Apoderado titular creado:", resultApoderado.insertId);
 
-        // Crear Apoderado Suplente
-        await apoderadoSuplenteController.createApoderadoSuplente({
-            nombreApoderado_suplente: nombreApoderado_suplente.trim(),
-            parentescoApoderado_suplente: parentescoApoderado__suplente.trim(),
-            rut_apoderado_suplente: rut_apoderado_suplente.trim(),
-            fechaNacimiento_apoderado_suplente: fechaNacimiento_apoderado_suplente.trim(),
-            telefono_suplente: telefono_suplente.trim(),
-            correoApoderado_suplente: correoApoderado_suplente.trim(),
-            trabajoApoderado_suplente: trabajoApoderado_suplente.trim(),
-            nivelEducacional_apoderado_suplente: nivelEducacional_apoderado_suplente.trim(),
-            alumno_id
-        });
+        /* ===== APODERADO SUPLENTE (OPCIONAL) ===== */
+        if (
+            rut_apoderado_suplente?.trim() &&
+            nombreApoderado_suplente?.trim() &&
+            parentescoApoderado_suplente?.trim()
+        ) {
+            const resultApoderadoSuplente = await apoderadoSuplenteController.createApoderadoSuplente({
+                nombreApoderado_suplente: nombreApoderado_suplente.trim(),
+                parentescoApoderado_suplente: parentescoApoderado_suplente.trim(),
+                rut_apoderado_suplente: rut_apoderado_suplente.trim(),
+                fechaNacimiento_apoderado_suplente: fechaNacimiento_apoderado_suplente.trim(),
+                telefono_suplente: telefono_suplente?.trim() || null,
+                correoApoderado_suplente: correoApoderado_suplente?.trim() || null,
+                trabajoApoderado_suplente: trabajoApoderado_suplente?.trim() || null,
+                nivelEducacional_apoderado_suplente: nivelEducacional_apoderado_suplente?.trim() || null,
+                alumno_id
+            });
 
-        console.log("Apoderado creado correctamente:", rut_apoderado);
+            console.log("Apoderado suplente creado:", resultApoderadoSuplente.insertId);
+        } else {
+            console.log("No se ingresó apoderado suplente (opcional).");
+        }
+
         return res.redirect('/listaAlumnos');
     } catch (error) {
         console.error("Error al guardar apoderado:", error);
-
         return res.status(500).render('apoderadoForm', {
             title: 'Registrar Nuevo Apoderado',
             error: 'Error interno al guardar apoderado',
@@ -101,6 +101,7 @@ router.post('/insertApoderado', async (req, res) => {
         });
     }
 });
+
 
 /* ==================================================
    FORMULARIO EDITAR APODERADO

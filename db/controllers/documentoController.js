@@ -12,7 +12,7 @@ exports.subirDocumento = async (req, res) => {
 
         const nombreArchivo = req.file.originalname;
         const documento = req.file.buffer;
-        
+
         // Guardar en la base de datos
         await conn.execute(
             "INSERT INTO matriculas (nombre_archivo, documento) VALUES (?, ?)",
@@ -34,9 +34,12 @@ exports.listarMatriculas = async (req, res) => {
     try {
         const [rows] = await conn.execute(
             `SELECT m.id, m.nombre_archivo, m.fecha_subida, 
-                    a.nombre AS alumno_nombre, a.parentesco_apoderado, a.fechaNacimiento_apoderado
+                    a.nombreCompleto_alumno AS alumno_nombre,
+                    ap.parentesco_apoderado,
+                    ap.fechaNacimiento_apoderado
              FROM matriculas m
              LEFT JOIN alumno a ON m.alumno_id = a.id
+             LEFT JOIN apoderados ap ON ap.alumno_id = a.id
              ORDER BY m.fecha_subida DESC`
         );
         res.render('DocMatricula', { matriculas: rows });
@@ -45,6 +48,7 @@ exports.listarMatriculas = async (req, res) => {
         res.status(500).send('Error al listar matrículas');
     }
 };
+
 
 /* =====================================================
    DESCARGAR PDF

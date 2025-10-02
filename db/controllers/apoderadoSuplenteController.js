@@ -1,5 +1,5 @@
 const conn = require('../conexion');
-const TABLA = 'apoderado_suplentes';
+const TABLA = 'apoderado_suplente';
 
 // Crear apoderado Suplente
 async function createApoderadoSuplente(apoderado_suplente) {

@@ -4,7 +4,8 @@ const TABLA = 'apoderados';
 // Crear apoderado
 async function createApoderado(apoderado) {
     const {
-        nombre_apoderado, parentesco_apoderado, rut_apoderado, fechaNacimiento_apoderado, telefono,correo_apoderado, trabajo_apoderado, nivelEducacional_apoderado, alumno_id} = apoderado;
+        nombre_apoderado, parentesco_apoderado, rut_apoderado, fechaNacimiento_apoderado, 
+        telefono,correo_apoderado, trabajo_apoderado, nivelEducacional_apoderado, alumno_id} = apoderado;
 
     const sql = `
         INSERT INTO ${TABLA} 

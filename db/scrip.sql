@@ -100,7 +100,7 @@ CREATE TABLE apoderados (
 CREATE TABLE apoderado_suplente (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombreApoderado_suplente VARCHAR(100) NOT NULL,
-    parentescoApoderado__suplente VARCHAR(100) NOT NULL,
+    parentescoApoderado_suplente VARCHAR(100) NOT NULL,
     rut_apoderado_suplente VARCHAR(12) NOT NULL UNIQUE,
     fechaNacimiento_apoderado_suplente DATE NOT NULL,
     telefono_suplente VARCHAR(15) NOT NULL,
