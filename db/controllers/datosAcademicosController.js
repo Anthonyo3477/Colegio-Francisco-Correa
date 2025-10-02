@@ -1,10 +1,10 @@
 const conn = require('../conexion');
 const TABLA = 'datos_academicos';
 
-// Crear registro academicos
-async function createDatosAcademicos (datos) {
+// Crear registro académicos
+async function createDatosAcademicos(datos) {
     const {
-        ultimo_curso_cursado, año_cursado, colegio_procedencia, cursos_reprobados, 
+        ultimo_curso_cursado, año_cursado, colegio_procedencia, cursos_reprobados,
         beneficios_beca, proteccion_infantil, alumno_id
     } = datos;
 
@@ -23,13 +23,44 @@ async function createDatosAcademicos (datos) {
 }
 
 // Obtener por alumno
-async function getByAlumnoId(alumnoId){
+async function getByAlumnoId(alumnoId) {
     const sql = `SELECT * FROM ${TABLA} WHERE alumno_id = ?`;
-    const [rows] = await conn.query(sql,[alumnoId]);
+    const [rows] = await conn.query(sql, [alumnoId]);
     return rows[0] || null;
 }
 
+// Actualizar datos académicos por ID
+async function updateDatosAcademicosByAlumnoId(alumno_id, datos) {
+    const {
+        ultimo_curso_cursado, año_cursado, colegio_procedencia,
+        cursos_reprobados, beneficios_beca, proteccion_infantil
+    } = datos;
+
+    const sql = `
+        UPDATE ${TABLA}
+        SET ultimo_curso_cursado=?, año_cursado=?, colegio_procedencia=?, cursos_reprobados=?,
+            beneficios_beca=?, proteccion_infantil=?
+        WHERE alumno_id=?`;
+
+    const valores = [
+        ultimo_curso_cursado, año_cursado, colegio_procedencia,
+        cursos_reprobados, beneficios_beca, proteccion_infantil, alumno_id
+    ];
+
+    const [result] = await conn.query(sql, valores);
+    return result;
+}
+
+// Eliminar datos académicos por ID
+async function deleteDatosAcademicos(id) {
+    const sql = `DELETE FROM ${TABLA} WHERE id = ?`;
+    const [result] = await conn.query(sql, [id]);
+    return result;
+}
 
 module.exports = {
-    createDatosAcademicos, getByAlumnoId
+    createDatosAcademicos,
+    getByAlumnoId,
+    updateDatosAcademicosByAlumnoId,
+    deleteDatosAcademicos
 };

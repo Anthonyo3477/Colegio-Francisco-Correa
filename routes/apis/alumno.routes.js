@@ -87,20 +87,20 @@ router.get('/nuevo', isAuthenticated, isAdmin, (req, res) => {
 // Procesar creación
 router.post('/insert', async (req, res) => {
     try {
-        const { 
+        const {
             // Datos del Alumno
             nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario,
             quePueblo, enfermedad, alergias, medicamentos, curso, fecha_ingreso, añoIngresoChile, nacionalidad,
-            orden_llegada, direccion, comuna, viveCon, 
+            orden_llegada, direccion, comuna, viveCon,
 
             // Datos Académicos
             ultimo_curso_cursado, año_cursado, colegio_procedencia, cursos_reprobados, beneficios_beca, proteccion_infantil
-        
+
         } = req.body;
 
         // Validar SOLO los campos realmente obligatorios
         if (!nombreCompleto_alumno?.trim() || !sexo?.trim() || !rut_alumnos?.trim() || !fechaNacimiento_alumno?.trim()
-            || !edadAlumno?.trim() || !curso?.trim() || !fecha_ingreso?.trim() || !añoIngresoChile?.trim() 
+            || !edadAlumno?.trim() || !curso?.trim() || !fecha_ingreso?.trim() || !añoIngresoChile?.trim()
             || !nacionalidad?.trim() || !orden_llegada?.trim() || !direccion?.trim() || !comuna?.trim() || !viveCon?.trim()
             || !ultimo_curso_cursado?.trim() || !año_cursado?.trim() || !colegio_procedencia?.trim()
             || !cursos_reprobados?.trim() || !beneficios_beca?.trim() || !proteccion_infantil?.trim()) {
@@ -195,26 +195,26 @@ router.get('/editar/:id', async (req, res) => {
     console.log("Solicitud GET /editar con ID:", id);
 
     try {
-        const alumno = await Promise.race([
-            alumnoController.getAlumnoById(id),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout DB')), 5000))
-        ]);
+        const alumno = await alumnoController.getAlumnoById(id);
+        const datos_academicos = await datosAcademicosController.getByAlumnoId(id);
 
         if (!alumno) {
-            return res.status(404).render('error', { message: 'Alumno no encontrado' });
+            return res.status(404).send('Alumno no encontrado');
         }
 
         res.render('EditarAlumnos', {
             title: `Editar ${alumno.nombreCompleto_alumno}`,
             alumno,
+            datos_academicos,
             error: null
         });
 
     } catch (error) {
         console.error('Error al cargar el formulario de edición:', error);
-        res.status(500).render('error', { message: `Error al obtener alumno: ${error.message}` });
+        res.status(500).send(`Error al obtener alumno: ${error.message}`);
     }
 });
+
 
 // Procesar actualización
 router.post('/actualizar/:id', async (req, res) => {
@@ -225,17 +225,20 @@ router.post('/actualizar/:id', async (req, res) => {
             nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, puebloOriginario,
             quePueblo, enfermedad, alergias, medicamentos, curso, fecha_ingreso, añoIngresoChile, nacionalidad,
             orden_llegada, direccion, comuna, viveCon,
-            
+
             //Datos Academicos
-            //ultimo_curso_cursado, año_cursado, colegio_procedencia, 
-            //cursos_reprobados, beneficios_beca, proteccion_infantil
-        
+            ultimo_curso_cursado, año_cursado, colegio_procedencia,
+            cursos_reprobados, beneficios_beca, proteccion_infantil
+
         } = req.body;
 
         if (!nombreCompleto_alumno?.trim() || !sexo?.trim() || !rut_alumnos?.trim() || !fechaNacimiento_alumno?.trim()
             || !edadAlumno?.trim() || !enfermedad?.trim() || !alergias?.trim()
             || !medicamentos?.trim() || !curso?.trim() || !fecha_ingreso?.trim() || !añoIngresoChile?.trim() || !nacionalidad?.trim()
-            || !orden_llegada?.trim() || !direccion?.trim() || !comuna?.trim() || !viveCon?.trim()) {
+            || !orden_llegada?.trim() || !direccion?.trim() || !comuna?.trim() || !viveCon?.trim()
+
+            || !ultimo_curso_cursado?.trim() || !año_cursado?.trim() || !colegio_procedencia?.trim()
+            || !cursos_reprobados?.trim() || !beneficios_beca?.trim() || !proteccion_infantil?.trim()) {
             return res.status(400).render('EditarAlumnos', {
                 title: `Editar Alumno`,
                 error: 'Todos los campos obligatorios deben estar completos',
@@ -262,25 +265,18 @@ router.post('/actualizar/:id', async (req, res) => {
             direccion: direccion.trim(),
             comuna: comuna.trim(),
             viveCon: viveCon.trim()
-            // Datos Académicos
-            //ultimo_curso_cursado: ultimo_curso_cursado.trim(),
-            //año_cursado: año_cursado.trim(),
-            //colegio_procedencia: colegio_procedencia.trim(),
-            //cursos_reprobados: cursos_reprobados.trim(),
-            //beneficios_beca: beneficios_beca.trim(),
-            //proteccion_infantil: proteccion_infantil.trim()
         });
 
         // Actualizar Datos Académicos vinculados
 
-        //await datosAcademicosController.updateDatosAcademicosByAlumnoId(id, {
-        //    ultimo_curso_cursado: ultimo_curso_cursado.trim(),
-        //    año_cursado: año_cursado.trim(),
-        //    colegio_procedencia: colegio_procedencia.trim(),
-        //    cursos_reprobados: cursos_reprobados.trim(),
-        //    beneficios_beca: beneficios_beca.trim(),
-        //    proteccion_infantil: proteccion_infantil.trim()
-        //});
+        await datosAcademicosController.updateDatosAcademicosByAlumnoId(id, {
+            ultimo_curso_cursado: ultimo_curso_cursado.trim(),
+            año_cursado: año_cursado.trim(),
+            colegio_procedencia: colegio_procedencia.trim(),
+            cursos_reprobados: cursos_reprobados.trim(),
+            beneficios_beca: beneficios_beca.trim(),
+            proteccion_infantil: proteccion_infantil.trim()
+        });
 
         console.log("Alumno actualizado correctamente:", id);
         res.redirect(`/apoderado/editar/${id}`);
@@ -300,8 +296,6 @@ router.post('/actualizar/:id', async (req, res) => {
 ================================================== */
 router.post('/eliminar/:id', async (req, res) => {
     const id = req.params.id;
-    console.log("Solicitud POST /eliminar con ID:", id);
-
     try {
         await alumnoController.deleteAlumno(id);
         console.log("Alumno eliminado correctamente:", id);
