@@ -147,7 +147,7 @@ router.post('/insert', async (req, res) => {
         });
 
         console.log("Alumno y datos académicos creados correctamente:", rut_alumnos, "ID:", alumnoId);
-        res.redirect(`/nuevo-apoderado/${alumnoId}`);
+        res.redirect(`/nuevo-padres/${alumnoId}`);
 
     } catch (error) {
         console.error('Error al crear alumno:', error);

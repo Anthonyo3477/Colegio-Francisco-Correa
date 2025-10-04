@@ -6,7 +6,7 @@ const apoderadoSuplenteController = require('../../db/controllers/apoderadoSuple
 /* ==================================================
    FORMULARIO NUEVO APODERADO
 ================================================== */
-router.get('/nuevo-apoderado/:alumnoId', (req, res) => {
+router.get('/nuevo-apoderado/:alumnoId',(req, res) => {
     const { alumnoId } = req.params;
     res.render('apoderadoForm', {
         title: 'Registrar Apoderado',
@@ -32,6 +32,9 @@ router.post('/insertApoderado', async (req, res) => {
             trabajoApoderado_suplente, nivelEducacional_apoderado_suplente
         } = req.body;
 
+
+        console.log("Datos recibidos del formulario:", req.body);
+        
         /* ===== VALIDAR APODERADO TITULAR ===== */
         if (
             !rut_apoderado?.trim() ||

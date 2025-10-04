@@ -21,7 +21,7 @@ async function createPadre(padre) {
 }
 
 // Obtener todos los padres
-async function getAllPadres() {
+async function getAllPadre() {
     const sql = `
         SELECT id, nombre_padre , rut_padre, fechaNacimiento_padre, nacionalidad_padre, nivelEducacional_padre, 
         trabajo_padre, correo_padre, direccion_padre, telefono_padre, alumno_id FROM${TABLA} 
@@ -32,7 +32,7 @@ async function getAllPadres() {
 }
 
 // Obtener padres por ID
-async function getPadresById(id) {
+async function getPadreById(id) {
     if (!id) return null;
     const sql = `SELECT * FROM ${TABLA} WHERE id = ?`;
     const [rows] = await conn.query(sql, [id]);
@@ -66,4 +66,4 @@ async function deletePadre(id) {
     return result;
 }
 
-module.exports = { createPadre, getAllPadres, getPadresById, updatePadre, deletePadre };
+module.exports = { createPadre, getAllPadre, getPadreById, updatePadre, deletePadre };

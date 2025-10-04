@@ -37,4 +37,10 @@ router.get('/matricula/generar/:idAlumno', documentoController.generarMatriculaP
 // ==============================
 router.get('/matricula/ver/:id', documentoController.verMatricula);
 
+// ==============================
+// ELIMINAR PDF
+// ==============================
+
+router.get('/eliminar/:id', documentoController.eliminarMatricula);
+
 module.exports = router;

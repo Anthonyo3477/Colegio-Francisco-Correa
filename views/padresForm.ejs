@@ -4,90 +4,98 @@
 <head>
   <meta charset="UTF-8">
   <title>Registro de Padres del Alumno</title>
-  <link rel="stylesheet" href="/css/alumno.css">  <!-- Se reutiliza el mismo css de alumnos-->
+  <link rel="stylesheet" href="/css/alumno.css"> <!-- Se reutiliza el mismo css de alumnos-->
 </head>
 
 <body>
   <!-- Navbar -->
   <%- include('partials/navbar') %>
 
-  <header>
-    <h1>Registro de Padres del Alumno</h1>
-    <p>Completa los datos del padre y la madre</p>
-  </header>
+    <header>
+      <h1>Registro de Padres del Alumno</h1>
+      <p>Completa los datos del padre y la madre</p>
+    </header>
 
-  <main>
-    <h2 style="text-align:center;">Datos de Padres</h2>
+    <main>
+      <h2 style="text-align:center;">Datos de Padres</h2>
+      
+      <form action="/insertPadres" method="POST">
+        <input type="hidden" name="alumno_id" value="<%= alumnoId %>">
 
-    <form action="/padres-madres/insert" method="POST" class="form-grid">
-      <!-- Columna Padre -->
-      <div class="columna">
-        <h3>Datos del Padre</h3>
+        <!-- Columna Padre -->
+        <div class="columna">
+          <h3>Datos del Padre</h3>
 
-        <label for="nombre_padre">Nombre del Padre:</label>
-        <input type="text" id="nombre_padre" name="nombre_padre" required>
+          <label for="nombre_padre">Nombre del Padre:</label>
+          <input type="text" id="nombre_padre" name="nombre_padre" required>
 
-        <label for="rut_padre">RUT:</label>
-        <input type="text" id="rut_padre" name="rut_padre" required>
+          <label for="rut_padre">RUT:</label>
+          <input type="text" id="rut_padre" name="rut_padre" required>
 
-        <label for="fechaNacimiento_padre">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento_padre" name="fechaNacimiento_padre" required>
+          <label for="fechaNacimiento_padre">Fecha de Nacimiento:</label>
+          <input type="date" id="fechaNacimiento_padre" name="fechaNacimiento_padre" required>
 
-        <label for="nivelEducacional_padre">Nivel Educacional:</label>
-        <input type="text" id="nivelEducacional_padre" name="nivelEducacional_padre" required>
+          <label for="nacionalidad_padre">Nacionalidad:</label>
+          <input type="text" id="nacionalidad_padre" name="nacionalidad_padre" required>
 
-        <label for="trabajo_padre">Trabajo/Actividad:</label>
-        <input type="text" id="trabajo_padre" name="trabajo_padre" required>
+          <label for="nivelEducacional_padre">Nivel Educacional:</label>
+          <input type="text" id="nivelEducacional_padre" name="nivelEducacional_padre" required>
 
-        <label for="correo_padre">Correo:</label>
-        <input type="email" id="correo_padre" name="correo_padre" required>
+          <label for="trabajo_padre">Trabajo/Actividad:</label>
+          <input type="text" id="trabajo_padre" name="trabajo_padre" required>
 
-        <label for="direccion_padre">Dirección:</label>
-        <input type="text" id="direccion_padre" name="direccion_padre" required>
+          <label for="correo_padre">Correo:</label>
+          <input type="email" id="correo_padre" name="correo_padre" required>
 
-        <label for="telefono_padre">Teléfono:</label>
-        <input type="text" id="telefono_padre" name="telefono_padre" required>
-      </div>
+          <label for="direccion_padre">Dirección:</label>
+          <input type="text" id="direccion_padre" name="direccion_padre" required>
 
-      <!-- Columna Madre -->
-      <div class="columna">
-        <h3>Datos de la Madre</h3>
+          <label for="telefono_padre">Teléfono:</label>
+          <input type="text" id="telefono_padre" name="telefono_padre" required>
+        </div>
 
-        <label for="nombre_madre">Nombre de la Madre:</label>
-        <input type="text" id="nombre_madre" name="nombre_madre" required>
+        <!-- Columna Madre -->
+        <div class="columna">
+          <h3>Datos de la Madre</h3>
 
-        <label for="rut_madre">RUT:</label>
-        <input type="text" id="rut_madre" name="rut_madre" required>
+          <label for="nombre_madre">Nombre de la Madre:</label>
+          <input type="text" id="nombre_madre" name="nombre_madre" required>
 
-        <label for="fechaNacimiento_madre">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento_madre" name="fechaNacimiento_madre" required>
+          <label for="rut_madre">RUT:</label>
+          <input type="text" id="rut_madre" name="rut_madre" required>
 
-        <label for="nivelEducacional_madre">Nivel Educacional:</label>
-        <input type="text" id="nivelEducacional_madre" name="nivelEducacional_madre" required>
+          <label for="fechaNacimiento_madre">Fecha de Nacimiento:</label>
+          <input type="date" id="fechaNacimiento_madre" name="fechaNacimiento_madre" required>
 
-        <label for="trabajo_madre">Trabajo/Actividad:</label>
-        <input type="text" id="trabajo_madre" name="trabajo_madre" required>
+          <label for="nacionalidad_madre">Nacionalidad:</label>
+          <input type="text" id="nacionalidad_madre" name="nacionalidad_madre" required>
 
-        <label for="correo_madre">Correo:</label>
-        <input type="email" id="correo_madre" name="correo_madre" required>
+          <label for="nivelEducacional_madre">Nivel Educacional:</label>
+          <input type="text" id="nivelEducacional_madre" name="nivelEducacional_madre" required>
 
-        <label for="direccion_madre">Dirección:</label>
-        <input type="text" id="direccion_madre" name="direccion_madre" required>
+          <label for="trabajo_madre">Trabajo/Actividad:</label>
+          <input type="text" id="trabajo_madre" name="trabajo_madre" required>
 
-        <label for="telefono_madre">Teléfono:</label>
-        <input type="text" id="telefono_madre" name="telefono_madre" required>
-      </div>
+          <label for="correo_madre">Correo:</label>
+          <input type="email" id="correo_madre" name="correo_madre" required>
 
-      <!-- Botones -->
-      <div class="form-buttons">
-        <button type="submit">Guardar</button>
-        <button type="button" onclick="window.history.back()">Cancelar</button>
-      </div>
-    </form>
-  </main>
+          <label for="direccion_madre">Dirección:</label>
+          <input type="text" id="direccion_madre" name="direccion_madre" required>
 
-  <!-- Footer -->
-  <%- include('partials/footer') %>
+          <label for="telefono_madre">Teléfono:</label>
+          <input type="text" id="telefono_madre" name="telefono_madre" required>
+        </div>
+
+        <!-- Botones -->
+        <div class="form-buttons">
+          <button type="submit">Guardar</button>
+          <button type="button" onclick="window.history.back()">Cancelar</button>
+        </div>
+      </form>
+    </main>
+
+    <!-- Footer -->
+    <%- include('partials/footer') %>
 </body>
 
 </html>

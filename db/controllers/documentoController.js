@@ -196,3 +196,29 @@ exports.regenerarMatricula = async (req, res) => {
         res.status(500).send("Error al regenerar PDF");
     }
 };
+
+/* =====================================================
+   ELIMINAR MATRÍCULA
+===================================================== */
+exports.eliminarMatricula = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const [result] = await conn.execute(
+            "DELETE FROM matriculas WHERE id = ?",
+            [id]
+        );
+
+        if (result.affectedRows === 0) {
+            console.warn("⚠️ Matrícula no encontrada para eliminar:", id);
+            return res.status(404).send("Matrícula no encontrada");
+        }
+
+        console.log("🗑️ Matrícula eliminada correctamente:", id);
+        res.redirect('/DocMatricula');  // vuelve a la vista de listado
+
+    } catch (error) {
+        console.error("❌ Error al eliminar matrícula:", error);
+        res.status(500).send("Error al eliminar matrícula");
+    }
+};

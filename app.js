@@ -49,6 +49,7 @@ const documentoRoutes = require('./routes/apis/documento.routes');
 const matriculaRoutes = require('./routes/apis/documento.routes');
 const apoderadoRoutes = require('./routes/apis/apoderado.routes');
 const nuevoPDFRoutes = require('./routes/apis/nuevoPDF.routes');
+const padresRouter = require('./routes/apis/padres.routes');
 
 app.use('/', home);
 app.use('/', alumnoRoutes);
@@ -57,6 +58,7 @@ app.use('/', documentoRoutes);
 app.use('/', matriculaRoutes);
 app.use('/', apoderadoRoutes);
 app.use('/', nuevoPDFRoutes);
+app.use('/', padresRouter);
 
 // Vista de documentos
 app.get('/documentosAlumnos', (req, res) => {
