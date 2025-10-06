@@ -12,11 +12,11 @@ realizaria en web, ya que se les hacia mas sencillo y tenian mejores tenian un p
 
 # Diagrama de Clases
 
-<img width="627" height="486" alt="image" src="https://github.com/user-attachments/assets/935a003a-a123-415e-9a1e-7cb3f6686ed3" />
+<img width="1685" height="609" alt="Captura de pantalla 2025-10-06 095842" src="https://github.com/user-attachments/assets/96eef3c0-4186-4e14-b8a8-1292fa82138a" />
 
 # Diagrama de Caso de Uso
 
-<img width="1080" height="403" alt="image" src="https://github.com/user-attachments/assets/16bfff0a-7759-4acf-a9ab-23231a294513" />
+<img width="1766" height="272" alt="Captura de pantalla 2025-10-06 100306" src="https://github.com/user-attachments/assets/c420f385-2786-4969-81a9-fb3039ec1c7e" />
 
 ## Algunas Observaciones
 - Algunas observaciones que dejare por aca con algunas cosas qeu faltan o mejor dicho tareas, incompletas que estaan de momento, me faltaria mejorara algunas vistas por parte de los .css y comenzar con el registro de apoderados del alumno, luego crear una session, y al final pulir mas el fronten para asi investigar sobre como extraer datos de la base de datos para crear un pdf con eseos datos y que pueda descargar una lista con los datos del alumno en un archivo de excel
