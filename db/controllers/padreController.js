@@ -39,21 +39,29 @@ async function getPadreById(id) {
     return rows[0] || null;
 }
 
+// Obtener datos del padre según alumno_id
+async function getPadreByAlumnoId(alumnoId) {
+    const [rows] = await conn.query('SELECT * FROM padre WHERE alumno_id = ?', [alumnoId]);
+    return rows[0] || null;
+};
+
 // Actualizar padre por ID
-async function updatePadre(id, padre) {
-    const { nombre_padre, rut_padre, fechaNacimiento_padre, nacionalidad_padre, nivelEducacional_padre,
-        trabajo_padre, correo_padre, direccion_padre, telefono_padre, alumno_id
-    } = padre;
+async function updatePadre(alumnoId, padre) {
+    const {
+        nombre_padre,rut_padre,fechaNacimiento_padre,nacionalidad_padre,
+        nivelEducacional_padre,trabajo_padre,correo_padre,direccion_padre,telefono_padre} = padre;
 
     const sql = `
         UPDATE ${TABLA} 
-        SET nombre_padre=?, rut_padre=?, rut_apoderado=?, fechaNacimiento_padre=?, nacionalidad_padre=?, 
-        nivelEducacional_padre=?, trabajo_padre=?, correo_padre=?, direccion_padre=?, telefono_padre=?, alumno_id=? 
-        WHERE id=?
+        SET nombre_padre = ?, rut_padre = ?, fechaNacimiento_padre = ?, nacionalidad_padre = ?, 
+            nivelEducacional_padre = ?, trabajo_padre = ?, correo_padre = ?, direccion_padre = ?, 
+            telefono_padre = ?
+        WHERE alumno_id = ?
     `;
 
-    const valoresPadre = [nombre_padre, rut_padre, fechaNacimiento_padre, nacionalidad_padre, nivelEducacional_padre,
-        trabajo_padre, correo_padre, direccion_padre, telefono_padre, alumno_id, id];
+    const valoresPadre = [
+        nombre_padre,rut_padre,fechaNacimiento_padre,nacionalidad_padre,nivelEducacional_padre,
+        trabajo_padre,correo_padre,direccion_padre,telefono_padre,alumnoId];
 
     const [result] = await conn.query(sql, valoresPadre);
     return result;
@@ -66,4 +74,4 @@ async function deletePadre(id) {
     return result;
 }
 
-module.exports = { createPadre, getAllPadre, getPadreById, updatePadre, deletePadre };
+module.exports = { createPadre, getAllPadre, getPadreById, getPadreByAlumnoId, updatePadre, deletePadre };

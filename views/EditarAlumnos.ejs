@@ -4,11 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-        <%= title || 'Editar Alumno' %>
-    </title>
+    <title><%= title || 'Editar Alumno' %></title>
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/actualizarAlumnos.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
@@ -18,153 +16,158 @@
     <!-- Navbar -->
     <%- include('partials/navbar') %>
 
-        <main class="container my-5">
-            <h2 class="text-center mb-4">Editar Alumno</h2>
+    <main class="container my-5">
+        <h2 class="text-center mb-4">Editar Alumno</h2>
 
-            <% if (error) { %>
-                <div class="alert alert-danger text-center">
-                    <%= error %>
+        <% if (error) { %>
+            <div class="alert alert-danger text-center"><%= error %></div>
+        <% } %>
+
+        <div class="card shadow-sm p-4">
+            <form action="/actualizar/<%= alumno.id %>" method="POST" class="row g-3">
+
+                <!-- ===================== DATOS PERSONALES ===================== -->
+                <h4 class="mt-3">Datos Personales</h4>
+
+                <div class="col-md-6">
+                    <label class="form-label">Nombre Completo del Alumno:</label>
+                    <input type="text" class="form-control" name="nombreCompleto_alumno" value="<%= alumno.nombreCompleto_alumno %>" readonly>
                 </div>
-                <% } %>
 
-                    <div class="card shadow-sm p-4">
-                        <form action="/actualizar/<%= alumno.id %>" method="POST" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Género:</label>
+                    <input type="text" class="form-control" name="sexo" value="<%= alumno.sexo %>" required>
+                </div>
 
-                            <!-- ===================== DATOS PERSONALES ===================== -->
-                            <h4 class="mt-3">Datos Personales</h4>
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese el Nombre Completo del Alumno:</label>
-                                <input type="text" class="form-control" name="nombreCompleto_alumno" value="<%= alumno.nombreCompleto_alumno %>" readonly>
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">RUT:</label>
+                    <input type="text" class="form-control" name="rut_alumnos" value="<%= alumno.rut_alumnos %>" required>
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese el Género:</label>
-                                <input type="text" class="form-control" name="sexo" value="<%= alumno.sexo %>" required>
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Fecha de Nacimiento:</label>
+                    <input type="date" class="form-control" name="fechaNacimiento_alumno" value="<%= alumno.fechaNacimiento_alumno ? new Date(alumno.fechaNacimiento_alumno).toISOString().split('T')[0] : '' %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese el RUT:</label>
-                                <input type="text" class="form-control" name="rut_alumnos" value="<%= alumno.rut_alumnos %>" required>
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Edad:</label>
+                    <input type="number" class="form-control" name="edadAlumno" value="<%= alumno.edadAlumno %>" required>
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese la Fecha de Nacimiento:</label>
-                                <input type="date" class="form-control" name="fechaNacimiento_alumno" value="<%= alumno.fechaNacimiento_alumno ? alumno.fechaNacimiento_alumno.toISOString().split('T')[0] : '' %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Pueblo Originario:</label>
+                    <input type="text" class="form-control" name="puebloOriginario" value="<%= alumno.puebloOriginario || '' %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese la Edad:</label>
-                                <input type="number" class="form-control" name="edadAlumno" value="<%= alumno.edadAlumno %>" required>
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">¿A qué Pueblo pertenece?</label>
+                    <input type="text" class="form-control" name="quePueblo" value="<%= alumno.quePueblo || '' %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese el Pueblo Originario:</label>
-                                <input type="text" class="form-control" name="puebloOriginario" value="<%= alumno.puebloOriginario %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Enfermedades:</label>
+                    <input type="text" class="form-control" name="enfermedad" value="<%= alumno.enfermedad || '' %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">¿Qué Pueblo Originario pertenece?</label>
-                                <input type="text" class="form-control" name="quePueblo" value="<%= alumno.quePueblo %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Alergias:</label>
+                    <input type="text" class="form-control" name="alergias" value="<%= alumno.alergias || '' %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese alguna de sus Enfermedades:</label>
-                                <input type="text" class="form-control" name="enfermedad" value="<%= alumno.enfermedad %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Medicamentos:</label>
+                    <input type="text" class="form-control" name="medicamentos" value="<%= alumno.medicamentos || '' %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese algunas de sus Alergias:</label>
-                                <input type="text" class="form-control" name="alergias" value="<%= alumno.alergias %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Curso:</label>
+                    <input type="text" class="form-control" name="curso" value="<%= alumno.curso %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese sus Medicamentos:</label>
-                                <input type="text" class="form-control" name="medicamentos" value="<%= alumno.medicamentos %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Fecha de Ingreso:</label>
+                    <input type="date" class="form-control" name="fecha_ingreso" value="<%= alumno.fecha_ingreso ? new Date(alumno.fecha_ingreso).toISOString().split('T')[0] : '' %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese el Curso:</label>
-                                <input type="text" class="form-control" name="curso" value="<%= alumno.curso %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Año de Ingreso a Chile:</label>
+                    <input type="number" class="form-control" name="añoIngresoChile" value="<%= alumno.añoIngresoChile %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese la Fecha de Ingreso a Chile:</label>
-                                <input type="date" class="form-control" name="fecha_ingreso" value="<%= alumno.fecha_ingreso ? alumno.fecha_ingreso.toISOString().split('T')[0] : '' %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Nacionalidad:</label>
+                    <input type="text" class="form-control" name="nacionalidad" value="<%= alumno.nacionalidad %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese su Nacionalidad:</label>
-                                <input type="text" class="form-control" name="nacionalidad" value="<%= alumno.nacionalidad %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Orden de Llegada:</label>
+                    <input type="number" class="form-control" name="orden_llegada" value="<%= alumno.orden_llegada %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese el Orden de Llegada:</label>
-                                <input type="number" class="form-control" name="orden_llegada" value="<%= alumno.orden_llegada %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Dirección:</label>
+                    <input type="text" class="form-control" name="direccion" value="<%= alumno.direccion %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese la Dirección:</label>
-                                <input type="text" class="form-control" name="direccion" value="<%= alumno.direccion %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Comuna:</label>
+                    <input type="text" class="form-control" name="comuna" value="<%= alumno.comuna %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese su Comuna:</label>
-                                <input type="text" class="form-control" name="comuna" value="<%= alumno.comuna %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Vive con:</label>
+                    <input type="text" class="form-control" name="viveCon" value="<%= alumno.viveCon %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese con quien Vive el Alumno:</label>
-                                <input type="text" class="form-control" name="viveCon" value="<%= alumno.viveCon %>">
-                            </div>
+                <!-- ===================== DATOS ACADÉMICOS ===================== -->
+                <h4 class="mt-4">Datos Académicos</h4>
 
-                            <!-- ===================== DATOS ACADÉMICOS ===================== -->
-                            <h4 class="mt-4">Datos Académicos</h4>
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese su Último Curso Cursado:</label>
-                                <input type="text" class="form-control" name="ultimo_curso_cursado" value="<%= datos_academicos.ultimo_curso_cursado %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Último Curso Cursado:</label>
+                    <input type="text" class="form-control" name="ultimo_curso_cursado" value="<%= datos_academicos.ultimo_curso_cursado %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese en que Año Curso el Ultimo Curso:</label>
-                                <input type="number" class="form-control" name="año_cursado" value="<%= datos_academicos.año_cursado %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Año del Último Curso:</label>
+                    <input type="number" class="form-control" name="año_cursado" value="<%= datos_academicos.año_cursado %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese que Colegio Procedencia:</label>
-                                <input type="text" class="form-control" name="colegio_procedencia" value="<%= datos_academicos.colegio_procedencia %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Colegio de Procedencia:</label>
+                    <input type="text" class="form-control" name="colegio_procedencia" value="<%= datos_academicos.colegio_procedencia %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese los Cursos Reprobados:</label>
-                                <input type="number" class="form-control" name="cursos_reprobados" value="<%= datos_academicos.cursos_reprobados %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Cursos Reprobados:</label>
+                    <input type="number" class="form-control" name="cursos_reprobados" value="<%= datos_academicos.cursos_reprobados %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese el Beneficios Beca:</label>
-                                <input type="text" class="form-control" name="beneficios_beca" value="<%= datos_academicos.beneficios_beca %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Beneficios o Becas:</label>
+                    <input type="text" class="form-control" name="beneficios_beca" value="<%= datos_academicos.beneficios_beca %>">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese Si tiene Protección a la Infancia:</label>
-                                <input type="text" class="form-control" name="proteccion_infantil" value="<%= datos_academicos.proteccion_infantil %>">
-                            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Protección a la Infancia:</label>
+                    <input type="text" class="form-control" name="proteccion_infantil" value="<%= datos_academicos.proteccion_infantil %>">
+                </div>
 
-                            <!-- ===================== BOTONES ===================== -->
-                            <div class="col-12 mt-4 d-flex justify-content-between">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-arrow-right-circle me-1"></i>Guardar Cambios
-                                </button>
-                                <a href="/listaAlumnos" class="btn btn-secondary">
-                                    <i class="bi bi-arrow-left-circle me-1"></i>Cancelar
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-        </main>
+                <!-- ===================== BOTONES ===================== -->
+                <div class="col-12 mt-4 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-arrow-right-circle me-1"></i>Guardar Cambios
+                    </button>
+                    <a href="/listaAlumnos" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left-circle me-1"></i>Cancelar
+                    </a>
+                </div>
 
-        <%- include('partials/footer') %>
+            </form>
+        </div>
+    </main>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <%- include('partials/footer') %>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

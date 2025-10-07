@@ -232,12 +232,12 @@ router.post('/actualizar/:id', async (req, res) => {
 
         } = req.body;
 
-        if (!nombreCompleto_alumno?.trim() || !sexo?.trim() || !rut_alumnos?.trim() || !fechaNacimiento_alumno?.trim()
+        if (!nombreCompleto_alumno?.trim() || !sexo?.trim() || !rut_alumnos?.trim() || !fechaNacimiento_alumno
             || !edadAlumno?.trim() || !enfermedad?.trim() || !alergias?.trim()
-            || !medicamentos?.trim() || !curso?.trim() || !fecha_ingreso?.trim() || !añoIngresoChile?.trim() || !nacionalidad?.trim()
+            || !medicamentos?.trim() || !curso?.trim() || !fecha_ingreso || !añoIngresoChile?.trim() || !nacionalidad?.trim()
             || !orden_llegada?.trim() || !direccion?.trim() || !comuna?.trim() || !viveCon?.trim()
 
-            || !ultimo_curso_cursado?.trim() || !año_cursado?.trim() || !colegio_procedencia?.trim()
+            || !ultimo_curso_cursado || !año_cursado?.trim() || !colegio_procedencia?.trim()
             || !cursos_reprobados?.trim() || !beneficios_beca?.trim() || !proteccion_infantil?.trim()) {
             return res.status(400).render('EditarAlumnos', {
                 title: `Editar Alumno`,
@@ -250,7 +250,7 @@ router.post('/actualizar/:id', async (req, res) => {
             nombreCompleto_alumno: nombreCompleto_alumno.trim(),
             sexo: sexo.trim(),
             rut_alumnos: rut_alumnos.trim(),
-            fechaNacimiento_alumno: fechaNacimiento_alumno.trim(),
+            fechaNacimiento_alumno: formatDate(fechaNacimiento_alumno),
             edadAlumno: edadAlumno.trim(),
             puebloOriginario: puebloOriginario?.trim() || null,
             quePueblo: quePueblo?.trim() || null,
@@ -270,7 +270,7 @@ router.post('/actualizar/:id', async (req, res) => {
         // Actualizar Datos Académicos vinculados
 
         await datosAcademicosController.updateDatosAcademicosByAlumnoId(id, {
-            ultimo_curso_cursado: ultimo_curso_cursado.trim(),
+            ultimo_curso_cursado: formatDate(ultimo_curso_cursado),
             año_cursado: año_cursado.trim(),
             colegio_procedencia: colegio_procedencia.trim(),
             cursos_reprobados: cursos_reprobados.trim(),
@@ -279,7 +279,7 @@ router.post('/actualizar/:id', async (req, res) => {
         });
 
         console.log("Alumno actualizado correctamente:", id);
-        res.redirect(`/apoderado/editar/${id}`);
+        res.redirect(`/editarPadres/${id}`);
 
     } catch (error) {
         console.error('Error al actualizar alumno:', error);

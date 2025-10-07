@@ -38,6 +38,12 @@ async function getMadresById(id) {
     return rows[0] || null;
 }
 
+// Obtener datos de la madre según alumno_id
+async function getMadreByAlumnoId (alumnoId) {
+    const [rows] = await conn.query('SELECT * FROM madre WHERE alumno_id = ?', [alumnoId]);
+    return rows[0] || null;
+}
+
 // Actualizar madre por ID
 async function updateMadres(id, madre) {
     const { nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre, trabajo_madre,
@@ -65,4 +71,4 @@ async function deleteMadre(id) {
     return result
 }
 
-module.exports = { createMadre, getAllMadres, getMadresById, updateMadres, deleteMadre };
+module.exports = { createMadre, getAllMadres, getMadresById, getMadreByAlumnoId, updateMadres, deleteMadre };

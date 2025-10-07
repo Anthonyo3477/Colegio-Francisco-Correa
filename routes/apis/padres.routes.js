@@ -84,7 +84,6 @@ router.post('/insertPadres', async (req, res) => {
             alumno_id
         });
         console.log("Madre insertada correctamente:", resultMadre);
-
         console.log("Padre y Madre insertados para el alumno:", alumno_id);
         res.redirect(`/nuevo-apoderado/${alumno_id}`);
 
@@ -121,7 +120,7 @@ router.get('/listaPadres', isAuthenticated, isAdmin, async (req, res) => {
 /* ================================================== 
    EDITAR PADRES
 ================================================== */
-router.get('/editar-padres/:alumnoId', isAuthenticated, isAdmin, async (req, res) => {
+router.get('/editarPadres/:alumnoId', isAuthenticated, isAdmin, async (req, res) => {
     const alumnoId = req.params.alumnoId;
     console.log("AlumnoId recibido para editar padres:", alumnoId);
 
@@ -129,16 +128,18 @@ router.get('/editar-padres/:alumnoId', isAuthenticated, isAdmin, async (req, res
         const padre = await padreController.getPadreByAlumnoId(alumnoId);
         const madre = await madreController.getMadreByAlumnoId(alumnoId);
 
-        if (!padre || !madre) {
-            return res.status(404).send('Padre o Madre no encontrado');
+        if (!padre && !madre) {
+            return res.status(404).send('Padre o Madre no encontrados');
         }
-
+        
         res.render('EditarPadres', {
             title: 'Editar Padres',
             error: null,
-            valores: { padre, madre },
+            padre,
+            madre,
             alumnoId
-        })
+        });
+
     } catch (error) {
         console.error('Error al obtener los datos de los padres:', error);
         res.status(500).send('Error del servidor. Por favor, inténtelo de nuevo más tarde.');
@@ -149,21 +150,19 @@ router.post('/actualizar-padres/:alumnoId', isAuthenticated, isAdmin, async (req
     const alumnoId = req.params.alumnoId;
     try {
         const {
-            // padre
             nombre_padre, rut_padre, fechaNacimiento_padre, nacionalidad_padre,
             nivelEducacional_padre, trabajo_padre, correo_padre, direccion_padre, telefono_padre,
-            // madre
             nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre,
             nivelEducacional_madre, trabajo_madre, correo_madre, direccion_madre, telefono_madre
         } = req.body;
 
-        // validación corregida
         if (
-            !nombre_padre?.trim() || !rut_padre?.trim() || !fechaNacimiento_padre?.trim() || !nacionalidad_padre?.trim() ||
-            !nivelEducacional_padre?.trim() || !trabajo_padre?.trim() || !correo_padre?.trim() || !direccion_padre?.trim() || !telefono_padre?.trim() ||
-            
-            !nombre_madre?.trim() || !rut_madre?.trim() || !fechaNacimiento_madre?.trim() || !nacionalidad_madre?.trim() ||
-            !nivelEducacional_madre?.trim() || !trabajo_madre?.trim() || !correo_madre?.trim() || !direccion_madre?.trim() || !telefono_madre?.trim()
+            !nombre_padre?.trim() || !rut_padre?.trim() || !fechaNacimiento_padre?.trim() ||
+            !nacionalidad_padre?.trim() || !nivelEducacional_padre?.trim() || !trabajo_padre?.trim() ||
+            !correo_padre?.trim() || !direccion_padre?.trim() || !telefono_padre?.trim() ||
+            !nombre_madre?.trim() || !rut_madre?.trim() || !fechaNacimiento_madre?.trim() ||
+            !nacionalidad_madre?.trim() || !nivelEducacional_madre?.trim() || !trabajo_madre?.trim() ||
+            !correo_madre?.trim() || !direccion_madre?.trim() || !telefono_madre?.trim()
         ) {
             return res.status(400).render('EditarPadres', {
                 title: 'Editar Padres',
@@ -173,11 +172,11 @@ router.post('/actualizar-padres/:alumnoId', isAuthenticated, isAdmin, async (req
             });
         }
 
-        await padreController.updatePadreByAlumnoId(alumnoId, { ...req.body });
-        await madreController.updateMadreByAlumnoId(alumnoId, { ...req.body });
+        await padreController.updatePadre(alumnoId, { ...req.body });
+        await madreController.updateMadres(alumnoId, { ...req.body });
 
         console.log("Padres actualizados correctamente para el alumno:", alumnoId);
-        res.redirect('/listaPadres');
+        res.redirect(`/editar-apoderado/${alumnoId}`);
 
     } catch (error) {
         console.error('Error al actualizar los datos de los padres:', error);
@@ -206,6 +205,5 @@ router.post('/eliminar/:alumnoId', async (req, res) => {
         res.status(500).render('error', { message: 'Error al eliminar padres' });
     }
 });
-
 
 module.exports = router;
