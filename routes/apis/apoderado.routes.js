@@ -108,12 +108,14 @@ router.get('/editar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, 
 
     try {
         const apoderado = await apoderadoController.getByAlumnoId(alumnoId);
+        const apoderado_suplente = await apoderadoSuplenteController.getByAlumnoId(alumnoId);
 
         if (!apoderado) {
             return res.render('EditarApoderado', {
                 title: 'Editar Apoderado',
                 error: 'Este alumno no tiene un apoderado asignado',
-                apoderado: null,
+                apoderado: {},
+                apoderado_suplente: apoderado_suplente || {},
                 alumnoId
             });
         }
@@ -122,14 +124,17 @@ router.get('/editar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, 
             title: 'Editar Apoderado',
             error: null,
             apoderado,
+            apoderado_suplente: apoderado_suplente || {},
             alumnoId
         });
+
     } catch (err) {
         console.error("Error al obtener apoderado:", err);
         res.render('EditarApoderado', {
             title: 'Editar Apoderado',
             error: 'Error al cargar apoderado',
             apoderado: null,
+            apoderado_suplente: {},
             alumnoId
         });
     }
@@ -140,39 +145,85 @@ router.get('/editar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, 
 ================================================== */
 router.post('/actualizar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, res) => {
     const alumnoId = req.params.alumnoId;
-
     try {
-        const { nombre_apoderado, parentesco_apoderado, rut_apoderado, fechaNacimiento_apoderado,
-            telefono, correo_apoderado, trabajo_apoderado, nivelEducacional_apoderado
+        const {
+            // Apoderado principal
+            nombre_apoderado, parentesco_apoderado, rut_apoderado, fechaNacimiento_apoderado,
+            telefono, correo_apoderado, trabajo_apoderado, nivelEducacional_apoderado,
+
+            // Apoderado suplente
+            nombreApoderado_suplente, parentescoApoderado_suplente, rut_apoderado_suplente,
+            fechaNacimiento_apoderado_suplente, telefono_suplente, correoApoderado_suplente,
+            trabajoApoderado_suplente, nivelEducacional_apoderado_suplente
         } = req.body;
 
+        // Validación básica
         if (
-            !nombre_apoderado || !parentesco_apoderado || !rut_apoderado ||
-            !fechaNacimiento_apoderado || !telefono || !correo_apoderado ||
-            !trabajo_apoderado || !nivelEducacional_apoderado
+            !nombre_apoderado?.trim() || !parentesco_apoderado?.trim() || !rut_apoderado?.trim() ||
+            !fechaNacimiento_apoderado?.trim() || !telefono?.trim() || !correo_apoderado?.trim() ||
+            !trabajo_apoderado?.trim() || !nivelEducacional_apoderado?.trim() ||
+
+            !nombreApoderado_suplente?.trim() || !parentescoApoderado_suplente?.trim() ||
+            !rut_apoderado_suplente?.trim() || !fechaNacimiento_apoderado_suplente?.trim() || !telefono_suplente?.trim() ||
+            !correoApoderado_suplente?.trim() || !trabajoApoderado_suplente?.trim() || !nivelEducacional_apoderado_suplente?.trim()
         ) {
+            const apoderado = await apoderadoController.getByAlumnoId(alumnoId);
+            const apoderado_suplente = await apoderadoSuplenteController.getByAlumnoId(alumnoId);
+
             return res.status(400).render('EditarApoderado', {
                 title: 'Editar Apoderado',
                 error: 'No puede haber campos vacíos',
-                valores: req.body,
+                apoderado,
+                apoderado_suplente: apoderado_suplente || {},
                 alumnoId
             });
         }
 
-        await apoderadoController.updateApoderado(alumnoId, req.body);
-        console.log("Apoderado actualizado con éxito:", alumnoId);
+        // Actualizar apoderado titular
+        await apoderadoController.updateApoderado(alumnoId, {
+            nombre_apoderado: nombre_apoderado.trim(),
+            parentesco_apoderado: parentesco_apoderado.trim(),
+            rut_apoderado: rut_apoderado.trim(),
+            fechaNacimiento_apoderado: fechaNacimiento_apoderado.trim(),
+            telefono: telefono.trim(),
+            correo_apoderado: correo_apoderado.trim(),
+            trabajo_apoderado: trabajo_apoderado.trim(),
+            nivelEducacional_apoderado: nivelEducacional_apoderado.trim()
+        });
 
-        res.redirect(`/listaAlumnos`);
+        // Actualizar apoderado suplente si existe
+        if (rut_apoderado_suplente?.trim()) {
+            await apoderadoSuplenteController.updateApoderadoSuplente(alumnoId, {
+                nombreApoderado_suplente: nombreApoderado_suplente?.trim() || '',
+                parentescoApoderado_suplente: parentescoApoderado_suplente?.trim() || '',
+                rut_apoderado_suplente: rut_apoderado_suplente?.trim() || '',
+                fechaNacimiento_apoderado_suplente: fechaNacimiento_apoderado_suplente?.trim() || '',
+                telefono_suplente: telefono_suplente?.trim() || '',
+                correoApoderado_suplente: correoApoderado_suplente?.trim() || '',
+                trabajoApoderado_suplente: trabajoApoderado_suplente?.trim() || '',
+                nivelEducacional_apoderado_suplente: nivelEducacional_apoderado_suplente?.trim() || ''
+            });
+        }
+
+        console.log(` Apoderado y suplente actualizados correctamente para alumno ${alumnoId}`);
+        res.redirect('/listaAlumnos');
+
     } catch (error) {
         console.error('Error al actualizar apoderado:', error);
+
+        const apoderado = await apoderadoController.getByAlumnoId(alumnoId);
+        const apoderado_suplente = await apoderadoSuplenteController.getByAlumnoId(alumnoId);
+
         res.status(500).render('EditarApoderado', {
             title: 'Editar Apoderado',
             error: 'Error del servidor. Por favor, inténtelo de nuevo más tarde.',
-            valores: req.body,
+            apoderado,
+            apoderado_suplente: apoderado_suplente || {},
             alumnoId
         });
     }
 });
+
 
 /* ==================================================
    ELIMINAR APODERADO

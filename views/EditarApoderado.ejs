@@ -16,61 +16,108 @@
 
         <main class="container my-5">
             <h2 class="text-center mb-4">Editar Apoderado</h2>
-
             <% if (error) { %>
                 <div class="alert alert-danger text-center">
                     <%= error %>
                 </div>
                 <% } %>
-
                     <div class="card shadow-sm p-4">
-                        <form action="/apoderado/actualizar/<%= apoderado.id %>" method="POST">
+                        <form action="/actualizar-apoderado/<%= apoderado.alumno_id %>" method="POST">
+                            <!-- Mantener relación con el alumno --> <input type="hidden" name="alumno_id"
+                                value="<%= apoderado.alumno_id %>">
+                            <!-- --------------------------------- APODERADO PRINCIPAL --------------------------------- -->
+                            <h4 class="mt-3">Datos Apoderado Principal</h4>
+                            <div class="row g-3">
 
-                            <!-- IMPORTANTE: Mantener la relación con el alumno -->
-                            <input type="hidden" name="alumno_id" value="<%= apoderado.alumno_id %>">
+                                <div class="col-md-6">
+                                    <label class="form-label">Nombre Completo:</label>
+                                    <input type="text" class="form-control" name="nombre_apoderado"value="<%= apoderado.nombre_apoderado || '' %>" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">RUT del Apoderado:</label>
+                                    <input type="text" class="form-control" name="rut_apoderado" value="<%= apoderado.rut_apoderado || '' %>" readonly>
+                                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese el RUT del Apoderado:</label>
-                                <input type="text" class="form-control" name="rut_apoderado" value="<%= apoderado.rut_apoderado %>" readonly>
+                                <div class="col-md-6">
+                                    <label class="form-label">Parentesco con el Alumno:</label>
+                                    <input type="text" class="form-control" name="parentesco_apoderado" value="<%= apoderado.parentesco_apoderado || '' %>" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Fecha de Nacimiento:</label>
+                                    <input type="date" class="form-control" name="fechaNacimiento_apoderado" value="<%= apoderado.fechaNacimiento_apoderado || '' %>">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Teléfono:</label>
+                                    <input type="text" class="form-control" name="telefono" value="<%= apoderado.telefono || '' %>" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Correo Electrónico:</label>
+                                    <input type="email" class="form-control" name="correo_apoderado" value="<%= apoderado.correo_apoderado || '' %>" required>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Trabajo o Actividad:</label>
+                                    <input type="text" class="form-control" name="trabajo_apoderado" value="<%= apoderado.trabajo_apoderado || '' %>">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Nivel Educacional:</label>
+                                    <input type="text" class="form-control" name="nivelEducacional_apoderado" value="<%= apoderado.nivelEducacional_apoderado || '' %>">
+                                </div>
+
                             </div>
+                            <!-- --------------------------------- APODERADO SUPLENTE --------------------------------- -->
+                            <h4 class="mt-4">Datos Apoderado Suplente</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6"> 
+                                    <label class="form-label">Nombre:</label> 
+                                    <input type="text"class="form-control" name="nombreApoderado_suplente"value="<%= apoderado_suplente.nombreApoderado_suplente || '' %>"> 
+                                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese el Nombre Completo:</label>
-                                <input type="text" class="form-control" name="nombre_apoderado" value="<%= apoderado.nombre_apoderado %>" required>
-                            </div>
+                                <div class="col-md-6"> 
+                                    <label class="form-label">Parentesco:</label> 
+                                    <input type="text" class="form-control" name="parentescoApoderado_suplente" value="<%= apoderado_suplente.parentescoApoderado_suplente || '' %>"> 
+                                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Parentesco qeu tiene con el Alumno:</label>
-                                <input type="text" class="form-control" name="parentesco_apoderado" value="<%= apoderado.parentesco_apoderado %>" required>
-                            </div>
+                                <div class="col-md-6"> 
+                                    <label class="form-label">RUT:</label> 
+                                    <input type="text"class="form-control" name="rut_apoderado_suplente"value="<%= apoderado_suplente.rut_apoderado_suplente || '' %>"> 
+                                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Fecha de nacimiento del Apoderado:</label>
-                                <input type="text" class="form-control" name="fechaNacimiento_apoderado" value="<%= apoderado.fechaNacimiento_apoderado %>">
-                            </div>
+                                <div class="col-md-6"> 
+                                    <label class="form-label">Fecha de Nacimiento:</label> 
+                                    <input type="date" class="form-control" name="fechaNacimiento_apoderado_suplente"value="<%= apoderado_suplente.fechaNacimiento_apoderado_suplente || '' %>">
+                                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">En que Trabaja o Tiene alguna Actividad:</label>
-                                <input type="text" class="form-control" name="trabajo_apoderado" value="<%= apoderado.trabajo_apoderado %>">
-                            </div>
+                                <div class="col-md-6"> 
+                                    <label class="form-label">Teléfono:</label> 
+                                    <input type="text" class="form-control" name="telefono_suplente"value="<%= apoderado_suplente.telefono_suplente || '' %>"> 
+                                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ingrese su numero Telefonico:</label>
-                                <input type="text" class="form-control" name="telefono" value="<%= apoderado.telefono %>" required>
-                            </div>
+                                <div class="col-md-6"> 
+                                    <label class="form-label">Correo:</label> 
+                                    <input type="email" class="form-control" name="correoApoderado_suplente" value="<%= apoderado_suplente.correoApoderado_suplente || '' %>"> 
+                                </div>
 
-                            <div class="col-md-12">
-                                <label class="form-label">Ingrese su Correo Personal</label>
-                                <input type="email" class="form-control" name="correo_apoderado" value="<%= apoderado.correo_apoderado %>" required>
-                            </div>
+                                <div class="col-md-6"> 
+                                    <label class="form-label">Trabajo:</label> 
+                                    <input type="text" class="form-control" name="trabajoApoderado_suplente" value="<%= apoderado_suplente.trabajoApoderado_suplente || '' %>"> 
+                                </div>
 
-                            <div class="col-12 mt-3 d-flex justify-content-between">
-                                <button type="submit" class="btn btn-warning">
-                                    <i class="bi bi-pencil-fill me-1"></i>Actualizar
-                                </button>
-                                <a href="/listaAlumnos" class="btn btn-secondary">
-                                    <i class="bi bi-arrow-left-circle me-1"></i>Cancelar
-                                </a>
+                                <div class="col-md-6"> 
+                                    <label class="form-label">Nivel Educacional:</label> 
+                                    <input type="text" class="form-control" name="nivelEducacional_apoderado_suplente" value="<%= apoderado_suplente.nivelEducacional_apoderado_suplente || '' %>">
+                                </div>
+
+                            </div> <!-- Botones -->
+                            <div class="col-12 mt-4 d-flex justify-content-between"> <button type="submit"
+                                    class="btn btn-warning"> <i class="bi bi-pencil-fill me-1"></i>Actualizar </button>
+                                <a href="/listaAlumnos" class="btn btn-secondary"> 
+                                    <i class="bi bi-arrow-left-circle me-1"></i>Cancelar </a>
                             </div>
                         </form>
                     </div>
