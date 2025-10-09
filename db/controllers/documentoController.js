@@ -285,28 +285,28 @@ exports.editarMatriculaPDF = async (req, res) => {
     page.drawText(correoPadre || "", { x: 390, y: 469, size: 11 });
 
     /* ------------------ MADRE ------------------ */
-    page.drawRectangle({ x: 92, y: 382, width: 300, height: 14, color: rgb(1, 1, 1) });
+    page.drawRectangle({ x: 92, y: 382, width: 100, height: 11, color: rgb(1, 1, 1) });
     page.drawText(direccionMadre || "", { x: 92, y: 382, size: 11 });
 
-    page.drawRectangle({ x: 400, y: 382, width: 150, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(telefonoMadre || "", { x: 400, y: 382, size: 11 });
+    page.drawRectangle({ x: 436, y: 382, width: 150, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(telefonoMadre || "", { x: 436, y: 382, size: 11 });
 
-    page.drawRectangle({ x: 160, y: 382, width: 150, height: 14, color: rgb(1, 1, 1) });
-    page.drawText(correoMadre || "", { x: 160, y: 382, size: fontSize });
+    page.drawRectangle({ x: 390, y: 401, width: 150, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(correoMadre || "", { x: 390, y: 401, size: 11 });
 
     /* ------------------ APODERADO PRINCIPAL ------------------ */
-    page.drawRectangle({ x: 400, y: 340, width: 150, height: 14, color: rgb(1, 1, 1) });
-    page.drawText(telefonoApoderado || "", { x: 400, y: 340, size: fontSize });
+    page.drawRectangle({ x: 100, y: 287, width: 90, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(telefonoApoderado || "", { x: 100, y: 287, size: 11 });
 
-    page.drawRectangle({ x: 160, y: 320, width: 250, height: 14, color: rgb(1, 1, 1) });
-    page.drawText(correoApoderado || "", { x: 160, y: 320, size: fontSize });
+    page.drawRectangle({ x: 330, y: 287, width: 150, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(correoApoderado || "", { x: 330, y: 287, size: 11 });
 
     /* ------------------ APODERADO SUPLENTE ------------------ */
-    page.drawRectangle({ x: 400, y: 220, width: 150, height: 14, color: rgb(1, 1, 1) });
-    page.drawText(telefonoApoderado2 || "", { x: 400, y: 220, size: fontSize });
+    page.drawRectangle({ x: 100, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(telefonoApoderado2 || "", { x: 100, y: 205, size: 11 });
 
-    page.drawRectangle({ x: 160, y: 200, width: 250, height: 14, color: rgb(1, 1, 1) });
-    page.drawText(correoApoderado2 || "", { x: 160, y: 200, size: fontSize });
+    page.drawRectangle({ x: 330, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(correoApoderado2 || "", { x: 330, y: 205, size: 11 });
 
     // Guarda el PDF editado
     const pdfEditado = await pdfDoc.save();
