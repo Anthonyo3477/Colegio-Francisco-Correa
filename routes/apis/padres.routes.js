@@ -25,7 +25,7 @@ router.post('/insertPadres', async (req, res) => {
         console.log("Datos recibidos en req.body:", req.body);
 
         const {
-            alumno_id, // viene desde el form oculto
+            alumno_id,
 
             // Datos del padre
             nombre_padre, rut_padre, fechaNacimiento_padre, nacionalidad_padre,
@@ -152,6 +152,7 @@ router.post('/actualizar-padres/:alumnoId', isAuthenticated, isAdmin, async (req
         const {
             nombre_padre, rut_padre, fechaNacimiento_padre, nacionalidad_padre,
             nivelEducacional_padre, trabajo_padre, correo_padre, direccion_padre, telefono_padre,
+
             nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre,
             nivelEducacional_madre, trabajo_madre, correo_madre, direccion_madre, telefono_madre
         } = req.body;
@@ -160,6 +161,7 @@ router.post('/actualizar-padres/:alumnoId', isAuthenticated, isAdmin, async (req
             !nombre_padre?.trim() || !rut_padre?.trim() || !fechaNacimiento_padre?.trim() ||
             !nacionalidad_padre?.trim() || !nivelEducacional_padre?.trim() || !trabajo_padre?.trim() ||
             !correo_padre?.trim() || !direccion_padre?.trim() || !telefono_padre?.trim() ||
+
             !nombre_madre?.trim() || !rut_madre?.trim() || !fechaNacimiento_madre?.trim() ||
             !nacionalidad_madre?.trim() || !nivelEducacional_madre?.trim() || !trabajo_madre?.trim() ||
             !correo_madre?.trim() || !direccion_madre?.trim() || !telefono_madre?.trim()

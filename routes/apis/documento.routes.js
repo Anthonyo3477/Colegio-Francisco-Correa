@@ -1,3 +1,4 @@
+const conn = require('../../db/conexion');
 const express = require('express');
 const multer = require('multer');
 const documentoController = require('../../db/controllers/documentoController');
@@ -40,7 +41,29 @@ router.get('/matricula/ver/:id', documentoController.verMatricula);
 // ==============================
 // ELIMINAR PDF
 // ==============================
-
 router.get('/eliminar/:id', documentoController.eliminarMatricula);
+
+// ==============================
+// EDITAR PDF (Solo algunos campos)
+// ==============================
+router.get('/matricula/editarVisual/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [rows] = await conn.execute('SELECT id, nombre_archivo FROM matriculas WHERE id = ?', [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).send('Documento no encontrado');
+    }
+
+    const matricula = rows[0];
+    res.render('editarPDFVisual', { matricula }); // Renderiza tu vista correcta
+  } catch (error) {
+    console.error('Error al cargar formulario de edición visual:', error);
+    res.status(500).send('Error interno del servidor');
+  }
+});
+
+// === GUARDAR CAMBIOS EN EL PDF EXISTENTE ===
+router.post('/matricula/editarPDFVisual/:id', documentoController.editarMatriculaPDF);
 
 module.exports = router;
