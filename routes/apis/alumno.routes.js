@@ -270,12 +270,13 @@ router.post('/actualizar/:id', async (req, res) => {
         // Actualizar Datos Académicos vinculados
 
         await datosAcademicosController.updateDatosAcademicosByAlumnoId(id, {
-            ultimo_curso_cursado: formatDate(ultimo_curso_cursado),
+            ultimo_curso_cursado: ultimo_curso_cursado.trim(),
             año_cursado: año_cursado.trim(),
             colegio_procedencia: colegio_procedencia.trim(),
             cursos_reprobados: cursos_reprobados.trim(),
             beneficios_beca: beneficios_beca.trim(),
-            proteccion_infantil: proteccion_infantil.trim()
+            proteccion_infantil: proteccion_infantil.trim(),
+            alumno_id: id
         });
 
         console.log("Alumno actualizado correctamente:", id);

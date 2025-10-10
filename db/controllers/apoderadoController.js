@@ -58,6 +58,9 @@ async function updateApoderado(id, apoderado) {
         alumno_id
     } = apoderado;
 
+    if (!alumno_id) {
+        throw new Error("El campo 'alumno_id' es obligatorio y no puede ser nulo.");
+    }
     const sql = `
         UPDATE ${TABLA} 
         SET nombre_apoderado=?, parentesco_apoderado=?, rut_apoderado=?, fechaNacimiento_apoderado=?, 

@@ -46,18 +46,18 @@ async function getMadreByAlumnoId (alumnoId) {
 
 // Actualizar madre por ID
 async function updateMadres(id, madre) {
-    const { nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre, trabajo_madre,
-        direccion_madre, telefono_madre, alumno_id } = madre;
+    const { nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre, 
+        trabajo_madre, correo_madre, direccion_madre, telefono_madre, alumno_id } = madre;
 
     const sql = `
         UPDATE ${TABLA} 
         SET nombre_madre=?, rut_madre=?, fechaNacimiento_madre=?, nacionalidad_madre=?, nivelEducacional_madre=?, 
-        trabajo_madre=?, direccion_madre=?, telefono_madre=?, alumno_id=? 
+        trabajo_madre=?, correo_madre=?, direccion_madre=?, telefono_madre=?, alumno_id=? 
         WHERE id=?
     `;
 
     const valoresMadre = [nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre,
-        trabajo_madre, direccion_madre, telefono_madre, alumno_id, id];
+        trabajo_madre, correo_madre, direccion_madre, telefono_madre, alumno_id, id];
 
     const [result] = await conn.query(sql, valoresMadre);
     return result;

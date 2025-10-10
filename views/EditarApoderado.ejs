@@ -23,8 +23,8 @@
                 <% } %>
                     <div class="card shadow-sm p-4">
                         <form action="/actualizar-apoderado/<%= apoderado.alumno_id %>" method="POST">
-                            <!-- Mantener relación con el alumno --> <input type="hidden" name="alumno_id"
-                                value="<%= apoderado.alumno_id %>">
+                            <!-- Mantener relación con el alumno --> 
+                            <input type="hidden" name="alumno_id" value="<%= apoderado.alumno_id %>">
                             <!-- --------------------------------- APODERADO PRINCIPAL --------------------------------- -->
                             <h4 class="mt-3">Datos Apoderado Principal</h4>
                             <div class="row g-3">

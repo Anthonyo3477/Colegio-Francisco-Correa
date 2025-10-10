@@ -4,6 +4,17 @@ const apoderadoController = require('../../db/controllers/apoderadoController');
 const apoderadoSuplenteController = require('../../db/controllers/apoderadoSuplenteController');
 const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware');
 
+// Función para dar formato a la fecha en YYYY-MM-DD
+function formatDate(date) {
+    if (!date) return null;
+    const d = new Date(date);
+    if (isNaN(d)) return null;
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 /* ==================================================
    FORMULARIO NUEVO APODERADO
 ================================================== */
@@ -184,11 +195,12 @@ router.post('/actualizar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (
             nombre_apoderado: nombre_apoderado.trim(),
             parentesco_apoderado: parentesco_apoderado.trim(),
             rut_apoderado: rut_apoderado.trim(),
-            fechaNacimiento_apoderado: fechaNacimiento_apoderado.trim(),
+            fechaNacimiento_apoderado: formatDate(fechaNacimiento_apoderado),
             telefono: telefono.trim(),
             correo_apoderado: correo_apoderado.trim(),
             trabajo_apoderado: trabajo_apoderado.trim(),
-            nivelEducacional_apoderado: nivelEducacional_apoderado.trim()
+            nivelEducacional_apoderado: nivelEducacional_apoderado.trim(),
+            alumno_id: alumnoId
         });
 
         // Actualizar apoderado suplente si existe
@@ -197,11 +209,12 @@ router.post('/actualizar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (
                 nombreApoderado_suplente: nombreApoderado_suplente?.trim() || '',
                 parentescoApoderado_suplente: parentescoApoderado_suplente?.trim() || '',
                 rut_apoderado_suplente: rut_apoderado_suplente?.trim() || '',
-                fechaNacimiento_apoderado_suplente: fechaNacimiento_apoderado_suplente?.trim() || '',
+                fechaNacimiento_apoderado_suplente: formatDate(fechaNacimiento_apoderado_suplente)?.trim() || '',
                 telefono_suplente: telefono_suplente?.trim() || '',
                 correoApoderado_suplente: correoApoderado_suplente?.trim() || '',
                 trabajoApoderado_suplente: trabajoApoderado_suplente?.trim() || '',
-                nivelEducacional_apoderado_suplente: nivelEducacional_apoderado_suplente?.trim() || ''
+                nivelEducacional_apoderado_suplente: nivelEducacional_apoderado_suplente?.trim() || '',
+                alumno_id: alumnoId
             });
         }
 
