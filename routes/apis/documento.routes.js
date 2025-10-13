@@ -45,6 +45,7 @@ router.get('/eliminar/:id', documentoController.eliminarMatricula);
 
 // ==============================
 // EDITAR PDF (Solo algunos campos)
+// este apartado solo edita algunos datos como el telefono, direccion, comuna, y con quien vive el alumno
 // ==============================
 router.get('/matricula/editarVisual/:id', async (req, res) => {
   try {

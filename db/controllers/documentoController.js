@@ -1,7 +1,8 @@
 const conn = require('../conexion');
-const PDFDocument = require('pdfkit');                      // Para generar PDFs nuevos
-const { PDFDocument: PDFLib, rgb } = require('pdf-lib');    // Para editar PDFs existentes
-
+const path = require('path');
+const fs = require('fs');
+const PDFKit = require('pdfkit'); // Renombrado para evitar confusión
+const { PDFDocument: PDFLib, rgb } = require('pdf-lib');
 
 // =====================================================
 // SUBIR PDF MANUAL (desde formulario)
@@ -28,7 +29,6 @@ exports.subirDocumento = async (req, res) => {
   }
 };
 
-
 // =====================================================
 // LISTAR MATRÍCULAS
 // =====================================================
@@ -50,7 +50,6 @@ exports.listarMatriculas = async (req, res) => {
     res.status(500).send('Error al listar matrículas');
   }
 };
-
 
 // =====================================================
 // VISUALIZAR PDF EN EL NAVEGADOR
@@ -77,86 +76,152 @@ exports.verMatricula = async (req, res) => {
   }
 };
 
-
 // =====================================================
-// GENERAR O REEMPLAZAR PDF (Alumno + Apoderado)
+// GENERAR O REEMPLAZAR PDF DESDE PLANTILLA EXISTENTE
 // =====================================================
 exports.generarMatriculaPDF = async (req, res) => {
   try {
     const { idAlumno } = req.params;
 
-    // Buscar alumno
-    const [alumnos] = await conn.execute(`SELECT * FROM alumno WHERE id = ?`, [idAlumno]);
-    if (alumnos.length === 0) {
-      return res.status(404).send("Alumno no encontrado");
+    // Obtener datos desde la base de datos 
+    const [[alumno]] = await conn.execute(`SELECT * FROM alumno WHERE id = ?`, [idAlumno]);
+    if (!alumno) return res.status(404).send("Alumno no encontrado");
+
+    const [[datosAcademicos]] = await conn.execute(`SELECT * FROM datos_academicos WHERE alumno_id = ?`, [idAlumno]);
+    const [[padre]] = await conn.execute(`SELECT * FROM padre WHERE alumno_id = ?`, [idAlumno]);
+    const [[madre]] = await conn.execute(`SELECT * FROM madre WHERE alumno_id = ?`, [idAlumno]);
+    const [[apoderado]] = await conn.execute(`SELECT * FROM apoderados WHERE alumno_id = ?`, [idAlumno]);
+    const [[apoderado2]] = await conn.execute(`SELECT * FROM apoderado_suplente WHERE alumno_id = ?`, [idAlumno]);
+
+    // Cargar plantilla PDF base
+    const plantillaPath = path.join(__dirname, "../../extras/PDF Modificado.pdf");
+    const pdfBytes = fs.readFileSync(plantillaPath);
+    const pdfDoc = await PDFLib.load(pdfBytes);
+    const form = pdfDoc.getForm();
+
+    // =======================
+    // DATOS DEL ALUMNO
+    // =======================
+    form.getTextField("nombreCompleto").setText(alumno.nombreCompleto_alumno || "");
+    form.getTextField("sexoAlumno").setText(alumno.sexo || "");
+    form.getTextField("rutAlumnos").setText(alumno.rut_alumnos || "");
+    form.getTextField("cursoAlumno").setText(alumno.curso || "");
+    form.getTextField("fechaNacimientoAlumno").setText(alumno.fechaNacimiento_alumno?.toISOString().split("T")[0] || "");
+    form.getTextField("edadAlumno").setText(alumno.edadAlumno?.toString() || "");
+    form.getTextField("domicilioAlumno").setText(alumno.direccion || "");
+    form.getTextField("comunaAlumno").setText(alumno.comuna || "");
+    form.getTextField("viviendaAlumno").setText(alumno.viveCon || "");
+    form.getTextField("nacionalidadAlumno").setText(alumno.nacionalidad || "");
+    form.getTextField("ingresoChile").setText(alumno.añoIngresoChile?.toString() || "");
+    form.getTextField("puebloOriginario").setText(alumno.puebloOriginario || "");
+    form.getTextField("quePuebloOriginario").setText(alumno.quePueblo || "");
+    form.getTextField("cualEnfermedad").setText(alumno.enfermedad || "");
+    form.getTextField("cualesAlergias").setText(alumno.alergias || "");
+    form.getTextField("recibeMedicamentos").setText(alumno.medicamentos || "");
+    form.getTextField("pesoAlumno").setText(alumno.peso || "");
+    form.getTextField("tallaAlumno").setText(alumno.talla || "");
+
+    // =======================
+    // DATOS SOCIO-ACADÉMICOS
+    // =======================
+    if (datosAcademicos) {
+      form.getTextField("UltimoCurso").setText(datosAcademicos.ultimo_curso_cursado || "");
+      form.getTextField("añoCursado").setText(datosAcademicos.año_cursado?.toString() || "");
+      form.getTextField("colegioProcedencia").setText(datosAcademicos.colegio_procedencia || "");
+      form.getTextField("cursoReprobado").setText(datosAcademicos.cursos_reprobados || "");
+      form.getTextField("cualBeca").setText(datosAcademicos.beneficios_beca || "");
+      form.getTextField("perteneceProgramaProteccionInfantil").setText(datosAcademicos.proteccion_infantil || "");
     }
-    const alumno = alumnos[0];
 
-    // Buscar apoderado
-    const [apoderados] = await conn.execute(`SELECT * FROM apoderados WHERE alumno_id = ?`, [idAlumno]);
-    const apoderado = apoderados.length > 0 ? apoderados[0] : null;
+    // =======================
+    // PADRE
+    // =======================
+    if (padre) {
+      form.getTextField("nombrePadre").setText(padre.nombre_padre || "");
+      form.getTextField("rutPadre").setText(padre.rut_padre || "");
+      form.getTextField("fechaNacimientoPadre").setText(padre.fechaNacimiento_padre?.toISOString().split("T")[0] || "");
+      form.getTextField("nacionalidadPadre").setText(padre.nacionalidad_padre || "");
+      form.getTextField("nivelEducacionalPadre").setText(padre.nivelEducacional_padre || "");
+      form.getTextField("trabajoPadre").setText(padre.trabajo_padre || "");
+      form.getTextField("correoPadre").setText(padre.correo_padre || "");
+      form.getTextField("direccionPadre").setText(padre.direccion_padre || "");
+      form.getTextField("telefonoPadre").setText(padre.telefono_padre || "");
+    }
 
-    // Crear PDF con pdfkit
-    const doc = new PDFDocument();
-    let buffers = [];
-    doc.on('data', buffers.push.bind(buffers));
-    doc.on('end', async () => {
-      const pdfData = Buffer.concat(buffers);
-      const nombreArchivo = `matricula_${alumno.rut_alumnos}.pdf`;
+    // =======================
+    // MADRE
+    // =======================
+    if (madre) {
+      form.getTextField("nombreMadre").setText(madre.nombre_madre || "");
+      form.getTextField("rutMadre").setText(madre.rut_madre || "");
+      form.getTextField("fechaNacimientoMadre").setText(madre.fechaNacimiento_madre?.toISOString().split("T")[0] || "");
+      form.getTextField("nacionalidadMadre").setText(madre.nacionalidad_madre || "");
+      form.getTextField("nivelEducacionalMadre").setText(madre.nivelEducacional_madre || "");
+      form.getTextField("trabajoMadre").setText(madre.trabajo_madre || "");
+      form.getTextField("correoMadre").setText(madre.correo_madre || "");
+      form.getTextField("direccionMadre").setText(madre.direccion_madre || "");
+      form.getTextField("telefonoMadre").setText(madre.telefono_madre || "");
+    }
 
-      await conn.execute(
-        `INSERT INTO matriculas (alumno_id, nombre_archivo, documento) 
-         VALUES (?, ?, ?) 
-         ON DUPLICATE KEY UPDATE 
-           nombre_archivo = VALUES(nombre_archivo), 
-           documento = VALUES(documento), 
-           fecha_subida = CURRENT_TIMESTAMP`,
-        [alumno.id, nombreArchivo, pdfData]
-      );
-
-      res.setHeader('Content-Disposition', `attachment; filename="${nombreArchivo}"`);
-      res.setHeader('Content-Type', 'application/pdf');
-      res.send(pdfData);
-    });
-
-    // Contenido del PDF
-    doc.fontSize(20).text("Ficha de Matrícula", { align: "center" });
-    doc.moveDown();
-
-    doc.fontSize(14).text("Datos del Alumno");
-    doc.fontSize(12)
-      .text(`Nombre: ${alumno.nombreCompleto_alumno}`)
-      .text(`RUT: ${alumno.rut_alumnos}`)
-      .text(`Curso: ${alumno.curso}`)
-      .text(`Fecha ingreso: ${alumno.fecha_ingreso}`)
-      .text(`Dirección: ${alumno.direccion}, ${alumno.comuna}`);
-    doc.moveDown();
-
+    // =======================
+    // APODERADO PRINCIPAL
+    // =======================
     if (apoderado) {
-      doc.fontSize(14).text("Datos del Apoderado");
-      doc.fontSize(12)
-        .text(`Nombre: ${apoderado.nombre_apoderado}`)
-        .text(`RUT: ${apoderado.rut_apoderado}`)
-        .text(`Teléfono: ${apoderado.telefono}`)
-        .text(`Correo: ${apoderado.correo_apoderado}`);
-    } else {
-      doc.fontSize(14).text("Este alumno aún no tiene apoderado registrado");
+      form.getTextField("nombreApoderado").setText(apoderado.nombre_apoderado || "");
+      form.getTextField("parentescoApoderado").setText(apoderado.parentesco_apoderado || "");
+      form.getTextField("rutApoderado").setText(apoderado.rut_apoderado || "");
+      form.getTextField("fechaNacimientoApoderado").setText(apoderado.fechaNacimiento_apoderado?.toISOString().split("T")[0] || "");
+      form.getTextField("telefonoApoderado").setText(apoderado.telefono || "");
+      form.getTextField("correoApoderado").setText(apoderado.correo_apoderado || "");
+      form.getTextField("trabajoApoderado").setText(apoderado.trabajo_apoderado || "");
+      form.getTextField("nivelEducacionalApoderado").setText(apoderado.nivelEducacional_apoderado || "");
     }
 
-    doc.end();
+    // =======================
+    // APODERADO SUPLENTE
+    // =======================
+    if (apoderado2) {
+      form.getTextField("nombreApoderado2").setText(apoderado2.nombreApoderado_suplente || "");
+      form.getTextField("parentescoApoderado2").setText(apoderado2.parentescoApoderado_suplente || "");
+      form.getTextField("rutApoderado2").setText(apoderado2.rut_apoderado_suplente || "");
+      form.getTextField("fechaNacimientoApoderado2").setText(apoderado2.fechaNacimiento_apoderado_suplente?.toISOString().split("T")[0] || "");
+      form.getTextField("telefonoApoderado2").setText(apoderado2.telefono_suplente || "");
+      form.getTextField("correoApoderado2").setText(apoderado2.correoApoderado_suplente || "");
+      form.getTextField("trabajoApoderado2").setText(apoderado2.trabajo_apoderado_suplente || "");
+      form.getTextField("nivelEducacionalApoderado2").setText(apoderado2.nivelEducacional_apoderado_suplente || "");
+    }
+
+    // =======================
+    // Guardar en base de datos (NO DESCARGAR)
+    // =======================
+    form.flatten();
+    const pdfFinal = await pdfDoc.save();
+    const nombreArchivo = `matricula_${alumno.nombreCompleto_alumno}.pdf`;
+
+    await conn.execute(
+      `INSERT INTO matriculas (alumno_id, nombre_archivo, documento)
+       VALUES (?, ?, ?)
+       ON DUPLICATE KEY UPDATE
+         nombre_archivo = VALUES(nombre_archivo),
+         documento = VALUES(documento),
+         fecha_subida = CURRENT_TIMESTAMP`,
+      [alumno.id, nombreArchivo, pdfFinal]
+    );
+
+    console.log(`Matrícula generada y guardada: ${nombreArchivo}`);
+    res.redirect('/DocMatricula');
+
   } catch (error) {
     console.error("Error al generar PDF:", error);
-    res.status(500).send("Error en el servidor");
+    res.status(500).send("Error al generar PDF");
   }
 };
-
 
 // =====================================================
 // REGENERAR PDF
 // =====================================================
 exports.regenerarMatricula = async (req, res) => {
   try {
-    const { idAlumno } = req.params;
     return exports.generarMatriculaPDF(req, res);
   } catch (error) {
     console.error("Error al regenerar PDF:", error);
@@ -164,25 +229,19 @@ exports.regenerarMatricula = async (req, res) => {
   }
 };
 
-
 // =====================================================
 // DESCARGAR PDF
 // =====================================================
 exports.descargarMatricula = async (req, res) => {
   try {
     const { id } = req.params;
-
     const [rows] = await conn.execute(
       'SELECT nombre_archivo, documento FROM matriculas WHERE id = ?',
       [id]
     );
-
-    if (rows.length === 0) {
-      return res.status(404).send('Archivo no encontrado');
-    }
+    if (rows.length === 0) return res.status(404).send('Archivo no encontrado');
 
     const { nombre_archivo, documento } = rows[0];
-
     res.setHeader('Content-Disposition', `attachment; filename="${nombre_archivo}"`);
     res.setHeader('Content-Type', 'application/pdf');
     res.send(documento);
@@ -192,20 +251,15 @@ exports.descargarMatricula = async (req, res) => {
   }
 };
 
-
 // =====================================================
 // ELIMINAR MATRÍCULA
 // =====================================================
 exports.eliminarMatricula = async (req, res) => {
   try {
     const { id } = req.params;
-
     const [result] = await conn.execute("DELETE FROM matriculas WHERE id = ?", [id]);
 
-    if (result.affectedRows === 0) {
-      console.warn("Matrícula no encontrada para eliminar:", id);
-      return res.status(404).send("Matrícula no encontrada");
-    }
+    if (result.affectedRows === 0) return res.status(404).send("Matrícula no encontrada");
 
     console.log("Matrícula eliminada correctamente:", id);
     res.redirect('/DocMatricula');
