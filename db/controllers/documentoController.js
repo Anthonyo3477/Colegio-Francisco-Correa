@@ -1,8 +1,8 @@
 const conn = require('../conexion');
 const path = require('path');
 const fs = require('fs');
-const PDFKit = require('pdfkit'); // Renombrado para evitar confusión
-const { PDFDocument: PDFLib, rgb } = require('pdf-lib');
+const PDFKit = require('pdfkit');
+const { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
 
 // =====================================================
 // SUBIR PDF MANUAL (desde formulario)
@@ -96,104 +96,121 @@ exports.generarMatriculaPDF = async (req, res) => {
     // Cargar plantilla PDF base
     const plantillaPath = path.join(__dirname, "../../extras/PDF Modificado.pdf");
     const pdfBytes = fs.readFileSync(plantillaPath);
-    const pdfDoc = await PDFLib.load(pdfBytes);
+    const pdfDoc = await PDFDocument.load(pdfBytes);
     const form = pdfDoc.getForm();
+
+    // Fuente Helvetica tamaño 10
+    const fontBase = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+    function setText(fieldName, text, fontSize = 9) {
+      const field = form.getTextField(fieldName);
+      if (!field) return;
+
+      field.setText(text || "");
+
+      // Actualizar apariencia con fuente y tamaño
+      try {
+        field.updateAppearances(fontBase);
+        if (field.defaultUpdateAppearances)
+          field.defaultUpdateAppearances(fontBase, { fontSize });
+      } catch (err) {
+        console.warn(`No se pudo actualizar ${fieldName}:`, err.message);
+      }
+    }
 
     // =======================
     // DATOS DEL ALUMNO
     // =======================
-    form.getTextField("nombreCompleto").setText(alumno.nombreCompleto_alumno || "");
-    form.getTextField("sexoAlumno").setText(alumno.sexo || "");
-    form.getTextField("rutAlumnos").setText(alumno.rut_alumnos || "");
-    form.getTextField("cursoAlumno").setText(alumno.curso || "");
-    form.getTextField("fechaNacimientoAlumno").setText(alumno.fechaNacimiento_alumno?.toISOString().split("T")[0] || "");
-    form.getTextField("edadAlumno").setText(alumno.edadAlumno?.toString() || "");
-    form.getTextField("domicilioAlumno").setText(alumno.direccion || "");
-    form.getTextField("comunaAlumno").setText(alumno.comuna || "");
-    form.getTextField("viviendaAlumno").setText(alumno.viveCon || "");
-    form.getTextField("nacionalidadAlumno").setText(alumno.nacionalidad || "");
-    form.getTextField("ingresoChile").setText(alumno.añoIngresoChile?.toString() || "");
-    form.getTextField("puebloOriginario").setText(alumno.puebloOriginario || "");
-    form.getTextField("quePuebloOriginario").setText(alumno.quePueblo || "");
-    form.getTextField("cualEnfermedad").setText(alumno.enfermedad || "");
-    form.getTextField("cualesAlergias").setText(alumno.alergias || "");
-    form.getTextField("recibeMedicamentos").setText(alumno.medicamentos || "");
-    form.getTextField("pesoAlumno").setText(alumno.peso || "");
-    form.getTextField("tallaAlumno").setText(alumno.talla || "");
+    setText("nombreCompleto", alumno.nombreCompleto_alumno);
+    setText("sexoAlumno", alumno.sexo);
+    setText("rutAlumnos", alumno.rut_alumnos);
+    setText("cursoAlumno", alumno.curso);
+    setText("fechaNacimientoAlumno", alumno.fechaNacimiento_alumno?.toISOString().split("T")[0]);
+    setText("edadAlumno", alumno.edadAlumno?.toString());
+    setText("domicilioAlumno", alumno.direccion);
+    setText("comunaAlumno", alumno.comuna);
+    setText("viviendaAlumno", alumno.viveCon);
+    setText("nacionalidadAlumno", alumno.nacionalidad);
+    setText("ingresoChile", alumno.añoIngresoChile?.toString());
+    setText("puebloOriginario", alumno.puebloOriginario);
+    setText("quePuebloOriginario", alumno.quePueblo);
+    setText("cualEnfermedad", alumno.enfermedad);
+    setText("cualesAlergias", alumno.alergias);
+    setText("recibeMedicamentos", alumno.medicamentos);
+    setText("pesoAlumno", alumno.peso);
+    setText("tallaAlumno", alumno.talla);
 
     // =======================
     // DATOS SOCIO-ACADÉMICOS
     // =======================
     if (datosAcademicos) {
-      form.getTextField("UltimoCurso").setText(datosAcademicos.ultimo_curso_cursado || "");
-      form.getTextField("añoCursado").setText(datosAcademicos.año_cursado?.toString() || "");
-      form.getTextField("colegioProcedencia").setText(datosAcademicos.colegio_procedencia || "");
-      form.getTextField("cursoReprobado").setText(datosAcademicos.cursos_reprobados || "");
-      form.getTextField("cualBeca").setText(datosAcademicos.beneficios_beca || "");
-      form.getTextField("perteneceProgramaProteccionInfantil").setText(datosAcademicos.proteccion_infantil || "");
+      setText("UltimoCurso", datosAcademicos.ultimo_curso_cursado);
+      setText("añoCursado", datosAcademicos.año_cursado?.toString());
+      setText("colegioProcedencia", datosAcademicos.colegio_procedencia);
+      setText("cursoReprobado", datosAcademicos.cursos_reprobados);
+      setText("cualBeca", datosAcademicos.beneficios_beca);
+      setText("perteneceProgramaProteccionInfantil", datosAcademicos.proteccion_infantil);
     }
 
     // =======================
     // PADRE
     // =======================
     if (padre) {
-      form.getTextField("nombrePadre").setText(padre.nombre_padre || "");
-      form.getTextField("rutPadre").setText(padre.rut_padre || "");
-      form.getTextField("fechaNacimientoPadre").setText(padre.fechaNacimiento_padre?.toISOString().split("T")[0] || "");
-      form.getTextField("nacionalidadPadre").setText(padre.nacionalidad_padre || "");
-      form.getTextField("nivelEducacionalPadre").setText(padre.nivelEducacional_padre || "");
-      form.getTextField("trabajoPadre").setText(padre.trabajo_padre || "");
-      form.getTextField("correoPadre").setText(padre.correo_padre || "");
-      form.getTextField("direccionPadre").setText(padre.direccion_padre || "");
-      form.getTextField("telefonoPadre").setText(padre.telefono_padre || "");
+      setText("nombrePadre", padre.nombre_padre);
+      setText("rutPadre", padre.rut_padre);
+      setText("fechaNacimientoPadre", padre.fechaNacimiento_padre?.toISOString().split("T")[0]);
+      setText("nacionalidadPadre", padre.nacionalidad_padre);
+      setText("nivelEducacionalPadre", padre.nivelEducacional_padre);
+      setText("trabajoPadre", padre.trabajo_padre);
+      setText("correoPadre", padre.correo_padre);
+      setText("direccionPadre", padre.direccion_padre);
+      setText("telefonoPadre", padre.telefono_padre);
     }
 
     // =======================
     // MADRE
     // =======================
     if (madre) {
-      form.getTextField("nombreMadre").setText(madre.nombre_madre || "");
-      form.getTextField("rutMadre").setText(madre.rut_madre || "");
-      form.getTextField("fechaNacimientoMadre").setText(madre.fechaNacimiento_madre?.toISOString().split("T")[0] || "");
-      form.getTextField("nacionalidadMadre").setText(madre.nacionalidad_madre || "");
-      form.getTextField("nivelEducacionalMadre").setText(madre.nivelEducacional_madre || "");
-      form.getTextField("trabajoMadre").setText(madre.trabajo_madre || "");
-      form.getTextField("correoMadre").setText(madre.correo_madre || "");
-      form.getTextField("direccionMadre").setText(madre.direccion_madre || "");
-      form.getTextField("telefonoMadre").setText(madre.telefono_madre || "");
+      setText("nombreMadre", madre.nombre_madre);
+      setText("rutMadre", madre.rut_madre);
+      setText("fechaNacimientoMadre", madre.fechaNacimiento_madre?.toISOString().split("T")[0]);
+      setText("nacionalidadMadre", madre.nacionalidad_madre);
+      setText("nivelEducacionalMadre", madre.nivelEducacional_madre);
+      setText("trabajoMadre", madre.trabajo_madre);
+      setText("correoMadre", madre.correo_madre);
+      setText("direccionMadre", madre.direccion_madre);
+      setText("telefonoMadre", madre.telefono_madre);
     }
 
     // =======================
     // APODERADO PRINCIPAL
     // =======================
     if (apoderado) {
-      form.getTextField("nombreApoderado").setText(apoderado.nombre_apoderado || "");
-      form.getTextField("parentescoApoderado").setText(apoderado.parentesco_apoderado || "");
-      form.getTextField("rutApoderado").setText(apoderado.rut_apoderado || "");
-      form.getTextField("fechaNacimientoApoderado").setText(apoderado.fechaNacimiento_apoderado?.toISOString().split("T")[0] || "");
-      form.getTextField("telefonoApoderado").setText(apoderado.telefono || "");
-      form.getTextField("correoApoderado").setText(apoderado.correo_apoderado || "");
-      form.getTextField("trabajoApoderado").setText(apoderado.trabajo_apoderado || "");
-      form.getTextField("nivelEducacionalApoderado").setText(apoderado.nivelEducacional_apoderado || "");
+      setText("nombreApoderado", apoderado.nombre_apoderado);
+      setText("parentescoApoderado", apoderado.parentesco_apoderado);
+      setText("rutApoderado", apoderado.rut_apoderado);
+      setText("fechaNacimientoApoderado", apoderado.fechaNacimiento_apoderado?.toISOString().split("T")[0]);
+      setText("telefonoApoderado", apoderado.telefono);
+      setText("correoApoderado", apoderado.correo_apoderado);
+      setText("trabajoApoderado", apoderado.trabajo_apoderado);
+      setText("nivelEducacionalApoderado", apoderado.nivelEducacional_apoderado);
     }
 
     // =======================
     // APODERADO SUPLENTE
     // =======================
     if (apoderado2) {
-      form.getTextField("nombreApoderado2").setText(apoderado2.nombreApoderado_suplente || "");
-      form.getTextField("parentescoApoderado2").setText(apoderado2.parentescoApoderado_suplente || "");
-      form.getTextField("rutApoderado2").setText(apoderado2.rut_apoderado_suplente || "");
-      form.getTextField("fechaNacimientoApoderado2").setText(apoderado2.fechaNacimiento_apoderado_suplente?.toISOString().split("T")[0] || "");
-      form.getTextField("telefonoApoderado2").setText(apoderado2.telefono_suplente || "");
-      form.getTextField("correoApoderado2").setText(apoderado2.correoApoderado_suplente || "");
-      form.getTextField("trabajoApoderado2").setText(apoderado2.trabajo_apoderado_suplente || "");
-      form.getTextField("nivelEducacionalApoderado2").setText(apoderado2.nivelEducacional_apoderado_suplente || "");
+      setText("nombreApoderado2", apoderado2.nombreApoderado_suplente);
+      setText("parentescoApoderado2", apoderado2.parentescoApoderado_suplente);
+      setText("rutApoderado2", apoderado2.rut_apoderado_suplente);
+      setText("fechaNacimientoApoderado2", apoderado2.fechaNacimiento_apoderado_suplente?.toISOString().split("T")[0]);
+      setText("telefonoApoderado2", apoderado2.telefono_suplente);
+      setText("correoApoderado2", apoderado2.correoApoderado_suplente);
+      setText("trabajoApoderado2", apoderado2.trabajo_apoderado_suplente);
+      setText("nivelEducacionalApoderado2", apoderado2.nivelEducacional_apoderado_suplente);
     }
 
-    // =======================
-    // Guardar en base de datos (NO DESCARGAR)
-    // =======================
+    // Guardar en base de datos
     form.flatten();
     const pdfFinal = await pdfDoc.save();
     const nombreArchivo = `matricula_${alumno.nombreCompleto_alumno}.pdf`;
@@ -208,7 +225,7 @@ exports.generarMatriculaPDF = async (req, res) => {
       [alumno.id, nombreArchivo, pdfFinal]
     );
 
-    console.log(`Matrícula generada y guardada: ${nombreArchivo}`);
+    console.log(`Matrícula generada correctamente: ${nombreArchivo}`);
     res.redirect('/DocMatricula');
 
   } catch (error) {
@@ -269,10 +286,109 @@ exports.eliminarMatricula = async (req, res) => {
   }
 };
 
+// =====================================================
+// MOSTRAR VISTA EDITAR PDF CON DATOS CARGADOS
+// =====================================================
+exports.vistaEditarPDF = async (req, res) => {
+  try {
+    const { idAlumno } = req.params;
 
-// =====================================================
-// EDITAR PDF EXISTENTE (Matriculas ya cargadas - PDF plano)
-// =====================================================
+    // BUscar datos del alumno, datos academicos, padre, madre, apoderado y apoderado suplente
+    const [[alumno]] = await conn.execute('SELECT * FROM alumno WHERE id = ?', [idAlumno]);
+    const [[datosAcademicos]] = await conn.execute(`SELECT * FROM datos_academicos WHERE alumno_id = ?`, [idAlumno]);
+    const [[padre]] = await conn.execute('SELECT * FROM padre WHERE alumno_id = ?', [idAlumno]);
+    const [[madre]] = await conn.execute('SELECT * FROM madre WHERE alumno_id = ?', [idAlumno]);
+    const [[apoderado]] = await conn.execute('SELECT * FROM apoderados WHERE alumno_id = ?', [idAlumno]);
+    const [[apoderado2]] = await conn.execute('SELECT * FROM apoderado_suplente WHERE alumno_id = ?', [idAlumno]);
+
+    if (!alumno) {
+      return res.status(404).send("Alumno no encontrado");
+    }
+
+    const datos = {
+      // Alumno
+      nombreCompleto: alumno.nombreCompleto_alumno,
+      sexoAlumno: alumno.sexo,
+      rutAlumnos: alumno.rut_alumnos,
+      cursoAlumno: alumno.curso,
+      fechaNacimientoAlumno: alumno.fechaNacimiento_alumno,
+      edadAlumno: alumno.edadAlumno,
+      domicilioAlumno: alumno.direccion,
+      comunaAlumno: alumno.comuna,
+      viviendaAlumno: alumno.viveCon,
+      nacionalidadAlumno: alumno.nacionalidad,
+      ingresoChile: alumno.añoIngresoChile,
+      puebloOriginario: alumno.puebloOriginario,
+      quePuebloOriginario: alumno.quePueblo,
+      cualEnfermedad: alumno.enfermedad,
+      cualesAlergias: alumno.alergias,
+      recibeMedicamentos: alumno.medicamentos,
+      pesoAlumno: alumno.peso,
+      tallaAlumno: alumno.talla,
+
+
+      // Datos académicos 
+      UltimoCurso: datosAcademicos?.ultimo_curso_cursado,
+      añoCursado: datosAcademicos?.año_cursado,
+      colegioProcedencia: datosAcademicos?.colegio_procedencia,
+      cursoReprobado: datosAcademicos?.cursos_reprobados,
+      cualBeca: datosAcademicos?.beneficios_beca,
+      perteneceProgramaProteccionInfantil: datosAcademicos?.proteccion_infantil,
+
+      // Padre
+      nombrePadre: padre?.nombre_padre,
+      rutPadre: padre?.rut_padre,
+      fechaNacimientoPadre: padre?.fechaNacimiento_padre,
+      nacionalidadPadre: padre?.nacionalidad_padre,
+      nivelEducacionalPadre: padre?.nivelEducacional_padre,
+      trabajoPadre: padre?.trabajo_padre,
+      correoPadre: padre?.correo_padre,
+      direccionPadre: padre?.direccion_padre,
+      telefonoPadre: padre?.telefono_padre,
+
+      // Madre
+      nombreMadre: madre?.nombre_madre,
+      rutMadre: madre?.rut_madre,
+      fechaNacimientoMadre: madre?.fechaNacimiento_madre,
+      nacionalidadMadre: madre?.nacionalidad_madre,
+      nivelEducacionalMadre: madre?.nivelEducacional_madre,
+      trabajoMadre: madre?.trabajo_madre,
+      correoMadre: madre?.correo_madre,
+      direccionMadre: madre?.direccion_madre,
+      telefonoMadre: madre?.telefono_madre,
+
+      // Apoderado
+      nombre_apoderado: apoderado?.nombre_apoderado,
+      parentesco_apoderado: apoderado?.parentesco_apoderado,
+      rut_apoderado: apoderado?.rut_apoderado,
+      fechaNacimiento_apoderado: apoderado?.fechaNacimiento_apoderado,
+      telefono: apoderado?.telefono,
+      correo_apoderado: apoderado?.correo_apoderado,
+      trabajo_apoderado: apoderado?.trabajo_apoderado,
+      nivelEducacional_apoderado: apoderado?.nivelEducacional_apoderado,
+
+      // Apoderado suplente
+      nombre_apoderado2: apoderado2?.nombreApoderado_suplente,
+      parentesco_apoderado2: apoderado2?.parentescoApoderado_suplente,
+      rut_apoderado2: apoderado2?.rut_apoderado_suplente,
+      fechaNacimiento_apoderado2: apoderado2?.fechaNacimiento_apoderado_suplente,
+      telefono2: apoderado2?.telefono_suplente,
+      correo_apoderado2: apoderado2?.correoApoderado_suplente,
+      trabajo_apoderado2: apoderado2?.trabajo_apoderado_suplente,
+      nivelEducacional_apoderado2: apoderado2?.nivelEducacional_apoderado_suplente
+    };
+
+    // Renderizar la vista con los datos
+    res.render("editarPDF", { documentoId: idAlumno, datos });
+  } catch (error) {
+    console.error("Error al mostrar vista de edición:", error);
+    res.status(500).send("Error al cargar los datos del PDF");
+  }
+};
+
+// ==========================================================
+// EDITAR PDF EXISTENTE DE MANERA VISUAL Y SOLO ALGUNOS DATOS
+// ==========================================================
 exports.editarMatriculaPDF = async (req, res) => {
   try {
     const { id } = req.params;
