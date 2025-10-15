@@ -4,6 +4,7 @@ const fs = require('fs');
 const PDFKit = require('pdfkit');
 const { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
 
+
 // =====================================================
 // SUBIR PDF MANUAL (desde formulario)
 // =====================================================
@@ -293,30 +294,27 @@ exports.vistaEditarPDF = async (req, res) => {
   try {
     const { idAlumno } = req.params;
 
-    // BUscar datos del alumno, datos academicos, padre, madre, apoderado y apoderado suplente
-    const [[alumno]] = await conn.execute('SELECT * FROM alumno WHERE id = ?', [idAlumno]);
+    const [[alumno]] = await conn.execute(`SELECT * FROM alumno WHERE id = ?`, [idAlumno]);
+    if (!alumno) return res.status(404).send("Alumno no encontrado");
+
     const [[datosAcademicos]] = await conn.execute(`SELECT * FROM datos_academicos WHERE alumno_id = ?`, [idAlumno]);
-    const [[padre]] = await conn.execute('SELECT * FROM padre WHERE alumno_id = ?', [idAlumno]);
-    const [[madre]] = await conn.execute('SELECT * FROM madre WHERE alumno_id = ?', [idAlumno]);
-    const [[apoderado]] = await conn.execute('SELECT * FROM apoderados WHERE alumno_id = ?', [idAlumno]);
-    const [[apoderado2]] = await conn.execute('SELECT * FROM apoderado_suplente WHERE alumno_id = ?', [idAlumno]);
+    const [[padre]] = await conn.execute(`SELECT * FROM padre WHERE alumno_id = ?`, [idAlumno]);
+    const [[madre]] = await conn.execute(`SELECT * FROM madre WHERE alumno_id = ?`, [idAlumno]);
+    const [[apoderado]] = await conn.execute(`SELECT * FROM apoderados WHERE alumno_id = ?`, [idAlumno]);
+    const [[apoderado2]] = await conn.execute(`SELECT * FROM apoderado_suplente WHERE alumno_id = ?`, [idAlumno]);
 
-    if (!alumno) {
-      return res.status(404).send("Alumno no encontrado");
-    }
-
+    // Construir objeto con todos los datos para el formulario
     const datos = {
-      // Alumno
+      // ALUMNO
       nombreCompleto: alumno.nombreCompleto_alumno,
       sexoAlumno: alumno.sexo,
       rutAlumnos: alumno.rut_alumnos,
-      cursoAlumno: alumno.curso,
-      fechaNacimientoAlumno: alumno.fechaNacimiento_alumno,
+      fechaNacimientoAlumno: alumno.fechaNacimiento_alumno?.toISOString().split("T")[0],
       edadAlumno: alumno.edadAlumno,
       domicilioAlumno: alumno.direccion,
       comunaAlumno: alumno.comuna,
       viviendaAlumno: alumno.viveCon,
-      nacionalidadAlumno: alumno.nacionalidad,
+      trabajo_apoderadoAlumno: alumno.trabajo_apoderadoAlumno,
       ingresoChile: alumno.añoIngresoChile,
       puebloOriginario: alumno.puebloOriginario,
       quePuebloOriginario: alumno.quePueblo,
@@ -326,8 +324,7 @@ exports.vistaEditarPDF = async (req, res) => {
       pesoAlumno: alumno.peso,
       tallaAlumno: alumno.talla,
 
-
-      // Datos académicos 
+      // DATOS ACADÉMICOS
       UltimoCurso: datosAcademicos?.ultimo_curso_cursado,
       añoCursado: datosAcademicos?.año_cursado,
       colegioProcedencia: datosAcademicos?.colegio_procedencia,
@@ -335,54 +332,53 @@ exports.vistaEditarPDF = async (req, res) => {
       cualBeca: datosAcademicos?.beneficios_beca,
       perteneceProgramaProteccionInfantil: datosAcademicos?.proteccion_infantil,
 
-      // Padre
+      // PADRE
       nombrePadre: padre?.nombre_padre,
       rutPadre: padre?.rut_padre,
-      fechaNacimientoPadre: padre?.fechaNacimiento_padre,
-      nacionalidadPadre: padre?.nacionalidad_padre,
-      nivelEducacionalPadre: padre?.nivelEducacional_padre,
+      fechaNacimientoPadre: padre?.fechaNacimiento_padre?.toISOString().split("T")[0],
+      trabajo_apoderadoPadre: padre?.trabajo_apoderadoPadre,
+      nivelEducacional: padre?.nivelEducacional_padre,
       trabajoPadre: padre?.trabajo_padre,
       correoPadre: padre?.correo_padre,
       direccionPadre: padre?.direccion_padre,
       telefonoPadre: padre?.telefono_padre,
 
-      // Madre
+      // MADRE
       nombreMadre: madre?.nombre_madre,
       rutMadre: madre?.rut_madre,
-      fechaNacimientoMadre: madre?.fechaNacimiento_madre,
-      nacionalidadMadre: madre?.nacionalidad_madre,
+      fechaNacimientoMadre: madre?.fechaNacimiento_madre?.toISOString().split("T")[0],
+      trabajo_apoderadoMadre: madre?.trabajo_apoderadoMadre,
       nivelEducacionalMadre: madre?.nivelEducacional_madre,
       trabajoMadre: madre?.trabajo_madre,
       correoMadre: madre?.correo_madre,
       direccionMadre: madre?.direccion_madre,
       telefonoMadre: madre?.telefono_madre,
 
-      // Apoderado
+      // APODERADO PRINCIPAL
       nombre_apoderado: apoderado?.nombre_apoderado,
       parentesco_apoderado: apoderado?.parentesco_apoderado,
       rut_apoderado: apoderado?.rut_apoderado,
-      fechaNacimiento_apoderado: apoderado?.fechaNacimiento_apoderado,
+      fechaNacimiento_apoderado: apoderado?.fechaNacimiento_apoderado?.toISOString().split("T")[0],
       telefono: apoderado?.telefono,
       correo_apoderado: apoderado?.correo_apoderado,
       trabajo_apoderado: apoderado?.trabajo_apoderado,
       nivelEducacional_apoderado: apoderado?.nivelEducacional_apoderado,
 
-      // Apoderado suplente
+      // APODERADO SUPLENTE
       nombre_apoderado2: apoderado2?.nombreApoderado_suplente,
       parentesco_apoderado2: apoderado2?.parentescoApoderado_suplente,
       rut_apoderado2: apoderado2?.rut_apoderado_suplente,
-      fechaNacimiento_apoderado2: apoderado2?.fechaNacimiento_apoderado_suplente,
+      fechaNacimiento_apoderado2: apoderado2?.fechaNacimiento_apoderado_suplente?.toISOString().split("T")[0],
       telefono2: apoderado2?.telefono_suplente,
       correo_apoderado2: apoderado2?.correoApoderado_suplente,
       trabajo_apoderado2: apoderado2?.trabajo_apoderado_suplente,
-      nivelEducacional_apoderado2: apoderado2?.nivelEducacional_apoderado_suplente
+      nivelEducacional_apoderado2: apoderado2?.nivelEducacional_apoderado_suplente,
     };
 
-    // Renderizar la vista con los datos
-    res.render("editarPDF", { documentoId: idAlumno, datos });
+    res.render('editarPDF', { documentoId: idAlumno, datos });
   } catch (error) {
-    console.error("Error al mostrar vista de edición:", error);
-    res.status(500).send("Error al cargar los datos del PDF");
+    console.error("Error al cargar datos para edición:", error);
+    res.status(500).send("Error al cargar los datos");
   }
 };
 
@@ -393,100 +389,84 @@ exports.editarMatriculaPDF = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      // DATOS DEL ALUMNO
-      direccionAlumno,
-      comunaAlumno,
-      viveConAlumno,
-      correoAlumno,
-
-      // DATOS DEL PADRE
-      direccionPadre,
-      telefonoPadre,
+      direccionAlumno, 
+      comunaAlumno, 
+      viveCon,
+      direccionPadre, 
+      telefonoPadre, 
       correoPadre,
-
-      // DATOS DE LA MADRE
-      direccionMadre,
-      telefonoMadre,
+      direccionMadre, 
+      telefonoMadre, 
       correoMadre,
-
-      // DATOS APODERADO PRINCIPAL
-      telefonoApoderado,
+      telefonoApoderado, 
       correoApoderado,
-
-      // DATOS APODERADO SUPLENTE
-      telefonoApoderado2,
+      telefonoApoderado2, 
       correoApoderado2
     } = req.body;
 
-    // Obtener PDF de la base de datos
     const [rows] = await conn.execute("SELECT documento FROM matriculas WHERE id = ?", [id]);
-    if (rows.length === 0) {
-      return res.status(404).send("No se encontró el documento.");
-    }
+    if (rows.length === 0) return res.status(404).send("No se encontró el documento.");
 
     const pdfBuffer = rows[0].documento;
-    const pdfDoc = await PDFLib.load(pdfBuffer);
+    const pdfDoc = await PDFDocument.load(pdfBuffer);
     const page = pdfDoc.getPages()[0];
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const fontSize = 11;
 
-    // Este apartado se encarga de dibuja un cuadro blanco, y encima va el texto que ingresda
-    // se maneja a travez de cooredenadas
-    // x = horizontal --------
-    // y = vertical  
-    const fontSize = 12;
-
-    /* ------------------ ALUMNO ------------------ */
+    // === Alumno ===
     page.drawRectangle({ x: 100, y: 769, width: 200, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(direccionAlumno || "", { x: 100, y: 769, size: 11 });
+    page.drawText(direccionAlumno || "", { x: 100, y: 769, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 89, y: 755, width: 80, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(comunaAlumno || "", { x: 89, y: 755, size: 11 });
+    page.drawText(comunaAlumno || "", { x: 89, y: 755, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 277, y: 755, width: 100, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(viveConAlumno || "", { x: 280, y: 755, size: 11 });
+    page.drawText(viveCon || "", { x: 280, y: 755, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    /* ------------------ PADRE ------------------ */
+    // === Padre ===
     page.drawRectangle({ x: 93, y: 450, width: 100, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(direccionPadre || "", { x: 93, y: 450, size: 11 });
+    page.drawText(direccionPadre || "", { x: 93, y: 450, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 436, y: 450, width: 80, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(telefonoPadre || "", { x: 436, y: 450, size: 11 });
+    page.drawText(telefonoPadre || "", { x: 436, y: 450, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 390, y: 469, width: 150, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(correoPadre || "", { x: 390, y: 469, size: 11 });
+    page.drawText(correoPadre || "", { x: 390, y: 469, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    /* ------------------ MADRE ------------------ */
+    // === Madre ===
     page.drawRectangle({ x: 92, y: 382, width: 100, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(direccionMadre || "", { x: 92, y: 382, size: 11 });
+    page.drawText(direccionMadre || "", { x: 92, y: 382, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 436, y: 382, width: 150, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(telefonoMadre || "", { x: 436, y: 382, size: 11 });
+    page.drawText(telefonoMadre || "", { x: 436, y: 382, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 390, y: 401, width: 150, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(correoMadre || "", { x: 390, y: 401, size: 11 });
+    page.drawText(correoMadre || "", { x: 390, y: 401, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    /* ------------------ APODERADO PRINCIPAL ------------------ */
+    // === Apoderado principal ===
     page.drawRectangle({ x: 100, y: 287, width: 90, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(telefonoApoderado || "", { x: 100, y: 287, size: 11 });
+    page.drawText(telefonoApoderado || "", { x: 100, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 330, y: 287, width: 150, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(correoApoderado || "", { x: 330, y: 287, size: 11 });
+    page.drawText(correoApoderado || "", { x: 330, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    /* ------------------ APODERADO SUPLENTE ------------------ */
+    // === Apoderado suplente ===
     page.drawRectangle({ x: 100, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(telefonoApoderado2 || "", { x: 100, y: 205, size: 11 });
+    page.drawText(telefonoApoderado2 || "", { x: 100, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 330, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(correoApoderado2 || "", { x: 330, y: 205, size: 11 });
+    page.drawText(correoApoderado2 || "", { x: 330, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    // Guarda el PDF editado
+    // Guardar y actualizar
     const pdfEditado = await pdfDoc.save();
     await conn.execute(
       "UPDATE matriculas SET documento = ?, fecha_subida = CURRENT_TIMESTAMP WHERE id = ?",
       [pdfEditado, id]
     );
 
-    console.log("PDF editado correctamente:", id);
-    res.redirect('/DocMatricula');
+    console.log(`PDF editado correctamente (ID: ${id})`);
+    return res.redirect('/DocMatricula');
+
   } catch (error) {
     console.error("Error al editar PDF:", error);
     res.status(500).send("Error al editar PDF");

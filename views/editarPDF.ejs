@@ -11,16 +11,16 @@
 <body>
   <!-- Navbar -->
   <%- include('partials/navbar') %>
+
     <div class="container mt-5">
       <h2>Editar PDF (ID: <%= documentoId %>)</h2>
 
-      <form action="/editarPDF" method="POST">
+      <form action="/matricula/editarPDF/<%= documentoId %>" method="POST">
         <input type="hidden" name="documentoId" value="<%= documentoId %>">
 
         <!-- ================= DATOS DEL ALUMNO ================= -->
         <h4 class="mt-4">Datos del Alumno</h4>
         <div class="row">
-
           <div class="col-md-6 mb-3">
             <label class="form-label">Nombre completo</label>
             <input type="text" name="nombreCompleto" class="form-control" value="<%= datos?.nombreCompleto %>">
@@ -38,12 +38,12 @@
 
           <div class="col-md-4 mb-3">
             <label class="form-label">Fecha Nacimiento</label>
-            <input type="text" name="fechaNacimientoAlumno" class="form-control" value="<%= datos?.fechaNacimientoAlumno %>">
+            <input type="date" name="fechaNacimientoAlumno" class="form-control" value="<%= datos?.fechaNacimientoAlumno %>">
           </div>
 
           <div class="col-md-2 mb-3">
             <label class="form-label">Edad</label>
-            <input type="text" name="edadAlumno" class="form-control" value="<%= datos?.edadAlumno %>">
+            <input type="number" name="edadAlumno" class="form-control" value="<%= datos?.edadAlumno %>">
           </div>
 
           <div class="col-md-6 mb-3">
@@ -62,7 +62,7 @@
           </div>
 
           <div class="col-md-4 mb-3">
-            <label class="form-label">trabajo_apoderado</label>
+            <label class="form-label">Trabajo apoderado</label>
             <input type="text" name="trabajo_apoderadoAlumno" class="form-control" value="<%= datos?.trabajo_apoderadoAlumno %>">
           </div>
 
@@ -107,10 +107,11 @@
           </div>
         </div>
 
-        <!-- ================= SOCIO ACADÉMICO ================= -->
+        <hr class="my-4">
+
+        <!-- ================= DATOS SOCIO-ACADÉMICOS ================= -->
         <h4 class="mt-4">Datos Socio-Académicos</h4>
         <div class="row">
-
           <div class="col-md-4 mb-3">
             <label class="form-label">Último curso aprobado</label>
             <input type="text" name="UltimoCurso" class="form-control" value="<%= datos?.UltimoCurso %>">
@@ -142,10 +143,11 @@
           </div>
         </div>
 
+        <hr class="my-4">
+
         <!-- ================= ANTECEDENTES FAMILIARES ================= -->
         <h4 class="mt-4">Antecedentes Familiares</h4>
         <div class="row">
-
           <div class="col-md-6 mb-3">
             <label class="form-label">Nombre padre</label>
             <input type="text" name="nombrePadre" class="form-control" value="<%= datos?.nombrePadre %>">
@@ -158,17 +160,14 @@
 
           <div class="col-md-3 mb-3">
             <label class="form-label">Fecha nacimiento padre</label>
-            <input type="text" name="fechaNacimientoPadre" class="form-control" value="<%= datos?.fechaNacimientoPadre %>">
-          </div>
-
-          <div class="col-md-4 mb-3">
-            <label class="form-label">trabajo_apoderado padre</label>
-            <input type="text" name="trabajo_apoderadoPadre" class="form-control" value="<%= datos?.trabajo_apoderadoPadre %>">
+            <input type="date" name="fechaNacimientoPadre" class="form-control"
+              value="<%= datos?.fechaNacimientoPadre %>">
           </div>
 
           <div class="col-md-4 mb-3">
             <label class="form-label">Nivel educacional padre</label>
-            <input type="text" name="nivelEducacional" class="form-control" value="<%= datos?.nivelEducacional %>">
+            <input type="text" name="nivelEducacionalPadre" class="form-control"
+              value="<%= datos?.nivelEducacionalPadre %>">
           </div>
 
           <div class="col-md-4 mb-3">
@@ -176,23 +175,16 @@
             <input type="text" name="trabajoPadre" class="form-control" value="<%= datos?.trabajoPadre %>">
           </div>
 
-          <div class="col-md-6 mb-3">
+          <div class="col-md-4 mb-3">
             <label class="form-label">Correo padre</label>
-            <input type="text" name="correoPadre" class="form-control" value="<%= datos?.correoPadre %>">
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Dirección padre</label>
-            <input type="text" name="direccionPadre" class="form-control" value="<%= datos?.direccionPadre %>">
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Teléfono padre</label>
-            <input type="text" name="telefonoPadre" class="form-control" value="<%= datos?.telefonoPadre %>">
+            <input type="email" name="correoPadre" class="form-control" value="<%= datos?.correoPadre %>">
           </div>
         </div>
 
+        <hr class="my-4">
 
+        <!-- ================= MADRE ================= -->
+        <h4 class="mt-4">Datos de la Madre</h4>
         <div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label">Nombre Madre</label>
@@ -206,17 +198,14 @@
 
           <div class="col-md-3 mb-3">
             <label class="form-label">Fecha nacimiento Madre</label>
-            <input type="text" name="fechaNacimientoMadre" class="form-control" value="<%= datos?.fechaNacimientoMadre %>">
+            <input type="date" name="fechaNacimientoMadre" class="form-control"
+              value="<%= datos?.fechaNacimientoMadre %>">
           </div>
 
           <div class="col-md-4 mb-3">
-            <label class="form-label">trabajo_apoderado Madre</label>
-            <input type="text" name="trabajo_apoderadoMadre" class="form-control" value="<%= datos?.trabajo_apoderadoMadre %>">
-          </div>
-          
-          <div class="col-md-4 mb-3">
             <label class="form-label">Nivel educacional Madre</label>
-            <input type="text" name="nivelEducacional" class="form-control" value="<%= datos?.nivelEducacional %>">
+            <input type="text" name="nivelEducacionalMadre" class="form-control"
+              value="<%= datos?.nivelEducacionalMadre %>">
           </div>
 
           <div class="col-md-4 mb-3">
@@ -224,26 +213,17 @@
             <input type="text" name="trabajoMadre" class="form-control" value="<%= datos?.trabajoMadre %>">
           </div>
 
-          <div class="col-md-6 mb-3">
+          <div class="col-md-4 mb-3">
             <label class="form-label">Correo Madre</label>
-            <input type="text" name="correoMadre" class="form-control" value="<%= datos?.correoMadre %>">
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Dirección Madre</label>
-            <input type="text" name="direccionMadre" class="form-control" value="<%= datos?.direccionMadre %>">
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Teléfono Madre</label>
-            <input type="text" name="telefonoMadre" class="form-control" value="<%= datos?.telefonoMadre %>">
+            <input type="email" name="correoMadre" class="form-control" value="<%= datos?.correoMadre %>">
           </div>
         </div>
 
-        <!-- ================= DATOS APODERADO ================= -->
+        <hr class="my-4">
+
+        <!-- ================= APODERADO PRINCIPAL ================= -->
         <h4 class="mt-4">Apoderado Principal</h4>
         <div class="row">
-
           <div class="col-md-6 mb-3">
             <label class="form-label">Nombre apoderado</label>
             <input type="text" name="nombre_apoderado" class="form-control" value="<%= datos?.nombre_apoderado %>">
@@ -251,7 +231,8 @@
 
           <div class="col-md-3 mb-3">
             <label class="form-label">Parentesco</label>
-            <input type="text" name="parentesco_apoderado" class="form-control" value="<%= datos?.parentesco_apoderado %>">
+            <input type="text" name="parentesco_apoderado" class="form-control"
+              value="<%= datos?.parentesco_apoderado %>">
           </div>
 
           <div class="col-md-3 mb-3">
@@ -261,7 +242,8 @@
 
           <div class="col-md-4 mb-3">
             <label class="form-label">Fecha nacimiento</label>
-            <input type="text" name="fechaNacimiento_apoderado" class="form-control" value="<%= datos?.fechaNacimiento_apoderado %>">
+            <input type="date" name="fechaNacimiento_apoderado" class="form-control"
+              value="<%= datos?.fechaNacimiento_apoderado %>">
           </div>
 
           <div class="col-md-4 mb-3">
@@ -271,24 +253,15 @@
 
           <div class="col-md-4 mb-3">
             <label class="form-label">Correo</label>
-            <input type="text" name="correo_apoderado" class="form-control" value="<%= datos?.correo_apoderado %>">
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Trabajo</label>
-            <input type="text" name="trabajo_apoderado" class="form-control" value="<%= datos?.trabajo_apoderado %>">
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Nivel educacional</label>
-            <input type="text" name="nivelEducacional_apoderado" class="form-control" value="<%= datos?.nivelEducacional_apoderado %>">
+            <input type="email" name="correo_apoderado" class="form-control" value="<%= datos?.correo_apoderado %>">
           </div>
         </div>
+
+        <hr class="my-4">
 
         <!-- ================= APODERADO SUPLENTE ================= -->
         <h4 class="mt-4">Apoderado Suplente</h4>
         <div class="row">
-
           <div class="col-md-6 mb-3">
             <label class="form-label">Nombre apoderado</label>
             <input type="text" name="nombre_apoderado2" class="form-control" value="<%= datos?.nombre_apoderado2 %>">
@@ -296,44 +269,21 @@
 
           <div class="col-md-3 mb-3">
             <label class="form-label">Parentesco</label>
-            <input type="text" name="parentesco_apoderado2" class="form-control"value="<%= datos?.parentesco_apoderado2 %>">
+            <input type="text" name="parentesco_apoderado2" class="form-control"
+              value="<%= datos?.parentesco_apoderado2 %>">
           </div>
 
           <div class="col-md-3 mb-3">
             <label class="form-label">RUT</label>
             <input type="text" name="rut_apoderado2" class="form-control" value="<%= datos?.rut_apoderado2 %>">
           </div>
-
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Fecha nacimiento</label>
-            <input type="text" name="fechaNacimiento_apoderado2" class="form-control"value="<%= datos?.fechaNacimiento_apoderado2 %>">
-          </div>
-
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Teléfono</label>
-            <input type="text" name="telefono2" class="form-control" value="<%= datos?.telefono2 %>">
-          </div>
-
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Correo</label>
-            <input type="text" name="correo_apoderado2" class="form-control" value="<%= datos?.correo_apoderado2 %>">
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Trabajo</label>
-            <input type="text" name="trabajo_apoderado2" class="form-control" value="<%= datos?.trabajo_apoderado2 %>">
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Nivel educacional</label>
-            <input type="text" name="nivelEducacional_apoderado2" class="form-control" value="<%= datos?.nivelEducacional_apoderado2 %>">
-          </div>
         </div>
+
+        <hr class="my-4">
 
         <!-- ================= PERSONA AUTORIZADA ================= -->
         <h4 class="mt-4">Autorización Retiro</h4>
         <div class="row">
-
           <div class="col-md-6 mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" name="nombreRetiro" class="form-control" value="<%= datos?.nombreRetiro %>">
@@ -351,12 +301,13 @@
         </div>
 
         <!-- ================= BOTONES ================= -->
-        <div class="mt-4">
+        <div class="mt-4 mb-5">
           <button type="submit" class="btn btn-primary">Guardar</button>
           <a href="/DocMatricula" class="btn btn-secondary">Cancelar</a>
         </div>
       </form>
     </div>
+
     <!-- Footer -->
     <%- include('partials/footer') %>
 </body>
