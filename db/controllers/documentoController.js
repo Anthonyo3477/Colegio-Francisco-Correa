@@ -43,7 +43,7 @@ exports.listarMatriculas = async (req, res) => {
        FROM matriculas m
        LEFT JOIN alumno a ON m.alumno_id = a.id
        LEFT JOIN apoderados ap ON ap.alumno_id = a.id
-       ORDER BY m.fecha_subida DESC`
+       ORDER BY a.nombreCompleto_alumno ASC`
     );
     res.render('DocMatricula', { matriculas: rows });
   } catch (error) {
@@ -103,41 +103,39 @@ exports.generarMatriculaPDF = async (req, res) => {
     // Fuente Helvetica tamaño 10
     const fontBase = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-    function setText(fieldName, text, fontSize = 9) {
-      const field = form.getTextField(fieldName);
-      if (!field) return;
-
-      field.setText(text || "");
-
-      // Actualizar apariencia con fuente y tamaño
+    function setText(fieldName, text, fontSize = 5) {
       try {
+        const field = form.getTextField(fieldName);
+        if (!field) {
+          console.warn(`Campo no encontrado en el PDF: ${fieldName}`);
+          return;
+        }
+        field.setText(text || "");
         field.updateAppearances(fontBase);
-        if (field.defaultUpdateAppearances)
-          field.defaultUpdateAppearances(fontBase, { fontSize });
-      } catch (err) {
-        console.warn(`No se pudo actualizar ${fieldName}:`, err.message);
-      }
+      }catch (error) {
+        console.warn(`No se puede actualizar este campo: ${fieldName}:`, err.message);
     }
+  }
 
     // =======================
     // DATOS DEL ALUMNO
     // =======================
     setText("nombreCompleto", alumno.nombreCompleto_alumno);
-    setText("sexoAlumno", alumno.sexo);
+    setText("sexoAlumno", alumno.sexo, 2);
     setText("rutAlumnos", alumno.rut_alumnos);
     setText("cursoAlumno", alumno.curso);
     setText("fechaNacimientoAlumno", alumno.fechaNacimiento_alumno?.toISOString().split("T")[0]);
     setText("edadAlumno", alumno.edadAlumno?.toString());
-    setText("domicilioAlumno", alumno.direccion);
+    setText("domicilioAlumno", alumno.direccion, 4);
     setText("comunaAlumno", alumno.comuna);
     setText("viviendaAlumno", alumno.viveCon);
     setText("nacionalidadAlumno", alumno.nacionalidad);
     setText("ingresoChile", alumno.añoIngresoChile?.toString());
-    setText("puebloOriginario", alumno.puebloOriginario);
-    setText("quePuebloOriginario", alumno.quePueblo);
-    setText("cualEnfermedad", alumno.enfermedad);
-    setText("cualesAlergias", alumno.alergias);
-    setText("recibeMedicamentos", alumno.medicamentos);
+    setText("puebloOriginario", alumno.puebloOriginario, 4);
+    setText("quePuebloOriginario", alumno.quePueblo, 4);
+    setText("cualEnfermedad", alumno.enfermedad, 4);
+    setText("cualesAlergias", alumno.alergias,4 );
+    setText("recibeMedicamentos", alumno.medicamentos, 4);
     setText("pesoAlumno", alumno.peso);
     setText("tallaAlumno", alumno.talla);
 
@@ -214,7 +212,7 @@ exports.generarMatriculaPDF = async (req, res) => {
     // Guardar en base de datos
     form.flatten();
     const pdfFinal = await pdfDoc.save();
-    const nombreArchivo = `matricula_${alumno.nombreCompleto_alumno}.pdf`;
+    const nombreArchivo = `${alumno.nombreCompleto_alumno}.pdf`;
 
     await conn.execute(
       `INSERT INTO matriculas (alumno_id, nombre_archivo, documento)

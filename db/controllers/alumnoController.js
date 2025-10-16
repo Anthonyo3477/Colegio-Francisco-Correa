@@ -67,6 +67,7 @@ async function getAlumnoById(id) {
 }
 
 // Listado alumno con apoderado
+// getAlumnosConApoderados corregida y robusta
 async function getAlumnosConApoderados({ curso } = {}) {
     let sql = `
         SELECT 
@@ -92,13 +93,14 @@ async function getAlumnosConApoderados({ curso } = {}) {
         valores.push(curso);
     }
 
+    sql += " ORDER BY TRIM(LOWER(a.nombreCompleto_alumno)) ASC";
     const [rows] = await conn.query(sql, valores);
 
-    // Agrupar los apoderados por alumno
-    const alumnos = {};
+    // Agrupar los apoderados por alumno SIN perder el orden
+    const alumnosMap = new Map();
     for (const row of rows) {
-        if (!alumnos[row.alumno_id]) {
-            alumnos[row.alumno_id] = {
+        if (!alumnosMap.has(row.alumno_id)) {
+            alumnosMap.set(row.alumno_id, {
                 id: row.alumno_id,
                 rut_alumnos: row.rut_alumnos,
                 nombreCompleto_alumno: row.nombreCompleto_alumno,
@@ -113,11 +115,11 @@ async function getAlumnosConApoderados({ curso } = {}) {
                 comuna: row.comuna,
                 viveCon: row.viveCon,
                 apoderados: []
-            };
+            });
         }
 
         if (row.apoderado_id) {
-            alumnos[row.alumno_id].apoderados.push({
+            alumnosMap.get(row.alumno_id).apoderados.push({
                 id: row.apoderado_id,
                 rut_apoderado: row.rut_apoderado,
                 nombre_apoderado: row.nombre_apoderado,
@@ -131,7 +133,7 @@ async function getAlumnosConApoderados({ curso } = {}) {
         }
     }
 
-    return Object.values(alumnos);
+    return Array.from(alumnosMap.values());
 }
 
 // Obtiene alumnos filtrados por curso

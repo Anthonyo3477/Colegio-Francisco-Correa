@@ -161,23 +161,18 @@ router.post('/insert', async (req, res) => {
 
 
 /* ==================================================
-   LISTAR ALUMNOS con FILTRO
+   LISTAR ALUMNOS 
 ================================================== */
 router.get('/listaAlumnos', isAuthenticated, async (req, res) => {
     try {
-        const cursoSeleccionado = req.query.curso || "";
+        // Obtener todos los alumnos con sus apoderados
+        const alumnos = await alumnoController.getAlumnosConApoderados();
 
-        // Debe traer datos de alumno + apoderado (nombre, correo, teléfono)
-        const alumnos = await alumnoController.getAlumnosConApoderados({
-            curso: cursoSeleccionado || undefined
-        });
-
-        const cursos = await alumnoController.getAllCursos();
-
+        // Renderizar la vista con el listado
         res.render('listaAlumnos', {
             alumnos,
-            cursos,
-            cursoSeleccionado
+            cursos: [],            // Eliminamos el uso de cursos
+            cursoSeleccionado: ""  // Sin filtro activo
         });
 
     } catch (error) {
@@ -185,6 +180,7 @@ router.get('/listaAlumnos', isAuthenticated, async (req, res) => {
         res.status(500).render('error', { message: 'Error al cargar alumnos' });
     }
 });
+
 
 /* ==================================================
    MODIFICAR ALUMNO
