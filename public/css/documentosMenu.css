@@ -1,3 +1,4 @@
+/* ------------------ Body ------------------ */
 body {
     font-family: Arial, sans-serif;
     background: #f5f6fa;
@@ -8,7 +9,7 @@ body {
     flex-direction: column;
 }
 
-/* Encabezado */
+/* ------------------ Encabezado ------------------ */
 header {
     background: #120077;
     color: #fff;
@@ -16,7 +17,7 @@ header {
     text-align: center;
 }
 
-/* Navbar */
+/* ------------------ Navbar ------------------ */
 nav {
     background: #120077;
     color: #fff;
@@ -46,7 +47,20 @@ nav a:hover {
     color: #FFF642;
 }
 
-/* Contenido principal */
+.btn-logout {
+    background: #e74c3c;
+    color: #fff !important;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: #c0392b;
+}
+
+/* ------------------ Main ------------------ */
 main {
     padding: 40px 20px;
     text-align: center;
@@ -67,7 +81,7 @@ main {
     display: inline-block;
 }
 
-/* Contenedor de tarjetas */
+/* ------------------ Container - Cards ------------------ */
 .cards-container {
     display: flex;
     flex-wrap: wrap;
@@ -76,7 +90,7 @@ main {
     margin-top: 30px;
 }
 
-/* Estilo de las tarjetas */
+/* ------------------ estilo de Cards ------------------ */
 .card {
     background: #fff;
     border-radius: 8px;
@@ -113,7 +127,7 @@ main {
     color: #555;
 }
 
-/* Footer */
+/* ------------------ Footer ------------------ */
 footer {
     background: #120077;
     color: #fff;

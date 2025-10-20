@@ -1,3 +1,4 @@
+/* ------------------ Body ------------------ */
 body {
     font-family: Arial, sans-serif;
     background: #f5f6fa;
@@ -8,7 +9,7 @@ body {
     flex-direction: column;
 }
 
-/* Encabezado */
+/* ------------------ Encabezado ------------------ */
 header {
     background: #120077;
     color: #fff;
@@ -26,7 +27,7 @@ header p {
     font-size: 16px;
 }
 
-/* Navbar */
+/* ------------------ Navbar ------------------ */
 nav {
     background: #120077;
     color: #fff;
@@ -55,8 +56,21 @@ nav a:hover {
     text-decoration: underline;
 }
 
+.btn-logout {
+    background: #e74c3c;
+    color: #fff !important;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
 
-/* Contenido principal */
+.btn-logout:hover {
+    background: #c0392b;
+}
+
+
+/* ------------------ Main ------------------ */
 main {
     padding: 50px 20px;
     display: flex;
@@ -66,7 +80,7 @@ main {
     flex: 1;
 }
 
-/* Contenedor de la tabla */
+/* ------------------ Contenedor de la tabla ------------------ */
 .tabla-matriculas {
     max-width: 90%;
     background: #ffffff;
@@ -76,21 +90,21 @@ main {
 }
 
 
-/* Título */
+/* ------------------ Titulo ------------------ */
 .tabla-matriculas h2 {
     margin-bottom: 1rem;
     text-align: center;
     color: #333;
 }
 
-/* Tabla */
+/* ------------------ Tabla ------------------ */
 .table {
     width: 100%;
     border-collapse: collapse;
     font-size: 15px;
 }
 
-/* Cabecera */
+/* ------------------ Cabezera de la tabla ------------------ */
 .table thead {
     background-color: #120077;
     color: #ffffff;
@@ -105,18 +119,18 @@ main {
     border-bottom: 1px solid #ddd;
 }
 
-/* Filas alternadas */
+/* ------------------ Filas de la Tabla ------------------ */
 .table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* Hover */
+/* ------------------ Hover ------------------ */
 .table tbody tr:hover {
     background-color: #e8f0fe;
     transition: background 0.3s ease;
 }
 
-/* Botones de acción */
+/* ------------------ Botones Tabla ------------------ */
 .btn-accion {
     display: inline-block;
     padding: 6px 12px;
@@ -155,7 +169,7 @@ main {
     background-color: #d32f2f;
 }
 
-/* Tarjeta de subida */
+/* ------------------ Tarjeta ------------------ */
 .upload-card {
     background: #fff;
     padding: 25px 20px;
@@ -172,7 +186,7 @@ main {
     color: #120077;
 }
 
-/* Input File */
+/* ------------------ Inputs ------------------ */
 input[type="file"] {
     display: block;
     margin: 20px auto;
@@ -189,7 +203,7 @@ input[type="file"]:hover {
     background: #eef6ff;
 }
 
-/* Botón */
+/* ------------------ Boton ------------------ */
 button {
     background: #120077;
     color: #FFF642;
@@ -206,7 +220,7 @@ button:hover {
     transform: scale(1.05);
 }
 
-/* Footer */
+/* ------------------ Footer ------------------ */
 footer {
     background: #120077;
     color: #fff;

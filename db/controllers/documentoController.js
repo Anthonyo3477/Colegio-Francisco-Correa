@@ -231,7 +231,7 @@ exports.generarMatriculaPDF = async (req, res) => {
     console.error("Error al generar PDF:", error);
     res.status(500).send("Error al generar PDF");
   }
-};
+};//
 
 // =====================================================
 // REGENERAR PDF
@@ -282,101 +282,6 @@ exports.eliminarMatricula = async (req, res) => {
   } catch (error) {
     console.error("Error al eliminar matrícula:", error);
     res.status(500).send("Error al eliminar matrícula");
-  }
-};
-
-// =====================================================
-// MOSTRAR VISTA EDITAR PDF CON DATOS CARGADOS
-// =====================================================
-exports.vistaEditarPDF = async (req, res) => {
-  try {
-    const { idAlumno } = req.params;
-
-    const [[alumno]] = await conn.execute(`SELECT * FROM alumno WHERE id = ?`, [idAlumno]);
-    if (!alumno) return res.status(404).send("Alumno no encontrado");
-
-    const [[datosAcademicos]] = await conn.execute(`SELECT * FROM datos_academicos WHERE alumno_id = ?`, [idAlumno]);
-    const [[padre]] = await conn.execute(`SELECT * FROM padre WHERE alumno_id = ?`, [idAlumno]);
-    const [[madre]] = await conn.execute(`SELECT * FROM madre WHERE alumno_id = ?`, [idAlumno]);
-    const [[apoderado]] = await conn.execute(`SELECT * FROM apoderados WHERE alumno_id = ?`, [idAlumno]);
-    const [[apoderado2]] = await conn.execute(`SELECT * FROM apoderado_suplente WHERE alumno_id = ?`, [idAlumno]);
-
-    // Construir objeto con todos los datos para el formulario
-    const datos = {
-      // ALUMNO
-      nombreCompleto: alumno.nombreCompleto_alumno,
-      sexoAlumno: alumno.sexo,
-      rutAlumnos: alumno.rut_alumnos,
-      fechaNacimientoAlumno: alumno.fechaNacimiento_alumno?.toISOString().split("T")[0],
-      edadAlumno: alumno.edadAlumno,
-      domicilioAlumno: alumno.direccion,
-      comunaAlumno: alumno.comuna,
-      viviendaAlumno: alumno.viveCon,
-      trabajo_apoderadoAlumno: alumno.trabajo_apoderadoAlumno,
-      ingresoChile: alumno.añoIngresoChile,
-      puebloOriginario: alumno.puebloOriginario,
-      quePuebloOriginario: alumno.quePueblo,
-      cualEnfermedad: alumno.enfermedad,
-      cualesAlergias: alumno.alergias,
-      recibeMedicamentos: alumno.medicamentos,
-      pesoAlumno: alumno.peso,
-      tallaAlumno: alumno.talla,
-
-      // DATOS ACADÉMICOS
-      UltimoCurso: datosAcademicos?.ultimo_curso_cursado,
-      añoCursado: datosAcademicos?.año_cursado,
-      colegioProcedencia: datosAcademicos?.colegio_procedencia,
-      cursoReprobado: datosAcademicos?.cursos_reprobados,
-      cualBeca: datosAcademicos?.beneficios_beca,
-      perteneceProgramaProteccionInfantil: datosAcademicos?.proteccion_infantil,
-
-      // PADRE
-      nombrePadre: padre?.nombre_padre,
-      rutPadre: padre?.rut_padre,
-      fechaNacimientoPadre: padre?.fechaNacimiento_padre?.toISOString().split("T")[0],
-      trabajo_apoderadoPadre: padre?.trabajo_apoderadoPadre,
-      nivelEducacional: padre?.nivelEducacional_padre,
-      trabajoPadre: padre?.trabajo_padre,
-      correoPadre: padre?.correo_padre,
-      direccionPadre: padre?.direccion_padre,
-      telefonoPadre: padre?.telefono_padre,
-
-      // MADRE
-      nombreMadre: madre?.nombre_madre,
-      rutMadre: madre?.rut_madre,
-      fechaNacimientoMadre: madre?.fechaNacimiento_madre?.toISOString().split("T")[0],
-      trabajo_apoderadoMadre: madre?.trabajo_apoderadoMadre,
-      nivelEducacionalMadre: madre?.nivelEducacional_madre,
-      trabajoMadre: madre?.trabajo_madre,
-      correoMadre: madre?.correo_madre,
-      direccionMadre: madre?.direccion_madre,
-      telefonoMadre: madre?.telefono_madre,
-
-      // APODERADO PRINCIPAL
-      nombre_apoderado: apoderado?.nombre_apoderado,
-      parentesco_apoderado: apoderado?.parentesco_apoderado,
-      rut_apoderado: apoderado?.rut_apoderado,
-      fechaNacimiento_apoderado: apoderado?.fechaNacimiento_apoderado?.toISOString().split("T")[0],
-      telefono: apoderado?.telefono,
-      correo_apoderado: apoderado?.correo_apoderado,
-      trabajo_apoderado: apoderado?.trabajo_apoderado,
-      nivelEducacional_apoderado: apoderado?.nivelEducacional_apoderado,
-
-      // APODERADO SUPLENTE
-      nombre_apoderado2: apoderado2?.nombreApoderado_suplente,
-      parentesco_apoderado2: apoderado2?.parentescoApoderado_suplente,
-      rut_apoderado2: apoderado2?.rut_apoderado_suplente,
-      fechaNacimiento_apoderado2: apoderado2?.fechaNacimiento_apoderado_suplente?.toISOString().split("T")[0],
-      telefono2: apoderado2?.telefono_suplente,
-      correo_apoderado2: apoderado2?.correoApoderado_suplente,
-      trabajo_apoderado2: apoderado2?.trabajo_apoderado_suplente,
-      nivelEducacional_apoderado2: apoderado2?.nivelEducacional_apoderado_suplente,
-    };
-
-    res.render('editarPDF', { documentoId: idAlumno, datos });
-  } catch (error) {
-    console.error("Error al cargar datos para edición:", error);
-    res.status(500).send("Error al cargar los datos");
   }
 };
 

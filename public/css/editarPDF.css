@@ -56,9 +56,22 @@ nav a {
 nav a:hover {
     color: #FFF642;
     text-decoration: underline;
-} 
+}
 
-/* ======= MAIN ======= */
+.btn-logout {
+    background: #e74c3c;
+    color: #fff !important;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: #c0392b;
+}
+
+/* ------------------ Main ------------------ */
 main {
   max-width: 1200px;
   margin: 30px auto;
@@ -71,7 +84,7 @@ main h2 {
   margin-bottom: 20px;
 }
 
-/* ======= FORMULARIOS ======= */
+/* ------------------ Formulario ------------------ */
 .formularios {
   background: #fff;
   border-radius: 10px;
@@ -114,7 +127,7 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 4px rgba(21, 0, 128, 0.3);
 }
 
-/* ======= BOTONES ======= */
+/* ------------------ Botones ------------------ */
 .botones {
   text-align: center;
   margin-top: 20px;
@@ -171,7 +184,7 @@ footer {
     gap: 8px;
 }
 
-/* ======= RESPONSIVE ======= */
+/* ------------------ Responsividad ------------------ */
 @media (max-width: 768px) {
   main h2 {
     text-align: center;

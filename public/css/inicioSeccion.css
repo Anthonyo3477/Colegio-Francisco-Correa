@@ -1,3 +1,4 @@
+/* ------------------ Body ------------------ */
 body {
     font-family: Arial, sans-serif;
     background: #f5f6fa;
@@ -8,7 +9,7 @@ body {
     flex-direction: column;
 }
 
-/* Encabezado */
+/* ------------------ Encabezado ------------------ */
 header {
     background: #120077;
     color: #fff;
@@ -16,7 +17,7 @@ header {
     text-align: center;
 }
 
-/* Navbar */
+/* ------------------ Navbar ------------------ */
 nav {
     background: #120077;
     color: #fff;
@@ -46,7 +47,20 @@ nav a:hover {
     color: #FFF642;
 }
 
-/* Contenido principal */
+.btn-logout {
+    background: #e74c3c;
+    color: #fff !important;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: #c0392b;
+}
+
+/* ------------------ Main ------------------ */
 main {
     padding: 40px 20px;
     text-align: center;
@@ -55,7 +69,7 @@ main {
     align-items: center;
 }
 
-/* Card de login */
+/* ------------------ Cards de Login ------------------ */
 .card {
     background-color: white;
     padding: 30px;
@@ -70,14 +84,14 @@ main {
     color: #333;
 }
 
-/* Formulario organizado */
+/* ------------------ Formulario ------------------ */
 form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Inputs */
+/* ------------------ Inputs ------------------ */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
@@ -88,7 +102,7 @@ input[type="password"] {
     font-size: 14px;
 }
 
-/* Botones */
+/* ------------------ Botones ------------------ */
 button,
 input[type="submit"] {
     width: 100%;
@@ -107,7 +121,7 @@ input[type="submit"]:hover {
     background-color: #2980b9;
 }
 
-/* Footer */
+/* ------------------ Footer ------------------ */
 footer {
     background: #120077;
     color: #fff;

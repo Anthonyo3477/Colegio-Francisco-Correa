@@ -1,3 +1,4 @@
+/* ------------------ Body ------------------ */
 body {
     font-family: Arial, sans-serif;
     background: #f5f6fa;
@@ -8,7 +9,7 @@ body {
     flex-direction: column;
 }
 
-/* Encabezado */
+/* ------------------ Encabezado ------------------ */
 header {
     background: #120077;
     color: #fff;
@@ -16,7 +17,7 @@ header {
     text-align: center;
 }
 
-/* Navbar */
+/* ------------------ Navbar ------------------ */
 nav {
     background: #120077;
     color: #fff;
@@ -46,6 +47,7 @@ nav a:hover {
     color: #FFF642;
 }
 
+/* ------------------ Main ------------------ */
 main {
     padding: 40px 20px;
     text-align: center;
@@ -89,7 +91,20 @@ main {
     background: #2275a5;
 }
 
-/* Botón modificar */
+.btn-logout {
+    background: #e74c3c;
+    color: #fff !important;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: #c0392b;
+}
+
+/* ------------------ Boton Modificar ------------------ */
 .btn-warning {
     background-color: #f0ad4e;
     border: none;
@@ -105,7 +120,7 @@ main {
     background-color: #ec971f;
 }
 
-/* Botón eliminar */
+/* ------------------ Boton Eliminar ------------------ */
 .btn-danger {
     background-color: #d9534f;
     border: none;
@@ -121,7 +136,7 @@ main {
     background-color: #c9302c;
 }
 
-/* Tabla de alumnos */
+/* ------------------ Tabla ------------------ */
 table {
     width: 90%;
     margin: 40px auto;
@@ -165,7 +180,7 @@ caption {
     color: #8C9292;
 }
 
-/* Footer */
+/* ------------------ Footer ------------------ */
 footer {
     background: #120077;
     color: #fff;
@@ -190,7 +205,7 @@ footer {
     gap: 8px;
 }
 
-/* Responsividad */
+/* ------------------ Responsividad ------------------ */
 @media (max-width: 800px) {
     table {
         width: 100%;

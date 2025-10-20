@@ -47,6 +47,19 @@ nav a:hover {
     text-decoration: underline;
 }
 
+.btn-logout {
+    background: #e74c3c;
+    color: #fff !important;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: #c0392b;
+}
+
 /* ------------------ Main ------------------ */
 main {
     flex: 1;
@@ -148,7 +161,7 @@ footer {
 /* ------------------ Formularios en Dos Columnas ------------------ */
 .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* dos columnas iguales */
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin: 20px auto;
     max-width: 1200px;
@@ -169,7 +182,7 @@ footer {
 }
 
 .form-buttons {
-    grid-column: span 2; /* botones ocupan las dos columnas */
+    grid-column: span 2;
     text-align: center;
     margin-top: 20px;
 }
