@@ -67,7 +67,7 @@
                                 <input type="text" id="nombreApoderado_suplente" name="nombreApoderado_suplente" maxlength="100" value="<%= valores?.nombreApoderado_suplente || '' %>">
 
                                 <label for="parentesco_apoderado_suplente">Parentesco:</label>
-                                <input type="text" id="parentescoApoderado_suplente" name="parentescoApoderado_suplente" maxlength="100"value="<%= valores?.parentescoApoderado_suplente || '' %>">
+                                <input type="text" id="parentescoApoderado_suplente" name="parentescoApoderado_suplente" maxlength="100" value="<%= valores?.parentescoApoderado_suplente || '' %>">
 
                                 <label for="rut_apoderado_suplente">RUT:</label>
                                 <input type="text" id="rut_apoderado_suplente" name="rut_apoderado_suplente" maxlength="12" value="<%= valores?.rut_apoderado_suplente || '' %>">
@@ -88,13 +88,24 @@
                                 <input type="text" id="nivelEducacional_apoderado_suplente" name="nivelEducacional_apoderado_suplente" maxlength="200" value="<%= valores?.nivelEducacional_apoderado_suplente || '' %>">
                             </div>
 
+                            <div class="columna">
+                                <h3> Datos de la Persona que hara el Retiro del Alumno </h3>
+                                <label for="nombre_retiro">Ingrese su Nombre Completo:</label>
+                                <input type="text" id="nombre_retiro" name="nombre_retiro" maxlength="100" required value="<%= valores?.nombre_retiro || '' %>">
+
+                                <label for="rut_retiro">Ingrese su RUT:</label>
+                                <input type="text" id="rut_retiro" name="rut_retiro" maxlength="12" required value="<%= valores?.rut_retiro || '' %>">
+
+                                <label for="parentesco_retiro">Parentesco con el Alumno:</label>
+                                <input type="text" id="parentesco_retiro" name="parentesco_retiro" maxlength="100" required value="<%= valores?.parentesco_retiro || '' %>">
+
+                            </div>
                             <!-- Botones -->
                             <button type="submit">Registrar Apoderados</button>
-                            <button type="button" onclick="window.history.back()"style="margin-left:10px;">Volver</button>
+                            <button type="button" onclick="window.history.back()" style="margin-left:10px;">Volver</button>
                         </form>
             </div>
         </main>
-
         <!-- Footer -->
         <%- include('partials/footer') %>
 </body>

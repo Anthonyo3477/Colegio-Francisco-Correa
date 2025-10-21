@@ -121,6 +121,16 @@ CREATE TABLE matriculas (
     FOREIGN KEY (alumno_id) REFERENCES alumno(id) ON DELETE CASCADE
 );
 
+-- Retiro de alumno 
+CREATE TABLE retiros ( 
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_retiro VARCHAR(500) NOT NULL,
+    rut_retiro VARCHAR(12) NOT NULL UNIQUE,
+    parentesco_retiro VARCHAR(100) NOT NULL,
+    alumno_id INT UNIQUE,
+    FOREIGN KEY ( alumno_id) REFERENCES alumno(id) ON DELETE CASCADE
+);
+
 
 INSERT INTO alumno (id, rut_alumnos, nombre, parentesco_apoderado, fechaNacimiento_apoderado, curso, fecha_ingreso, trabajo_apoderado, orden_llegada) 
 VALUES (1, '21.222.347-6', 'Antonio', 'Verdugo', 'Díaz', '4 Medio', '2025-08-13', '55');
