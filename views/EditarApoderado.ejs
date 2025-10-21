@@ -45,7 +45,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Fecha de Nacimiento:</label>
-                                    <input type="date" class="form-control" name="fechaNacimiento_apoderado" value="<%= apoderado.fechaNacimiento_apoderado || '' %>">
+                                    <input type="date" class="form-control" name="fechaNacimiento_apoderado" value="<%= apoderado.fechaNacimiento_apoderado ? new Date(apoderado.fechaNacimiento_apoderado).toISOString().split('T')[0]: '' %>">
                                 </div>
 
                                 <div class="col-md-6">
@@ -90,7 +90,7 @@
 
                                 <div class="col-md-6"> 
                                     <label class="form-label">Fecha de Nacimiento:</label> 
-                                    <input type="date" class="form-control" name="fechaNacimiento_apoderado_suplente"value="<%= apoderado_suplente.fechaNacimiento_apoderado_suplente || '' %>">
+                                    <input type="date" class="form-control" name="fechaNacimiento_apoderado_suplente" value="<%= apoderado_suplente.fechaNacimiento_apoderado_suplente ? new Date(apoderado_suplente.fechaNacimiento_apoderado_suplente).toISOString().split('T')[0] : '' %>">
                                 </div>
 
                                 <div class="col-md-6"> 
@@ -112,8 +112,24 @@
                                     <label class="form-label">Nivel Educacional:</label> 
                                     <input type="text" class="form-control" name="nivelEducacional_apoderado_suplente" value="<%= apoderado_suplente.nivelEducacional_apoderado_suplente || '' %>">
                                 </div>
-
-                            </div> <!-- Botones -->
+                            </div> 
+                            <!-- --------------------------------- PERSONA AUTORIZADA PARA RETIRO --------------------------------- -->
+                            <h4 class="mt-4">Persona Autorizada para Retiro</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6"> 
+                                    <label class="form-label">Nombre:</label>
+                                    <input type="text" class="form-control" name="nombre_retiro" value="<%= retiro.nombre_retiro || '' %>">
+                                </div>
+                                <div class="col-md-6"> 
+                                    <label class="form-label">RUT:</label>
+                                    <input type="text" class="form-control" name="rut_retiro" value="<%= retiro.rut_retiro || '' %>">
+                                </div>
+                                <div class="col-md-6"> 
+                                    <label class="form-label">Parentesco:</label>
+                                    <input type="text" class="form-control" name="parentesco_retiro" value="<%= retiro.parentesco_retiro || '' %>">
+                                </div>
+                            </div>
+                            <!-- Botones -->
                             <div class="col-12 mt-4 d-flex justify-content-between"> <button type="submit"
                                     class="btn btn-warning"> <i class="bi bi-pencil-fill me-1"></i>Actualizar </button>
                                 <a href="/listaAlumnos" class="btn btn-secondary"> 

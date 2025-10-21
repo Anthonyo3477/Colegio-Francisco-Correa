@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const apoderadoController = require('../../db/controllers/apoderadoController');
 const apoderadoSuplenteController = require('../../db/controllers/apoderadoSuplenteController');
+const retiroController = require('../../db/controllers/retiroController');
 const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware');
 
 // Función para dar formato a la fecha en YYYY-MM-DD
@@ -29,24 +30,27 @@ router.get('/nuevo-apoderado/:alumnoId', (req, res) => {
 });
 
 /* ==================================================
-   INSERTAR APODERADO
+   INSERTAR APODERADO + SUPLENTE + RETIRO
 ================================================== */
 router.post('/insertApoderado', async (req, res) => {
     try {
         const {
-            // Datos Apoderado Titular
+            // Apoderado titular
             rut_apoderado, nombre_apoderado, parentesco_apoderado, fechaNacimiento_apoderado,
             trabajo_apoderado, nivelEducacional_apoderado, alumno_id, telefono, correo_apoderado,
 
-            // Datos de Apoderado Suplente
+            // Apoderado suplente (opcional)
             nombreApoderado_suplente, parentescoApoderado_suplente, rut_apoderado_suplente,
             fechaNacimiento_apoderado_suplente, telefono_suplente, correoApoderado_suplente,
-            trabajoApoderado_suplente, nivelEducacional_apoderado_suplente
+            trabajoApoderado_suplente, nivelEducacional_apoderado_suplente,
+
+            // Retiro (opcional)
+            nombre_retiro, rut_retiro, parentesco_retiro
         } = req.body;
 
         console.log("Datos recibidos del formulario:", req.body);
 
-        /* ---- VALIDACIÓN APODERADO TITULAR ---- */
+        // Validación apoderado titular obligatoria
         if (
             !rut_apoderado?.trim() || !nombre_apoderado?.trim() ||
             !parentesco_apoderado?.trim() || !fechaNacimiento_apoderado?.trim() ||
@@ -61,12 +65,12 @@ router.post('/insertApoderado', async (req, res) => {
             });
         }
 
-        // Crear Apoderado Principal
+        // Crear apoderado titular
         const resultApoderado = await apoderadoController.createApoderado({
             rut_apoderado: rut_apoderado.trim(),
             nombre_apoderado: nombre_apoderado.trim(),
             parentesco_apoderado: parentesco_apoderado.trim(),
-            fechaNacimiento_apoderado: fechaNacimiento_apoderado.trim(),
+            fechaNacimiento_apoderado: formatDate(fechaNacimiento_apoderado),
             trabajo_apoderado: trabajo_apoderado.trim(),
             nivelEducacional_apoderado: nivelEducacional_apoderado.trim(),
             alumno_id,
@@ -76,7 +80,7 @@ router.post('/insertApoderado', async (req, res) => {
 
         console.log("Apoderado titular creado:", resultApoderado.insertId);
 
-        /* ----- APODERADO SUPLENTE (OPCIONAL) ----- */
+        // Crear apoderado suplente (opcional)
         if (
             rut_apoderado_suplente?.trim() &&
             nombreApoderado_suplente?.trim() &&
@@ -86,7 +90,7 @@ router.post('/insertApoderado', async (req, res) => {
                 nombreApoderado_suplente: nombreApoderado_suplente.trim(),
                 parentescoApoderado_suplente: parentescoApoderado_suplente.trim(),
                 rut_apoderado_suplente: rut_apoderado_suplente.trim(),
-                fechaNacimiento_apoderado_suplente: fechaNacimiento_apoderado_suplente?.trim() || null,
+                fechaNacimiento_apoderado_suplente: formatDate(fechaNacimiento_apoderado_suplente),
                 telefono_suplente: telefono_suplente?.trim() || null,
                 correoApoderado_suplente: correoApoderado_suplente?.trim() || null,
                 trabajoApoderado_suplente: trabajoApoderado_suplente?.trim() || null,
@@ -99,10 +103,24 @@ router.post('/insertApoderado', async (req, res) => {
             console.log("No se ingresó apoderado suplente (opcional).");
         }
 
-        return res.redirect('/listaAlumnos');
+        // Crear persona de retiro (opcional)
+        if (nombre_retiro?.trim() && rut_retiro?.trim() && parentesco_retiro?.trim()) {
+            const resultRetiro = await retiroController.createRetiro({
+                nombre_retiro: nombre_retiro.trim(),
+                rut_retiro: rut_retiro.trim(),
+                parentesco_retiro: parentesco_retiro.trim(),
+                alumno_id
+            });
+
+            console.log("Persona autorizada para retiro creada:", resultRetiro.insertId);
+        } else {
+            console.log("No se ingresó persona autorizada para retiro (opcional).");
+        }
+
+        res.redirect('/listaAlumnos');
     } catch (error) {
         console.error("Error al guardar apoderado:", error);
-        return res.status(500).render('apoderadoForm', {
+        res.status(500).render('apoderadoForm', {
             title: 'Registrar Nuevo Apoderado',
             error: 'Error interno al guardar apoderado',
             valores: req.body,
@@ -116,10 +134,10 @@ router.post('/insertApoderado', async (req, res) => {
 ================================================== */
 router.get('/editar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, res) => {
     const alumnoId = req.params.alumnoId;
-
     try {
         const apoderado = await apoderadoController.getByAlumnoId(alumnoId);
         const apoderado_suplente = await apoderadoSuplenteController.getByAlumnoId(alumnoId);
+        const retiro = await retiroController.getRetiroByAlumnoId(alumnoId);
 
         if (!apoderado) {
             return res.render('EditarApoderado', {
@@ -127,6 +145,7 @@ router.get('/editar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, 
                 error: 'Este alumno no tiene un apoderado asignado',
                 apoderado: {},
                 apoderado_suplente: apoderado_suplente || {},
+                retiro: retiro || {},
                 alumnoId
             });
         }
@@ -136,6 +155,7 @@ router.get('/editar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, 
             error: null,
             apoderado,
             apoderado_suplente: apoderado_suplente || {},
+            retiro: retiro || {},
             alumnoId
         });
 
@@ -146,16 +166,18 @@ router.get('/editar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, 
             error: 'Error al cargar apoderado',
             apoderado: null,
             apoderado_suplente: {},
+            retiro: {},
             alumnoId
         });
     }
 });
 
 /* ==================================================
-   ACTUALIZAR APODERADO
+   ACTUALIZAR APODERADO + SUPLENTE + RETIRO
 ================================================== */
 router.post('/actualizar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, res) => {
     const alumnoId = req.params.alumnoId;
+
     try {
         const {
             // Apoderado principal
@@ -165,32 +187,33 @@ router.post('/actualizar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (
             // Apoderado suplente
             nombreApoderado_suplente, parentescoApoderado_suplente, rut_apoderado_suplente,
             fechaNacimiento_apoderado_suplente, telefono_suplente, correoApoderado_suplente,
-            trabajoApoderado_suplente, nivelEducacional_apoderado_suplente
+            trabajoApoderado_suplente, nivelEducacional_apoderado_suplente,
+
+            // Retiro
+            nombre_retiro, rut_retiro, parentesco_retiro
         } = req.body;
 
-        // Validación básica
+        // Validación del titular
         if (
             !nombre_apoderado?.trim() || !parentesco_apoderado?.trim() || !rut_apoderado?.trim() ||
             !fechaNacimiento_apoderado?.trim() || !telefono?.trim() || !correo_apoderado?.trim() ||
-            !trabajo_apoderado?.trim() || !nivelEducacional_apoderado?.trim() ||
-
-            !nombreApoderado_suplente?.trim() || !parentescoApoderado_suplente?.trim() ||
-            !rut_apoderado_suplente?.trim() || !fechaNacimiento_apoderado_suplente?.trim() || !telefono_suplente?.trim() ||
-            !correoApoderado_suplente?.trim() || !trabajoApoderado_suplente?.trim() || !nivelEducacional_apoderado_suplente?.trim()
+            !trabajo_apoderado?.trim() || !nivelEducacional_apoderado?.trim()
         ) {
             const apoderado = await apoderadoController.getByAlumnoId(alumnoId);
             const apoderado_suplente = await apoderadoSuplenteController.getByAlumnoId(alumnoId);
+            const retiro = await retiroController.getRetiroByAlumnoId(alumnoId);
 
             return res.status(400).render('EditarApoderado', {
                 title: 'Editar Apoderado',
-                error: 'No puede haber campos vacíos',
+                error: 'Los campos del apoderado titular son obligatorios.',
                 apoderado,
                 apoderado_suplente: apoderado_suplente || {},
+                retiro: retiro || {},
                 alumnoId
             });
         }
 
-        // Actualizar apoderado titular
+        // Actualizar titular
         await apoderadoController.updateApoderado(alumnoId, {
             nombre_apoderado: nombre_apoderado.trim(),
             parentesco_apoderado: parentesco_apoderado.trim(),
@@ -203,22 +226,47 @@ router.post('/actualizar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (
             alumno_id: alumnoId
         });
 
-        // Actualizar apoderado suplente si existe
+        // Actualizar o crear suplente
         if (rut_apoderado_suplente?.trim()) {
-            await apoderadoSuplenteController.updateApoderadoSuplente(alumnoId, {
+            const suplenteExistente = await apoderadoSuplenteController.getByAlumnoId(alumnoId);
+            const dataSuplente = {
                 nombreApoderado_suplente: nombreApoderado_suplente?.trim() || '',
                 parentescoApoderado_suplente: parentescoApoderado_suplente?.trim() || '',
                 rut_apoderado_suplente: rut_apoderado_suplente?.trim() || '',
-                fechaNacimiento_apoderado_suplente: formatDate(fechaNacimiento_apoderado_suplente)?.trim() || '',
+                fechaNacimiento_apoderado_suplente: formatDate(fechaNacimiento_apoderado_suplente),
                 telefono_suplente: telefono_suplente?.trim() || '',
                 correoApoderado_suplente: correoApoderado_suplente?.trim() || '',
                 trabajoApoderado_suplente: trabajoApoderado_suplente?.trim() || '',
                 nivelEducacional_apoderado_suplente: nivelEducacional_apoderado_suplente?.trim() || '',
                 alumno_id: alumnoId
-            });
+            };
+
+            if (suplenteExistente) {
+                await apoderadoSuplenteController.updateApoderadoSuplente(alumnoId, dataSuplente);
+            } else {
+                await apoderadoSuplenteController.createApoderadoSuplente(dataSuplente);
+            }
         }
 
-        console.log(` Apoderado y suplente actualizados correctamente para alumno ${alumnoId}`);
+        // Actualizar o crear persona autorizada para retiro
+        if (nombre_retiro?.trim() && rut_retiro?.trim() && parentesco_retiro?.trim()) {
+            const retiroExistente = await retiroController.getRetiroByAlumnoId(alumnoId);
+
+            const dataRetiro = {
+                nombre_retiro: nombre_retiro.trim(),
+                rut_retiro: rut_retiro.trim(),
+                parentesco_retiro: parentesco_retiro.trim(),
+                alumno_id: alumnoId
+            };
+
+            if (retiroExistente) {
+                await retiroController.updateRetiro(retiroExistente.id, dataRetiro);
+            } else {
+                await retiroController.createRetiro(dataRetiro);
+            }
+        }
+
+        console.log(`Apoderado, suplente y retiro actualizados correctamente para alumno ${alumnoId}`);
         res.redirect('/listaAlumnos');
 
     } catch (error) {
@@ -226,30 +274,34 @@ router.post('/actualizar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (
 
         const apoderado = await apoderadoController.getByAlumnoId(alumnoId);
         const apoderado_suplente = await apoderadoSuplenteController.getByAlumnoId(alumnoId);
+        const retiro = await retiroController.getRetiroByAlumnoId(alumnoId);
 
         res.status(500).render('EditarApoderado', {
             title: 'Editar Apoderado',
             error: 'Error del servidor. Por favor, inténtelo de nuevo más tarde.',
             apoderado,
             apoderado_suplente: apoderado_suplente || {},
+            retiro: retiro || {},
             alumnoId
         });
     }
 });
 
-
 /* ==================================================
-   ELIMINAR APODERADO
+   ELIMINAR APODERADO + SUPLENTE + RETIRO
 ================================================== */
 router.post('/eliminar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, res) => {
     const alumnoId = req.params.alumnoId;
     try {
         const deleted = await apoderadoController.deleteApoderado(alumnoId);
+        await apoderadoSuplenteController.deleteApoderadoSuplente(alumnoId);
+        await retiroController.deleteRetiroByAlumnoId(alumnoId);
+
         if (!deleted) {
             return res.status(404).send('Apoderado no encontrado');
         }
 
-        console.log(`Apoderado eliminado correctamente para alumno ${alumnoId}`);
+        console.log(`Apoderado, suplente y retiro eliminados correctamente para alumno ${alumnoId}`);
         res.redirect('/listaAlumnos');
     } catch (error) {
         console.error("Error al eliminar apoderado:", error);
