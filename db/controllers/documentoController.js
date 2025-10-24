@@ -93,9 +93,10 @@ exports.generarMatriculaPDF = async (req, res) => {
     const [[madre]] = await conn.execute(`SELECT * FROM madre WHERE alumno_id = ?`, [idAlumno]);
     const [[apoderado]] = await conn.execute(`SELECT * FROM apoderados WHERE alumno_id = ?`, [idAlumno]);
     const [[apoderado2]] = await conn.execute(`SELECT * FROM apoderado_suplente WHERE alumno_id = ?`, [idAlumno]);
+    const [[retiros]] = await conn.execute(`SELECT * FROM retiros WHERE alumno_id = ?`, [idAlumno]);
 
     // Cargar plantilla PDF base
-    const plantillaPath = path.join(__dirname, "../../extras/PDF Modificado.pdf");
+    const plantillaPath = path.join(__dirname, "../../extras/PDF Modificado Completo.pdf");
     const pdfBytes = fs.readFileSync(plantillaPath);
     const pdfDoc = await PDFDocument.load(pdfBytes);
     const form = pdfDoc.getForm();
@@ -207,6 +208,14 @@ exports.generarMatriculaPDF = async (req, res) => {
       setText("correoApoderado2", apoderado2.correoApoderado_suplente);
       setText("trabajoApoderado2", apoderado2.trabajo_apoderado_suplente);
       setText("nivelEducacionalApoderado2", apoderado2.nivelEducacional_apoderado_suplente);
+    }
+
+    // =======================
+    // RETIRO
+    // =======================
+    if (retiros){
+
+
     }
 
     // Guardar en base de datos
