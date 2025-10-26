@@ -15,143 +15,138 @@
   <!-- Navbar -->
   <%- include('partials/navbar') %>
 
-  <main class="container my-5">
-    <h2 class="text-center mb-4">Editar Datos del Padre y la Madre</h2>
+    <main class="container my-5">
+      <h2 class="text-center mb-4">Editar Datos del Padre y la Madre</h2>
 
-    <% if (error) { %>
-      <div class="alert alert-danger text-center">
-        <%= error %>
-      </div>
-    <% } %>
-
-    <div class="card shadow-sm p-4">
-      <form action="/actualizar-padres/<%= alumnoId %>" method="POST" class="row g-3">
-        <input type="hidden" name="alumno_id" value="<%= alumnoId %>">
-
-        <div class="row">
-          <!-- ===================================== Formulario Padre ===================================== -->
-          <div class="col-md-6">
-            <div class="card shadow-sm p-4 mb-4">
-              <h4 class="text-center text-primary mb-3">Datos del Padre</h4>
-
-              <div class="mb-3">
-                <label class="form-label">Nombre Completo</label>
-                <input type="text" class="form-control" name="nombre_padre" value="<%= padre?.nombre_padre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">RUT</label>
-                <input type="text" class="form-control" name="rut_padre" value="<%= padre?.rut_padre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Fecha de Nacimiento</label>
-                <input type="date" class="form-control" name="fechaNacimiento_padre"
-                  value="<%= padre?.fechaNacimiento_padre ? new Date(padre.fechaNacimiento_padre).toISOString().split('T')[0] : '' %>"
-                  required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Nacionalidad</label>
-                <input type="text" class="form-control" name="nacionalidad_padre" value="<%= padre?.nacionalidad_padre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Nivel Educacional</label>
-                <input type="text" class="form-control" name="nivelEducacional_padre" value="<%= padre?.nivelEducacional_padre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Trabajo / Actividad</label>
-                <input type="text" class="form-control" name="trabajo_padre" value="<%= padre?.trabajo_padre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" name="correo_padre" value="<%= padre?.correo_padre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Dirección</label>
-                <input type="text" class="form-control" name="direccion_padre" value="<%= padre?.direccion_padre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Teléfono</label>
-                <input type="text" class="form-control" name="telefono_padre" value="<%= padre?.telefono_padre || '' %>" required>
-              </div>
-            </div>
-          </div>
-
-          <!-- ===================================== Formulario Madre ===================================== -->
-          <div class="col-md-6">
-            <div class="card shadow-sm p-4 mb-4">
-              <h4 class="text-center text-success mb-3">Datos de la Madre</h4>
-
-              <div class="mb-3">
-                <label class="form-label">Nombre Completo</label>
-                <input type="text" class="form-control" name="nombre_madre" value="<%= madre?.nombre_madre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">RUT</label>
-                <input type="text" class="form-control" name="rut_madre" value="<%= madre?.rut_madre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Fecha de Nacimiento</label>
-                <input type="date" class="form-control" name="fechaNacimiento_madre"
-                  value="<%= madre?.fechaNacimiento_madre ? new Date(madre.fechaNacimiento_madre).toISOString().split('T')[0] : '' %>"
-                  required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Nacionalidad</label>
-                <input type="text" class="form-control" name="nacionalidad_madre" value="<%= madre?.nacionalidad_madre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Nivel Educacional</label>
-                <input type="text" class="form-control" name="nivelEducacional_madre" value="<%= madre?.nivelEducacional_madre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Trabajo / Actividad</label>
-                <input type="text" class="form-control" name="trabajo_madre" value="<%= madre?.trabajo_madre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" name="correo_madre" value="<%= madre?.correo_madre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Dirección</label>
-                <input type="text" class="form-control" name="direccion_madre" value="<%= madre?.direccion_madre || '' %>" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Teléfono</label>
-                <input type="text" class="form-control" name="telefono_madre" value="<%= madre?.telefono_madre || '' %>" required>
-              </div>
-            </div>
-          </div>
+      <% if (error) { %>
+        <div class="alert alert-danger text-center">
+          <%= error %>
         </div>
+        <% } %>
 
-        <!-- ===================================== BOTONES ===================================== -->
-        <div class="col-12 mt-3 d-flex justify-content-between">
-          <button type="submit" class="btn btn-warning">
-            <i class="bi bi-pencil-fill me-1"></i> Siguente
-          </button>
-          <a href="/listaAlumnos" class="btn btn-secondary">
-            <i class="bi bi-arrow-left-circle me-1"></i> Cancelar
-          </a>
-        </div>
-      </form>
-    </div>
-  </main>
+          <div class="card shadow-sm p-4">
+            <form action="/actualizar-padres/<%= alumnoId %>" method="POST" class="row g-3">
+              <input type="hidden" name="alumno_id" value="<%= alumnoId %>">
 
-  <%- include('partials/footer') %>
+              <div class="row">
+                <!-- ===================================== Formulario Padre ===================================== -->
+                <div class="col-md-6">
+                  <div class="card shadow-sm p-4 mb-4">
+                    <h4 class="text-center text-primary mb-3">Datos del Padre</h4>
+
+                    <div class="mb-3">
+                      <label class="form-label">Nombre Completo</label>
+                      <input type="text" class="form-control" name="nombre_padre" value="<%= padre?.nombre_padre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">RUT</label>
+                      <input type="text" class="form-control" name="rut_padre" value="<%= padre?.rut_padre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Fecha de Nacimiento</label>
+                      <input type="date" class="form-control" name="fechaNacimiento_padre" value="<%= padre?.fechaNacimiento_padre ? new Date(padre.fechaNacimiento_padre).toISOString().split('T')[0] : '' %>"required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Nacionalidad</label>
+                      <input type="text" class="form-control" name="nacionalidad_padre" value="<%= padre?.nacionalidad_padre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Nivel Educacional</label>
+                      <input type="text" class="form-control" name="nivelEducacional_padre" value="<%= padre?.nivelEducacional_padre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Trabajo / Actividad</label>
+                      <input type="text" class="form-control" name="trabajo_padre" value="<%= padre?.trabajo_padre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Correo Electrónico</label>
+                      <input type="email" class="form-control" name="correo_padre" value="<%= padre?.correo_padre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Dirección</label>
+                      <input type="text" class="form-control" name="direccion_padre" value="<%= padre?.direccion_padre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Teléfono</label>
+                      <input type="text" class="form-control" name="telefono_padre" value="<%= padre?.telefono_padre || '' %>" required>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ===================================== Formulario Madre ===================================== -->
+                <div class="col-md-6">
+                  <div class="card shadow-sm p-4 mb-4">
+                    <h4 class="text-center text-success mb-3">Datos de la Madre</h4>
+
+                    <div class="mb-3">
+                      <label class="form-label">Nombre Completo</label>
+                      <input type="text" class="form-control" name="nombre_madre" value="<%= madre?.nombre_madre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">RUT</label>
+                      <input type="text" class="form-control" name="rut_madre" value="<%= madre?.rut_madre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Fecha de Nacimiento</label>
+                      <input type="date" class="form-control" name="fechaNacimiento_madre" value="<%= madre?.fechaNacimiento_madre ? new Date(madre.fechaNacimiento_madre).toISOString().split('T')[0] : '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Nacionalidad</label>
+                      <input type="text" class="form-control" name="nacionalidad_madre" value="<%= madre?.nacionalidad_madre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Nivel Educacional</label>
+                      <input type="text" class="form-control" name="nivelEducacional_madre" value="<%= madre?.nivelEducacional_madre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Trabajo / Actividad</label>
+                      <input type="text" class="form-control" name="trabajo_madre" value="<%= madre?.trabajo_madre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Correo Electrónico</label>
+                      <input type="email" class="form-control" name="correo_madre" value="<%= madre?.correo_madre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Dirección</label>
+                      <input type="text" class="form-control" name="direccion_madre" value="<%= madre?.direccion_madre || '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Teléfono</label>
+                      <input type="text" class="form-control" name="telefono_madre" value="<%= madre?.telefono_madre || '' %>" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===================================== BOTONES ===================================== -->
+              <div class="col-12 mt-3 d-flex justify-content-between">
+                <button type="submit" class="btn btn-warning">
+                  <i class="bi bi-pencil-fill me-1"></i> Siguente
+                </button>
+                <a href="/listaAlumnos" class="btn btn-secondary">
+                  <i class="bi bi-arrow-left-circle me-1"></i> Cancelar
+                </a>
+              </div>
+            </form>
+          </div>
+    </main>
+    <%- include('partials/footer') %>
 </body>
 
 </html>

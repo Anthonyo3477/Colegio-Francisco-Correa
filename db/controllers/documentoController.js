@@ -114,7 +114,7 @@ exports.generarMatriculaPDF = async (req, res) => {
         field.setText(text || "");
         field.updateAppearances(fontBase);
       }catch (error) {
-        console.warn(`No se puede actualizar este campo: ${fieldName}:`, err.message);
+        console.warn(`No se puede actualizar este campo: ${fieldName}:`, error.message);
     }
   }
 
@@ -214,8 +214,9 @@ exports.generarMatriculaPDF = async (req, res) => {
     // RETIRO
     // =======================
     if (retiros){
-
-
+      setText("nombreRetiro", retiros.nombre_retiro);
+      setText("rutRetirado", retiros.rut_retiro);
+      setText("parentescoRetiro", retiros.parentesco_retiro);
     }
 
     // Guardar en base de datos
@@ -240,7 +241,7 @@ exports.generarMatriculaPDF = async (req, res) => {
     console.error("Error al generar PDF:", error);
     res.status(500).send("Error al generar PDF");
   }
-};//
+};
 
 // =====================================================
 // REGENERAR PDF

@@ -4,17 +4,17 @@ const TABLA = "madre";
 // Creacion de madre
 async function createMadre(madre) {
     const { nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre,
-        trabajo_madre, direccion_madre, telefono_madre, alumno_id } = madre;
+        trabajo_madre, correo_madre,  direccion_madre, telefono_madre, alumno_id } = madre;
 
     const sql = `
         INSERT INTO ${TABLA} 
         (nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre, 
-        trabajo_madre, direccion_madre, telefono_madre, alumno_id) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        trabajo_madre, correo_madre direccion_madre, telefono_madre, alumno_id) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const valoresMadre = [nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre,
-        trabajo_madre, direccion_madre, telefono_madre, alumno_id];
+        trabajo_madre, correo_madre, direccion_madre, telefono_madre, alumno_id];
 
     const [result] = await conn.query(sql, valoresMadre);
     return result;
