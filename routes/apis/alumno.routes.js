@@ -9,7 +9,9 @@ const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware')
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
-// Función para dar formato a la fecha en YYYY-MM-DD
+// ==========================================================
+// FORMATO DE FECHA 
+// ==========================================================
 function formatDate(date) {
     if (!date) return null;
     const d = new Date(date);
@@ -159,20 +161,16 @@ router.post('/insert', async (req, res) => {
     }
 });
 
-
 /* ==================================================
    LISTAR ALUMNOS 
 ================================================== */
 router.get('/listaAlumnos', isAuthenticated, async (req, res) => {
     try {
-        // Obtener todos los alumnos con sus apoderados
         const alumnos = await alumnoController.getAlumnosConApoderados();
-
-        // Renderizar la vista con el listado
         res.render('listaAlumnos', {
             alumnos,
-            cursos: [],            // Eliminamos el uso de cursos
-            cursoSeleccionado: ""  // Sin filtro activo
+            cursos: [],
+            cursoSeleccionado: ""
         });
 
     } catch (error) {
@@ -225,7 +223,6 @@ router.get('/editar/:id', async (req, res) => {
         res.status(500).send(`Error al obtener alumno: ${error.message}`);
     }
 });
-
 
 // Procesar actualización
 router.post('/actualizar/:id', async (req, res) => {

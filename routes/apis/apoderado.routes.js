@@ -5,7 +5,9 @@ const apoderadoSuplenteController = require('../../db/controllers/apoderadoSuple
 const retiroController = require('../../db/controllers/retiroController');
 const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware');
 
-// Función para dar formato a la fecha en YYYY-MM-DD
+// ==========================================================
+// FORMATO FECHA
+// ==========================================================
 function formatDate(date) {
     if (!date) return null;
     const d = new Date(date);

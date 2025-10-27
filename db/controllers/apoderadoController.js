@@ -1,7 +1,9 @@
 const conn = require('../conexion');
 const TABLA = 'apoderados';
 
-// Crear apoderado
+// =====================================
+//  CREATE APODERADO
+// =====================================
 async function createApoderado(apoderado) {
     const {
         nombre_apoderado, parentesco_apoderado, rut_apoderado, fechaNacimiento_apoderado, 
@@ -18,7 +20,9 @@ async function createApoderado(apoderado) {
     return result;
 }
 
-// Obtener todos los apoderados
+// =====================================
+//  OBTENER APODERADOS
+// =====================================
 async function getAllApoderados() {
     const sql = `
         SELECT id, nombre_apoderado, parentesco_apoderado, rut_apoderado, fechaNacimiento_apoderado, telefono, correo_apoderado, trabajo_apoderado, nivelEducacional_apoderado, alumno_id
@@ -28,7 +32,9 @@ async function getAllApoderados() {
     return rows;
 }
 
-// Obtener apoderado por ID
+// =====================================
+//  OBTENER APODERADO POR ID
+// =====================================
 async function getApoderadoById(id) {
     if (!id) return null;
     const sql = `SELECT * FROM ${TABLA} WHERE id = ?`;
@@ -36,7 +42,9 @@ async function getApoderadoById(id) {
     return rows[0] || null;
 }
 
-// Obtener apoderado por ID de Alumno
+// =====================================
+//  OBTENER APODERADO POR ID ALUMNO
+// =====================================
 async function getByAlumnoId(alumnoId) {
     if (!alumnoId) return null;
     const sql = `SELECT * FROM ${TABLA} WHERE alumno_id = ?`;
@@ -44,7 +52,9 @@ async function getByAlumnoId(alumnoId) {
     return rows[0] || null;
 }
 
-// Actualizar apoderado por ID
+// =====================================
+//  ACTUALIZAR APODERADO
+// =====================================
 async function updateApoderado(id, apoderado) {
     const {
         nombre_apoderado,
@@ -84,7 +94,9 @@ async function updateApoderado(id, apoderado) {
     return result;
 }
 
-// Eliminar apoderado por ID
+// =====================================
+//  ELIMINAR APODERADO
+// =====================================
 async function deleteApoderado(id) {
     const sql = `DELETE FROM ${TABLA} WHERE id = ?`;
     const [result] = await conn.query(sql, [id]);

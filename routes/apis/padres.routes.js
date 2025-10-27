@@ -7,7 +7,6 @@ const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware')
 /* ====================================================== 
     CREAR PADRE Y MADRE
 ======================================================*/
-// Mostrar formulario
 router.get('/nuevo-padres/:alumnoId', isAuthenticated, isAdmin, (req, res) => {
     const { alumnoId } = req.params;
     res.render('padresForm', {
@@ -21,9 +20,7 @@ router.get('/nuevo-padres/:alumnoId', isAuthenticated, isAdmin, (req, res) => {
 // Procesar formulario
 router.post('/insertPadres', async (req, res) => {
     try {
-        // Log de lo que llega del formulario
         console.log("Datos recibidos en req.body:", req.body);
-
         const {
             alumno_id,
 
@@ -104,7 +101,6 @@ router.post('/insertPadres', async (req, res) => {
 ================================================== */
 router.get('/listaPadres', isAuthenticated, isAdmin, async (req, res) => {
     try {
-        // Idealmente deberías crear un método en el controller que haga JOIN entre padres y madres
         const padres = await padreController.getAllPadresConMadres();
 
         res.render('listaPadres', {

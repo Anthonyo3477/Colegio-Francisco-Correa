@@ -1,7 +1,9 @@
 const { PDFDocument } = require('pdf-lib');
 const conn = require('../conexion');
 
-// Mostrar formulario de edición
+// ==========================================================
+// MOSTRAR FORMULARIO DE EDICION
+// ==========================================================
 exports.mostrarFormulario = async (req, res) => {
   try {
     const documentoId = req.params.id;
@@ -36,7 +38,9 @@ exports.mostrarFormulario = async (req, res) => {
 };
 
 
-// Procesar edición
+// ==========================================================
+// PROCESAR EDICION
+// ==========================================================
 exports.editarPDF = async (req, res) => {
   try {
     const {documentoId, nombreCompleto, sexoAlumno, rutAlumnos, fechaNacimientoAlumno, domicilioAlumno,

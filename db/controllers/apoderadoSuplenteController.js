@@ -1,7 +1,9 @@
 const conn = require('../conexion');
 const TABLA = 'apoderado_suplente';
 
-// Crear apoderado Suplente
+// =====================================
+//  CREATE APODERADO SUPLENTE
+// =====================================
 async function createApoderadoSuplente(apoderado_suplente) {
     const { nombreApoderado_suplente, parentescoApoderado_suplente, rut_apoderado_suplente,
         fechaNacimiento_apoderado_suplente, telefono_suplente, correoApoderado_suplente, trabajoApoderado_suplente,
@@ -21,7 +23,9 @@ async function createApoderadoSuplente(apoderado_suplente) {
     return result;
 }
 
-// Obtener todos los apoderado Suplente
+// =====================================
+//  LISTAR TODOS LOS APODERADOS SUPLENTE
+// =====================================
 async function getAllApoderadoSuplente() {
     const sql = `
         SELECT id, nombreApoderado_suplente, parentescoApoderado_suplente, rut_apoderado_suplente, fechaNacimiento_apoderado_suplente, 
@@ -32,7 +36,9 @@ async function getAllApoderadoSuplente() {
     return rows;
 }
 
-// Obtener apoderado Suplente por ID
+// =====================================
+//  ACTUALIZAR APODERADO POR ID
+// =====================================
 async function getApoderadoSuplenteById(id) {
     if (!id) return null;
     const sql = `SELECT * FROM ${TABLA} WHERE id = ?`;
@@ -40,7 +46,9 @@ async function getApoderadoSuplenteById(id) {
     return rows[0] || null;
 }
 
-// Obtener apoderado Suplente por ID de Alumno
+// =====================================
+//  OBTENER APODERADO SUPLENTE POR ID
+// =====================================
 async function getByAlumnoId(alumnoId) {
     if (!alumnoId) return null;
     const sql = `SELECT * FROM ${TABLA} WHERE alumno_id = ?`;
@@ -48,7 +56,9 @@ async function getByAlumnoId(alumnoId) {
     return rows[0] || null;
 }
 
-// Actualizar apoderado Suplente por ID
+// =====================================
+//  ACTUALIZAR POR ID APODERADO SUPLENTE
+// =====================================
 async function updateApoderadoSuplente(id, apoderado_suplente) {
     const { nombreApoderado_suplente, parentescoApoderado_suplente, rut_apoderado_suplente,
         fechaNacimiento_apoderado_suplente, telefono_suplente, correoApoderado_suplente, trabajoApoderado_suplente,
@@ -70,10 +80,4 @@ async function updateApoderadoSuplente(id, apoderado_suplente) {
     return result;
 }
 
-module.exports = {
-    createApoderadoSuplente,
-    getAllApoderadoSuplente,
-    getApoderadoSuplenteById,
-    getByAlumnoId,
-    updateApoderadoSuplente
-};
+module.exports = { createApoderadoSuplente, getAllApoderadoSuplente, getApoderadoSuplenteById, getByAlumnoId, updateApoderadoSuplente };

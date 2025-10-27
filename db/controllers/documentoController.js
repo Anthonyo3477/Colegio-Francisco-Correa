@@ -326,7 +326,7 @@ exports.editarMatriculaPDF = async (req, res) => {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const fontSize = 11;
 
-    // === Alumno ===
+    // ------------------------ Alumno ------------------------
     page.drawRectangle({ x: 100, y: 769, width: 200, height: 11, color: rgb(1, 1, 1) });
     page.drawText(direccionAlumno || "", { x: 100, y: 769, size: fontSize, font, color: rgb(0, 0, 0) });
 
@@ -336,7 +336,7 @@ exports.editarMatriculaPDF = async (req, res) => {
     page.drawRectangle({ x: 277, y: 755, width: 100, height: 11, color: rgb(1, 1, 1) });
     page.drawText(viveCon || "", { x: 280, y: 755, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    // === Padre ===
+    // ------------------------ Padre ------------------------
     page.drawRectangle({ x: 93, y: 450, width: 100, height: 11, color: rgb(1, 1, 1) });
     page.drawText(direccionPadre || "", { x: 93, y: 450, size: fontSize, font, color: rgb(0, 0, 0) });
 
@@ -346,7 +346,7 @@ exports.editarMatriculaPDF = async (req, res) => {
     page.drawRectangle({ x: 390, y: 469, width: 150, height: 11, color: rgb(1, 1, 1) });
     page.drawText(correoPadre || "", { x: 390, y: 469, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    // === Madre ===
+    // ------------------------ Madre ------------------------
     page.drawRectangle({ x: 92, y: 382, width: 100, height: 11, color: rgb(1, 1, 1) });
     page.drawText(direccionMadre || "", { x: 92, y: 382, size: fontSize, font, color: rgb(0, 0, 0) });
 
@@ -356,14 +356,14 @@ exports.editarMatriculaPDF = async (req, res) => {
     page.drawRectangle({ x: 390, y: 401, width: 150, height: 11, color: rgb(1, 1, 1) });
     page.drawText(correoMadre || "", { x: 390, y: 401, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    // === Apoderado principal ===
+    // ------------------------ Apoderado principal ------------------------
     page.drawRectangle({ x: 100, y: 287, width: 90, height: 11, color: rgb(1, 1, 1) });
     page.drawText(telefonoApoderado || "", { x: 100, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 330, y: 287, width: 150, height: 11, color: rgb(1, 1, 1) });
     page.drawText(correoApoderado || "", { x: 330, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    // === Apoderado suplente ===
+    // ------------------------ Apoderado suplente ------------------------
     page.drawRectangle({ x: 100, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
     page.drawText(telefonoApoderado2 || "", { x: 100, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
 

@@ -28,9 +28,9 @@ router.get('/DocMatricula', documentoController.listarMatriculas);
 // ==============================
 router.get('/matricula/descargar/:id', documentoController.descargarMatricula);
 
-// ==============================
+// ==================================
 // GENERAR PDF desde alumno/apoderado
-// ==============================
+// ==================================
 router.get('/matricula/generar/:idAlumno', documentoController.generarMatriculaPDF);
 
 // ==============================
@@ -43,9 +43,9 @@ router.get('/matricula/ver/:id', documentoController.verMatricula);
 // ==============================
 router.get('/eliminar/:id', documentoController.eliminarMatricula);
 
-// ==============================
+// ================================
 // EDITAR PDF (Solo algunos campos)
-// ==============================
+// ================================
 router.get('/matricula/editarVisual/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -63,11 +63,11 @@ router.get('/matricula/editarVisual/:id', async (req, res) => {
   }
 });
 
-// ==============================
+// ===============================================================
 // EDITA PDF SOLO ALGUNOS CAMPOS
 // direccion, telefono, correo, comuna, y con quien vive el alumno
 // ojo se edita de manera visual
-// ==============================
+// ===============================================================
 router.post('/matricula/editarPDFVisual/:id', documentoController.editarMatriculaPDF);
 
 module.exports = router;

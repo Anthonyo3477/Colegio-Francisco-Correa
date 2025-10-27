@@ -1,7 +1,9 @@
 const conn = require('../conexion');
 const TABLA = 'datos_academicos';
 
-// Crear registro académicos
+// =====================================
+//  CREATE DATOS ACADEMICOS 
+// =====================================
 async function createDatosAcademicos(datos) {
     const {
         ultimo_curso_cursado, año_cursado, colegio_procedencia, cursos_reprobados,
@@ -22,14 +24,18 @@ async function createDatosAcademicos(datos) {
     return result;
 }
 
-// Obtener por alumno
+// =====================================
+//  OBTENER DATOS ACADEMICOS POR ALUMNO
+// =====================================
 async function getByAlumnoId(alumnoId) {
     const sql = `SELECT * FROM ${TABLA} WHERE alumno_id = ?`;
     const [rows] = await conn.query(sql, [alumnoId]);
     return rows[0] || null;
 }
 
-// Actualizar datos académicos por ID
+// =====================================
+//  ACTUALIZAR DATOS ACADEMICOS 
+// =====================================
 async function updateDatosAcademicosByAlumnoId(alumno_id, datos) {
     const {
         ultimo_curso_cursado, año_cursado, colegio_procedencia,
@@ -51,16 +57,13 @@ async function updateDatosAcademicosByAlumnoId(alumno_id, datos) {
     return result;
 }
 
-// Eliminar datos académicos por ID
+// =====================================
+//  ELIMINAR DATOS ACADEMICOS
+// =====================================
 async function deleteDatosAcademicos(id) {
     const sql = `DELETE FROM ${TABLA} WHERE id = ?`;
     const [result] = await conn.query(sql, [id]);
     return result;
 }
 
-module.exports = {
-    createDatosAcademicos,
-    getByAlumnoId,
-    updateDatosAcademicosByAlumnoId,
-    deleteDatosAcademicos
-};
+module.exports = { createDatosAcademicos, getByAlumnoId, updateDatosAcademicosByAlumnoId, deleteDatosAcademicos };

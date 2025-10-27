@@ -6,25 +6,21 @@
     <title>Listado de Alumnos</title>
     <link rel="stylesheet" href="/css/listaAlumnos.css">
 </head>
-
 <body>
     <!-- Navbar -->
     <%- include('partials/navbar') %>
-
         <header>
             <h1>Colegio Manuel Francisco Correa</h1>
             <p>Bienvenidos a nuestra comunidad educativa</p>
         </header>
-
         <main>
             <h2 style="text-align:center;">Listado de Alumnos</h2>
-
             <!-- Filtro de curso -->
             <form action="/filtrar" method="GET" style="text-align:center; margin-bottom:20px;">
                 <label for="curso" style="font-weight:bold;">Filtrar por curso:</label>
                 <select name="curso" id="curso" onchange="this.form.submit()" style="padding:5px;">
                     <option value="">-- Todos los cursos --</option>
-                    <option value="Pre-Kinder" <%=cursoSeleccionado==='Pre-Kinder' ? 'selected' : '' %>>Pre-Kinder </option>
+                    <option value="Pre Kinder" <%=cursoSeleccionado==='Pre Kinder' ? 'selected' : '' %>>Pre-Kinder </option>
                     <option value="Kinder" <%=cursoSeleccionado==='Kinder' ? 'selected' : '' %>>Kinder</option>
                     <option value="1 Básico" <%=cursoSeleccionado==='1 Básico' ? 'selected' : '' %>>1° Básico</option>
                     <option value="2 Básico" <%=cursoSeleccionado==='2 Básico' ? 'selected' : '' %>>2° Básico</option>
@@ -40,7 +36,6 @@
                     <option value="4 Medio" <%=cursoSeleccionado==='4 Medio' ? 'selected' : '' %>>4° Medio</option>
                 </select>
             </form>
-
             <table>
                 <thead>
                     <tr>
