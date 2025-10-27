@@ -203,6 +203,31 @@ input[type="file"]:hover {
     background: #eef6ff;
 }
 
+/* ------------------ Input de búsqueda ------------------ */
+.buscador-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#buscador {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px 15px;
+    border: 2px solid #120077;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f9fbff;
+    transition: all 0.3s ease;
+}
+
+#buscador:focus {
+    outline: none;
+    border-color: #8C9292;
+    background-color: #eef6ff;
+    box-shadow: 0 0 6px rgba(18, 0, 119, 0.4);
+}
+
 /* ------------------ Boton ------------------ */
 button {
     background: #120077;

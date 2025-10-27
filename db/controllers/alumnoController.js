@@ -67,7 +67,6 @@ async function getAlumnoById(id) {
 }
 
 // Listado alumno con apoderado
-// getAlumnosConApoderados corregida y robusta
 async function getAlumnosConApoderados({ curso } = {}) {
     let sql = `
         SELECT 
@@ -88,9 +87,9 @@ async function getAlumnosConApoderados({ curso } = {}) {
     `;
 
     const valores = [];
-    if (curso) {
+    if (curso && curso.trim() !== "") {
         sql += " WHERE a.curso = ?";
-        valores.push(curso);
+        valores.push(curso.trim());
     }
 
     sql += " ORDER BY TRIM(LOWER(a.nombreCompleto_alumno)) ASC";
@@ -134,12 +133,6 @@ async function getAlumnosConApoderados({ curso } = {}) {
     }
 
     return Array.from(alumnosMap.values());
-}
-
-// Obtiene alumnos filtrados por curso
-async function getAlumnosByCurso(curso) {
-    const [rows] = await conn.query("SELECT * FROM alumno WHERE curso = ?", [curso]);
-    return rows;
 }
 
 // Obtiene todos los cursos distintos
@@ -186,7 +179,6 @@ module.exports = {
     getAlumnoById,
     getAlumnosConApoderados,
     getAllCursos,
-    getAlumnosByCurso,
     updateAlumno,
     deleteAlumno
 };

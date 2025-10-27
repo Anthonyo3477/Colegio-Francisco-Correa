@@ -181,6 +181,21 @@ router.get('/listaAlumnos', isAuthenticated, async (req, res) => {
     }
 });
 
+/* ==================================================
+    FILTRAR ALUMNO
+================================================== */
+router.get('/filtrar', async (req, res) => {
+    try {
+        const { curso } = req.query;
+        const alumnos = await alumnoController.getAlumnosConApoderados(
+            curso ? { curso } : {}
+        );
+        res.render('listaAlumnos', { alumnos, cursoSeleccionado: curso || '' });
+    } catch (error) {
+        console.error('Error al filtrar alumnos por curso:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
 
 /* ==================================================
    MODIFICAR ALUMNO
