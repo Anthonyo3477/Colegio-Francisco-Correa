@@ -11,7 +11,7 @@ async function createMadre(madre) {
     const sql = `
         INSERT INTO ${TABLA} 
         (nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre, 
-        trabajo_madre, correo_madre direccion_madre, telefono_madre, alumno_id) 
+        trabajo_madre, correo_madre,  direccion_madre, telefono_madre, alumno_id) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 

@@ -82,7 +82,7 @@ main {
 
 /* ------------------ Contenedor de la tabla ------------------ */
 .tabla-matriculas {
-    max-width: 90%;
+    width: 60%;
     background: #ffffff;
     padding: 1.5rem;
     border-radius: 12px;
@@ -99,12 +99,11 @@ main {
 
 /* ------------------ Tabla ------------------ */
 .table {
-    width: 100%;
+    width: 99%;
     border-collapse: collapse;
     font-size: 15px;
 }
 
-/* ------------------ Cabezera de la tabla ------------------ */
 .table thead {
     background-color: #120077;
     color: #ffffff;
@@ -119,7 +118,6 @@ main {
     border-bottom: 1px solid #ddd;
 }
 
-/* ------------------ Filas de la Tabla ------------------ */
 .table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
