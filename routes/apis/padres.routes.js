@@ -18,7 +18,7 @@ router.get('/nuevo-padres/:alumnoId', isAuthenticated, isAdmin, (req, res) => {
 });
 
 // Procesar formulario
-router.post('/insertPadres', async (req, res) => {
+router.post('/insertPadres', isAuthenticated, isAdmin, async (req, res) => {
     try {
         console.log("Datos recibidos en req.body:", req.body);
         const {

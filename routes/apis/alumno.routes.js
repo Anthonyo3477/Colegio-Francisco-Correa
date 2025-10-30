@@ -25,7 +25,7 @@ function formatDate(date) {
 /* ================================================
     Convertir Datos a PDF 
 ==================================================*/
-router.post('/generar-pdf', isAdmin, async (req, res) => {
+router.post('/generar-pdf', isAuthenticated, isAdmin, async (req, res) => {
     try {
         const datos = req.body;
 
@@ -87,7 +87,7 @@ router.get('/nuevo', isAuthenticated, isAdmin, (req, res) => {
 });
 
 // Procesar creación
-router.post('/insert', async (req, res) => {
+router.post('/insert', isAuthenticated, isAdmin, async (req, res) => {
     try {
         const {
             // Datos del Alumno
@@ -182,7 +182,7 @@ router.get('/listaAlumnos', isAuthenticated, async (req, res) => {
 /* ==================================================
     FILTRAR ALUMNO
 ================================================== */
-router.get('/filtrar', async (req, res) => {
+router.get('/filtrar', isAuthenticated, async (req, res) => {
     try {
         const { curso } = req.query;
         const alumnos = await alumnoController.getAlumnosConApoderados(
@@ -199,7 +199,7 @@ router.get('/filtrar', async (req, res) => {
    MODIFICAR ALUMNO
 ================================================== */
 // Formulario edición
-router.get('/editar/:id', async (req, res) => {
+router.get('/editar/:id', isAuthenticated, isAdmin, async (req, res) => {
     const id = req.params.id;
     console.log("Solicitud GET /editar con ID:", id);
 
@@ -225,7 +225,7 @@ router.get('/editar/:id', async (req, res) => {
 });
 
 // Procesar actualización
-router.post('/actualizar/:id', async (req, res) => {
+router.post('/actualizar/:id', isAuthenticated, isAdmin, async (req, res) => {
     const id = req.params.id;
     try {
         const {
@@ -303,7 +303,7 @@ router.post('/actualizar/:id', async (req, res) => {
 /* ==================================================
    ELIMINAR ALUMNO
 ================================================== */
-router.post('/eliminar/:id', async (req, res) => {
+router.post('/eliminar/:id', isAuthenticated, isAdmin, async (req, res) => {
     const id = req.params.id;
     try {
         await alumnoController.deleteAlumno(id);

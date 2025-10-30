@@ -302,19 +302,78 @@ exports.editarMatriculaPDF = async (req, res) => {
   try {
     const { id } = req.params;
     const {
+      // --------------- Datos del Alumno ---------------
+      nombreAlumno,
+      generoAlumno,
+      rutAlumno,
+      fechaNacimiento_alumno,
       direccionAlumno, 
       comunaAlumno, 
       viveCon,
+      nacionalidadAlumno,
+      añoIngreso_chile,
+      puebloOriginario,
+      quePueblo,
+      enfermedad,
+      alergias,
+      queAlergias,
+      medicamentos,
+      queMedicamentos,
+      peso,
+      talla,
+      // -------------------------------------------------------
+      // ---------------- Datos socio academico ----------------
+      ultimoCurso_aprobado,
+      añoCursado,
+      colegioProcedencia,
+      beca,
+      proteccionInfantil,
+      // -------------------------------------------------------
+      // ----------------- Datos de los padres -----------------
+      nombrePadre,
+      rutPadre,
+      fechaNacimiento_padre,
+      nacionalidadPadre,
+      nivelEducacional_padre,
+      trabajoPadre,
+      correoPadre,
       direccionPadre, 
       telefonoPadre, 
-      correoPadre,
+
+      nombreMadre,
+      rutMadre,
+      fechaNacimiento_madre,
+      nacionalidadMadre,
+      nivelEducacional_madre,
+      trabajoMadre,
+      correoMadre,
       direccionMadre, 
       telefonoMadre, 
-      correoMadre,
+      // -------------------------------------------------------
+      // --------------- Datos de los apoderados ---------------
+      nombreApoderado,
+      parentescoApoderado,
+      rutApoderado,
+      fechaNacimiento_apoderado,
       telefonoApoderado, 
       correoApoderado,
+      trabajoApoderado,
+      nivelEducacional_apoderado,
+
+      nombreApoderado2,
+      parentescoApoderado2,
+      rutApoderado2,
+      fechaNacimiento_apoderado2,
       telefonoApoderado2, 
-      correoApoderado2
+      correoApoderado2,
+      trabajoApoderado2,
+      nivelEducacional_apoderado2,
+      // -------------------------------------------------------
+      // --------------------- Datos retiro --------------------
+      nombreRetiro,
+      rutRetiro,
+      parentescoRetiro
+      // -------------------------------------------------------
     } = req.body;
 
     const [rows] = await conn.execute("SELECT documento FROM matriculas WHERE id = ?", [id]);

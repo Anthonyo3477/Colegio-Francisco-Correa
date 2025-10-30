@@ -21,7 +21,7 @@ function formatDate(date) {
 /* ==================================================
    FORMULARIO NUEVO APODERADO
 ================================================== */
-router.get('/nuevo-apoderado/:alumnoId', (req, res) => {
+router.get('/nuevo-apoderado/:alumnoId', isAuthenticated, isAdmin, (req, res) => {
     const { alumnoId } = req.params;
     res.render('apoderadoForm', {
         title: 'Registrar Apoderado',
@@ -34,7 +34,7 @@ router.get('/nuevo-apoderado/:alumnoId', (req, res) => {
 /* ==================================================
    INSERTAR APODERADO + SUPLENTE + RETIRO
 ================================================== */
-router.post('/insertApoderado', async (req, res) => {
+router.post('/insertApoderado', isAuthenticated, isAdmin, async (req, res) => {
     try {
         const {
             // Apoderado titular
