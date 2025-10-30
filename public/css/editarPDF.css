@@ -1,20 +1,20 @@
 /* -------------------- Body -------------------- */
 body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    background: #f5f6fa;
-    display: flex;
-    flex-direction: column;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: #f5f6fa;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ------------------ Encabezado ------------------ */
 header {
-    background: #120077;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
+  background: #120077;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
 }
 
 header h1 {
@@ -30,45 +30,45 @@ header p {
 
 /* ------------------ Navbar ------------------ */
 nav {
-    background: #120077;
-    color: #fff;
-    padding: 10px 20px;
+  background: #120077;
+  color: #fff;
+  padding: 10px 20px;
 }
 
 nav ul {
-    display: flex;
-    gap: 15px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 nav ul li {
-    display: inline-block;
+  display: inline-block;
 }
 
 nav a {
-    color: #fff;
-    font-weight: bold;
-    text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 nav a:hover {
-    color: #FFF642;
-    text-decoration: underline;
+  color: #FFF642;
+  text-decoration: underline;
 }
 
 .btn-logout {
-    background: #e74c3c;
-    color: #fff !important;
-    padding: 6px 12px;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background 0.3s ease;
+  background: #e74c3c;
+  color: #fff !important;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s ease;
 }
 
 .btn-logout:hover {
-    background: #c0392b;
+  background: #c0392b;
 }
 
 /* ------------------ Main ------------------ */
@@ -121,11 +121,32 @@ input, select, textarea {
   transition: border-color 0.3s;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   border-color: #150080;
   outline: none;
   box-shadow: 0 0 4px rgba(21, 0, 128, 0.3);
 }
+
+.seccion-formulario {
+  background: #ffffff;
+  padding: 25px;
+  margin-bottom: 35px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.seccion-formulario h4 {
+  background: #120077;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
 
 /* ------------------ Botones ------------------ */
 .botones {
@@ -133,7 +154,8 @@ input:focus, select:focus, textarea:focus {
   margin-top: 20px;
 }
 
-button, .btn {
+button,
+.btn {
   background: #150080;
   color: white;
   border: none;
@@ -147,7 +169,8 @@ button, .btn {
   display: inline-block;
 }
 
-button:hover, .btn:hover {
+button:hover,
+.btn:hover {
   background: #0f0060;
 }
 
@@ -161,27 +184,27 @@ button:hover, .btn:hover {
 
 /* ------------------ Footer ------------------ */
 footer {
-    position: relative;
-    width: 100%;
-    margin-top: 100px;
-    padding: 10px 0;
-    text-align: center;
-    background: #120077;
-    color: #fff;
+  position: relative;
+  width: 100%;
+  margin-top: 100px;
+  padding: 10px 0;
+  text-align: center;
+  background: #120077;
+  color: #fff;
 }
 
 .contactanos {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* ------------------ Responsividad ------------------ */
@@ -189,6 +212,7 @@ footer {
   main h2 {
     text-align: center;
   }
+
   .row {
     display: block;
   }

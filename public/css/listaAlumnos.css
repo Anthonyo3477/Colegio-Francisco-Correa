@@ -147,6 +147,13 @@ table {
     overflow: hidden;
 }
 
+.table-responsive {
+  width: 95%;
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 th, td {
     border: 1px solid #ccc;
     padding: 14px 16px;

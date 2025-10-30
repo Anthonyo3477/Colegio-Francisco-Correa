@@ -89,8 +89,13 @@ main {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.table-responsive {
+  width: 95%;
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
 
-/* ------------------ Titulo ------------------ */
 .tabla-matriculas h2 {
     margin-bottom: 1rem;
     text-align: center;

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Editar PDF Manual</title>
@@ -11,21 +10,100 @@
 <body>
     <%- include('partials/navbar') %>
 
-        <div class="container mt-5">
-            <h2>Editar PDF Manualmente (ID: <%= matricula.id %>)</h2>
-            <p class="text-muted">Este modo reemplaza texto visualmente sobre el PDF (para documentos sin campos
-                editables).</p>
+    <div class="container mt-5">
+        <h2>Editar PDF Manualmente (ID: <%= matricula.id %>)</h2>
+        <p class="text-muted">
+            Este modo reemplaza texto visualmente sobre el PDF (para documentos sin campos editables).
+        </p>
 
-            <form action="/matricula/editarPDFVisual/<%= matricula.id %>" method="POST">
-                <div class="row"> <!-- ================= ALUMNO ================= -->
-                    <h4 class="mt-4">Datos del Alumno</h4>
+        <form action="/matricula/editarPDFVisual/<%= matricula.id %>" method="POST">
+
+            <!-- --------------------------- DATOS DEL ALUMNO --------------------------- -->
+            <div class="seccion-formulario">
+                <h4 class="mt-4">Datos del Alumno</h4>
+                <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Dirección Alumno</label>
+                        <label class="form-label">Nombre del Alumno</label>
+                        <input type="text" name="nombreAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Género</label>
+                        <input type="text" name="generoAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">RUT</label>
+                        <input type="text" name="RutAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" name="fechaNacimientoAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Edad</label>
+                        <input type="text" name="edadAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Pueblo Originario</label>
+                        <input type="text" name="puebloOriginario" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">¿Qué Pueblo?</label>
+                        <input type="text" name="quePueblo" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Enfermedad</label>
+                        <input type="text" name="enfermedadAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Alergias</label>
+                        <input type="text" name="alergiasAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Medicamentos</label>
+                        <input type="text" name="medicamentosAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Curso</label>
+                        <input type="text" name="cursoAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Fecha de Ingreso</label>
+                        <input type="date" name="fechaIngreso" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Año de Ingreso a Chile</label>
+                        <input type="text" name="ingresoChile" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nacionalidad</label>
+                        <input type="text" name="nacionalidadAlumno" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Orden de Llegada</label>
+                        <input type="text" name="Ordenllegada" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Dirección</label>
                         <input type="text" name="direccionAlumno" class="form-control">
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Comuna Alumno</label>
+                        <label class="form-label">Comuna</label>
                         <input type="text" name="comunaAlumno" class="form-control">
                     </div>
 
@@ -33,64 +111,268 @@
                         <label class="form-label">Vive con</label>
                         <input type="text" name="viveConAlumno" class="form-control">
                     </div>
-                    <!-- ================= PADRE ================= -->
-                    <h4 class="mt-4">Datos del Padre</h4>
+                </div>
+            </div>
+
+            <!-- --------------------------- DATOS ACADÉMICOS --------------------------- -->
+            <div class="seccion-formulario">
+                <h4>Datos Académicos</h4>
+                <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Dirección Padre</label>
+                        <label class="form-label">Último Año Cursado</label>
+                        <input type="number" name="ultimoAñoCursado" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Año del Último Curso</label>
+                        <input type="number" name="añoCurso" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Colegio de Procedencia</label>
+                        <input type="text" name="colegioProcedencia" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Cursos Reprobados</label>
+                        <input type="number" name="cursoReprobado" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Beneficios de Beca</label>
+                        <input type="text" name="beneficioBecas" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Protección Infantil</label>
+                        <input type="text" name="proteccionInfantil" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <!-- --------------------------- PADRE --------------------------- -->
+            <div class="seccion-formulario">
+                <h4 class="mt-4">Datos del Padre</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="nombrePadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">RUT</label>
+                        <input type="text" name="rutPadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" name="fechaNacimientoPadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nacionalidad</label>
+                        <input type="text" name="nacionalidadPadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nivel Educacional</label>
+                        <input type="text" name="nivelEducacionalPadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Trabajo</label>
+                        <input type="text" name="trabajoPadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Dirección</label>
                         <input type="text" name="direccionPadre" class="form-control">
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Teléfono Padre</label>
-                        <input type="text" name="telefonoPadre" class="form-control">
+                        <label class="form-label">Teléfono</label>
+                        <input type="number" name="telefonoPadre" class="form-control">
                     </div>
+
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Correo Padre</label>
+                        <label class="form-label">Correo</label>
                         <input type="email" name="correoPadre" class="form-control">
                     </div>
-                    <!-- ================= MADRE ================= -->
-                    <h4 class="mt-4">Datos de la Madre</h4>
+                </div>
+            </div>
+
+            <!-- --------------------------- MADRE --------------------------- -->
+            <div class="seccion-formulario">
+                <h4 class="mt-4">Datos de la Madre</h4>
+                <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Dirección Madre</label>
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="nombreMadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">RUT</label>
+                        <input type="text" name="rutMadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" name="fechaNacimientoMadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nacionalidad</label>
+                        <input type="text" name="nacionalidadMadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nivel Educacional</label>
+                        <input type="text" name="nivelEducacionalMadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Trabajo</label>
+                        <input type="text" name="trabajoMadre" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Dirección</label>
                         <input type="text" name="direccionMadre" class="form-control">
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Teléfono Madre</label>
-                        <input type="text" name="telefonoMadre" class="form-control">
+                        <label class="form-label">Teléfono</label>
+                        <input type="number" name="telefonoMadre" class="form-control">
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Correo Madre</label>
+                        <label class="form-label">Correo</label>
                         <input type="email" name="correoMadre" class="form-control">
                     </div>
-                    <!-- ================= APODERADO PRINCIPAL ================= -->
-                    <h4 class="mt-4">Apoderado Principal</h4>
+                </div>
+            </div>
+
+            <!-- --------------------------- APODERADO PRINCIPAL --------------------------- -->
+            <div class="seccion-formulario">
+                <h4 class="mt-4">Apoderado Principal</h4>
+                <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Teléfono Apoderado</label>
-                        <input type="text" name="telefonoApoderado" class="form-control">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="nombreApoderado" class="form-control">
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Correo Apoderado</label>
+                        <label class="form-label">Parentesco</label>
+                        <input type="text" name="parentescoApoderado" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">RUT</label>
+                        <input type="text" name="rutApoderado" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" name="nacimientoApoderado" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Teléfono</label>
+                        <input type="number" name="telefonoApoderado" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Correo</label>
                         <input type="email" name="correoApoderado" class="form-control">
                     </div>
-                    <!-- ================= APODERADO SUPLENTE ================= -->
-                    <h4 class="mt-4">Apoderado Suplente</h4>
+
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Teléfono Suplente</label>
-                        <input type="text" name="telefonoApoderado2" class="form-control">
+                        <label class="form-label">Trabajo</label>
+                        <input type="text" name="trabajoApoderado" class="form-control">
                     </div>
-                    
+
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Correo Suplente</label>
-                        <input type="email" name="correoApoderado2" class="form-control">
+                        <label class="form-label">Nivel Educacional</label>
+                        <input type="text" name="nivelEducacionalApoderado" class="form-control">
                     </div>
                 </div>
+            </div>
+
+            <!-- --------------------------- APODERADO SUPLENTE --------------------------- -->
+            <div class="seccion-formulario">
+                <h4 class="mt-4">Apoderado Suplente</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="nombreApoderado2" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Parentesco</label>
+                        <input type="text" name="parentescoApoderado2" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">RUT</label>
+                        <input type="text" name="rutApoderado2" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" name="nacimientoApoderado2" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Teléfono</label>
+                        <input type="number" name="telefonoApoderado2" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Correo</label>
+                        <input type="email" name="correoApoderado2" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Trabajo</label>
+                        <input type="text" name="trabajoApoderado2" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nivel Educacional</label>
+                        <input type="text" name="nivelEducacionalApoderado2" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <!-- --------------------------- APODERADO QUE RETIRA --------------------------- -->
+            <div class="seccion-formulario">
+                <h4 class="mt-4">Apoderado que lo va a retirar</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="nombreRetiro" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">RUT</label>
+                        <input type="text" name="rutRetiro" class="form-control">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Parentesco</label>
+                        <input type="text" name="parentescoRetiro" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <!-- --------------------------- BOTONES --------------------------- -->
+            <div class="mt-4 mb-5">
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 <a href="/DocMatricula" class="btn btn-secondary">Cancelar</a>
-            </form>
-        </div>
-        <%- include('partials/footer') %>
+            </div>
+        </form>
+    </div>
+
+    <%- include('partials/footer') %>
 </body>
 </html>
