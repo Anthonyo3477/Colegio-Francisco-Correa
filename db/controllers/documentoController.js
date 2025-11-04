@@ -307,6 +307,7 @@ exports.editarMatriculaPDF = async (req, res) => {
       generoAlumno,
       rutAlumno,
       fechaNacimiento_alumno,
+      edadAlumno,
       direccionAlumno, 
       comunaAlumno, 
       viveCon,
@@ -316,9 +317,8 @@ exports.editarMatriculaPDF = async (req, res) => {
       quePueblo,
       enfermedad,
       alergias,
-      queAlergias,
       medicamentos,
-      queMedicamentos,
+      curso,
       peso,
       talla,
       // -------------------------------------------------------
@@ -326,6 +326,7 @@ exports.editarMatriculaPDF = async (req, res) => {
       ultimoCurso_aprobado,
       añoCursado,
       colegioProcedencia,
+      cursoReprobado,
       beca,
       proteccionInfantil,
       // -------------------------------------------------------
@@ -386,48 +387,206 @@ exports.editarMatriculaPDF = async (req, res) => {
     const fontSize = 11;
 
     // ------------------------ Alumno ------------------------
+    // X = hacia la Derecha y Izquerda
+    // X = + Derecha, - Izquerda
+    // Y = hacia Arriba y Abajo
+    // Y = + Arriba, - Abajo
+    // --------------------------------------------------------
+
+    page.drawRectangle({ x: 140, y: 796, width: 200, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( nombreAlumno || "", { x: 140, y: 796, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 70, y: 782, width: 60, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( generoAlumno || "", { x: 70, y: 782, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 170, y: 782, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( rutAlumno || "", { x: 170, y: 782, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 387, y: 782, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( fechaNacimiento_alumno || "", { x: 387, y: 782, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 510, y: 782, width: 50, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( edadAlumno || "", { x: 510, y: 782, size: fontSize, font, color: rgb(0, 0, 0) })
+
     page.drawRectangle({ x: 100, y: 769, width: 200, height: 11, color: rgb(1, 1, 1) });
     page.drawText(direccionAlumno || "", { x: 100, y: 769, size: fontSize, font, color: rgb(0, 0, 0) });
-
+    
     page.drawRectangle({ x: 89, y: 755, width: 80, height: 11, color: rgb(1, 1, 1) });
     page.drawText(comunaAlumno || "", { x: 89, y: 755, size: fontSize, font, color: rgb(0, 0, 0) });
-
+    
     page.drawRectangle({ x: 277, y: 755, width: 100, height: 11, color: rgb(1, 1, 1) });
     page.drawText(viveCon || "", { x: 280, y: 755, size: fontSize, font, color: rgb(0, 0, 0) });
+    
+    page.drawRectangle({ x: 114, y: 740, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( nacionalidadAlumno || "", { x: 114, y: 740, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 398, y: 740, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( añoIngreso_chile || "", { x: 398, y: 740, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 220, y: 726, width: 60, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( puebloOriginario || "", { x: 220, y: 726, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 320, y: 726, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( quePueblo || "", { x: 320, y: 726, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 300, y: 713, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( enfermedad || "", { x: 300, y: 713, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 248, y: 698, width: 200, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( alergias || "", { x: 248, y: 698, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 315, y: 685, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( medicamentos || "", { x: 315, y: 685, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 370, y: 852, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( curso || "", { x: 370, y: 852, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 70, y: 671, width: 30, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( peso || "", { x: 70, y: 671, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 160, y: 671, width: 30, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( talla || "", { x: 160, y: 671, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    // ------------------------ Datos Socio Academicos ------------------------
+
+    page.drawRectangle({ x: 160, y: 615, width: 50, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( ultimoCurso_aprobado || "", { x: 160, y: 615, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 277, y: 615, width: 30, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( añoCursado || "", { x: 277, y: 615, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 160, y: 600, width: 30, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( colegioProcedencia || "", { x: 160, y: 600, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 430, y: 600, width: 30, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( cursoReprobado || "", { x: 430, y: 600, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 310, y: 585, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( beca || "", { x: 310, y: 585, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 425, y: 545, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( proteccionInfantil || "", { x: 425, y: 545, size: fontSize, font, color: rgb(0, 0, 0) })
 
     // ------------------------ Padre ------------------------
-    page.drawRectangle({ x: 93, y: 450, width: 100, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(direccionPadre || "", { x: 93, y: 450, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    page.drawRectangle({ x: 436, y: 450, width: 80, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(telefonoPadre || "", { x: 436, y: 450, size: fontSize, font, color: rgb(0, 0, 0) });
+    page.drawRectangle({ x: 118, y: 494, width: 130, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(nombrePadre || "", { x: 118, y: 494, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    page.drawRectangle({ x: 390, y: 469, width: 150, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(correoPadre || "", { x: 390, y: 469, size: fontSize, font, color: rgb(0, 0, 0) });
+    page.drawRectangle({ x: 340, y: 495, width: 70, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(rutPadre || "", { x: 340, y: 495, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 510, y: 495, width: 60, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(fechaNacimiento_padre || "", { x: 510, y: 495, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 114, y: 480, width: 80, height: 11, color: rgb(1, 1, 1) })
+    page.drawText( nacionalidadPadre || "", { x: 114, y: 480, size: fontSize, font, color: rgb(0, 0, 0) })
+
+    page.drawRectangle({ x: 375, y: 480, width: 100, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(nivelEducacional_padre || "", { x: 375, y: 480, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 139, y: 466, width: 105, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(trabajoPadre || "", { x: 139, y: 466, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 93, y: 453, width: 100, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(direccionPadre || "", { x: 93, y: 453, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 436, y: 452, width: 100, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(telefonoPadre || "", { x: 436, y: 452, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 390, y: 466, width: 150, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(correoPadre || "", { x: 390, y: 466, size: fontSize, font, color: rgb(0, 0, 0) });
 
     // ------------------------ Madre ------------------------
+
+    page.drawRectangle({ x: 120, y: 425, width: 150, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(nombreMadre || "", { x: 120, y: 425, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 340, y: 424, width: 70, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(rutMadre || "", { x: 340, y: 424, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 510, y: 424, width: 60, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(fechaNacimiento_madre || "", { x: 510, y: 424, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 120, y: 410, width: 100, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(nacionalidadMadre || "", { x: 120, y: 410, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 375, y: 410, width: 100, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(nivelEducacional_madre || "", { x: 375, y: 410, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    page.drawRectangle({ x: 139, y: 396, width: 100, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(trabajoMadre || "", { x: 139, y: 396, size: fontSize, font, color: rgb(0, 0, 0) });
+
     page.drawRectangle({ x: 92, y: 382, width: 100, height: 11, color: rgb(1, 1, 1) });
     page.drawText(direccionMadre || "", { x: 92, y: 382, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    page.drawRectangle({ x: 436, y: 382, width: 150, height: 11, color: rgb(1, 1, 1) });
+    page.drawRectangle({ x: 436, y: 382, width: 100, height: 11, color: rgb(1, 1, 1) });
     page.drawText(telefonoMadre || "", { x: 436, y: 382, size: fontSize, font, color: rgb(0, 0, 0) });
 
-    page.drawRectangle({ x: 390, y: 401, width: 150, height: 11, color: rgb(1, 1, 1) });
-    page.drawText(correoMadre || "", { x: 390, y: 401, size: fontSize, font, color: rgb(0, 0, 0) });
+    page.drawRectangle({ x: 390, y: 396, width: 100, height: 11, color: rgb(1, 1, 1) });
+    page.drawText(correoMadre || "", { x: 390, y: 396, size: fontSize, font, color: rgb(0, 0, 0) });
 
     // ------------------------ Apoderado principal ------------------------
+
+    //page.drawRectangle({ x: 100, y: 287, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(nombreApoderado || "", { x: 100, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 100, y: 287, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(parentescoApoderado || "", { x: 100, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 100, y: 287, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(rutApoderado || "", { x: 100, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 100, y: 287, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(fechaNacimiento_apoderado || "", { x: 100, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
+
     page.drawRectangle({ x: 100, y: 287, width: 90, height: 11, color: rgb(1, 1, 1) });
     page.drawText(telefonoApoderado || "", { x: 100, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 330, y: 287, width: 150, height: 11, color: rgb(1, 1, 1) });
     page.drawText(correoApoderado || "", { x: 330, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
 
+    //page.drawRectangle({ x: 330, y: 287, width: 150, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(trabajoApoderado || "", { x: 330, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 330, y: 287, width: 150, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(nivelEducacional_apoderado || "", { x: 330, y: 287, size: fontSize, font, color: rgb(0, 0, 0) });
+
     // ------------------------ Apoderado suplente ------------------------
+
+    //page.drawRectangle({ x: 100, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(nombreApoderado2 || "", { x: 100, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 100, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(parentescoApoderado2 || "", { x: 100, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 100, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(rutApoderado2 || "", { x: 100, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 100, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(fechaNacimiento_apoderado2 || "", { x: 100, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
+
     page.drawRectangle({ x: 100, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
     page.drawText(telefonoApoderado2 || "", { x: 100, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
 
     page.drawRectangle({ x: 330, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
     page.drawText(correoApoderado2 || "", { x: 330, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 330, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(trabajoApoderado2 || "", { x: 330, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 330, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(nivelEducacional_apoderado2 || "", { x: 330, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    // ------------------------ Retiro ------------------------
+
+    //page.drawRectangle({ x: 330, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(nombreRetiro || "", { x: 330, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 330, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(rutRetiro || "", { x: 330, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
+
+    //page.drawRectangle({ x: 330, y: 205, width: 90, height: 11, color: rgb(1, 1, 1) });
+    //page.drawText(parentescoRetiro || "", { x: 330, y: 205, size: fontSize, font, color: rgb(0, 0, 0) });
 
     // Guardar y actualizar
     const pdfEditado = await pdfDoc.save();
