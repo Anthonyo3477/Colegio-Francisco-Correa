@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const PDFKit = require('pdfkit');
 const { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
+const ExcelJS = require('exceljs');
 
 
 // =====================================================
@@ -113,10 +114,10 @@ exports.generarMatriculaPDF = async (req, res) => {
         }
         field.setText(text || "");
         field.updateAppearances(fontBase);
-      }catch (error) {
+      } catch (error) {
         console.warn(`No se puede actualizar este campo: ${fieldName}:`, error.message);
+      }
     }
-  }
 
     // =======================
     // DATOS DEL ALUMNO
@@ -135,7 +136,7 @@ exports.generarMatriculaPDF = async (req, res) => {
     setText("puebloOriginario", alumno.puebloOriginario, 4);
     setText("quePuebloOriginario", alumno.quePueblo, 4);
     setText("cualEnfermedad", alumno.enfermedad, 4);
-    setText("cualesAlergias", alumno.alergias,4 );
+    setText("cualesAlergias", alumno.alergias, 4);
     setText("recibeMedicamentos", alumno.medicamentos, 4);
     setText("pesoAlumno", alumno.peso);
     setText("tallaAlumno", alumno.talla);
@@ -213,7 +214,7 @@ exports.generarMatriculaPDF = async (req, res) => {
     // =======================
     // RETIRO
     // =======================
-    if (retiros){
+    if (retiros) {
       setText("nombreRetiro", retiros.nombre_retiro);
       setText("rutRetirado", retiros.rut_retiro);
       setText("parentescoRetiro", retiros.parentesco_retiro);
@@ -452,5 +453,61 @@ exports.editarMatriculaPDF = async (req, res) => {
   } catch (error) {
     console.error("Error al editar PDF:", error);
     res.status(500).send("Error al editar PDF");
+  }
+};
+
+// =====================================
+// DESCARGAR EXCEL
+// =====================================
+exports.generarExcel = async function (req, res) {
+  try {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Lista de Alumnos");
+
+    worksheet.columns = [
+      { header: "Orden de LLegada", key: "orden_llegada", width: 20 },
+      { header: "Nombre Completo", key: "nombreCompleto_alumno", width: 30 },
+      { header: "RUT", key: "rut_alumnos", width: 15 },
+      { header: "Genero", key: "sexo", width: 10 },
+      { header: "Fecha de Nacimiento", key: "fechaNacimiento_alumno", width: 20 },
+      { header: "Edad", key: "edadAlumno", width: 10 },
+      { header: "Curso", key: "curso", width: 10 },
+      { header: "Enfermedades", key: "enfermedad", width: 30 },
+      { header: "Alergias", key: "alergias", width: 30 },
+      { header: "Medicamentos", key: "medicamentos", width: 30 },
+      { header: "Nacionalidad", key: "nacionalidad", width: 20 },
+      { header: "Año que Ingreso a Chile", key: "añoIngresoChile", width: 20 },
+      { header: "Fecha de Matricula", key: "fecha_ingreso", width: 20 },
+      { header: "Comuna", key: "comuna", width: 20 },
+      { header: "Direccion", key: "direccion", width: 40 },
+      { header: "Vive Con", key: "viveCon", width: 20 },
+      { header: "Pueblo Originario", key: "puebloOriginario", width: 20 },
+      { header: "¿Que Pueblo?", key: "quePueblo", width: 20 }
+    ];
+
+    const [rows] = await conn.query('SELECT * FROM alumno');
+
+    rows.forEach(alumno => worksheet.addRow(alumno));
+
+    worksheet.getRow(1).eachCell(cell => {
+      cell.font = { bold: true };
+      cell.alignment = { horizontal: 'center' };
+    });
+
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=Listado_Alumnos.xlsx'
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+
+  } catch (error) {
+    console.error("Error al generar el archivo Excel:", error);
+    res.status(500).send("Error al generar el archivo Excel");
   }
 };

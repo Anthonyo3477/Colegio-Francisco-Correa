@@ -74,6 +74,26 @@ main {
     color: #FFF642;
 }
 
+.btn-descargar {
+    margin: 30px auto 0 auto;
+    display: block;
+    background: #120077;
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.btn-descargar:hover {
+    background: #8C9292;
+    color: #FFF642;
+}
+
 .btn-filtrar {
     margin-left: 10px;
     background: #120077;

@@ -130,13 +130,3 @@ CREATE TABLE retiros (
     alumno_id INT UNIQUE,
     FOREIGN KEY ( alumno_id) REFERENCES alumno(id) ON DELETE CASCADE
 );
-
-
-INSERT INTO alumno (id, rut_alumnos, nombre, parentesco_apoderado, fechaNacimiento_apoderado, curso, fecha_ingreso, trabajo_apoderado, orden_llegada) 
-VALUES (1, '21.222.347-6', 'Antonio', 'Verdugo', 'Díaz', '4 Medio', '2025-08-13', '55');
-
-INSERT INTO apoderados (id, rut_apoderado, nombre_apoderado, parentesco_apoderado, fechaNacimiento_apoderado, trabajo_apoderado, alumno_id) 
-VALUES (1, '22.355.498-7', 'Celina', 'Vergara', 'Venegas', 'Chilena', 1);
-
-INSERT INTO admin (id, rut_admin, nombre_admin, correo_admin, contrasena_admin, telefono, direccion) 
-VALUES (1, '21.222.347-6', 'Antonio Verdugo', 'antonio@gmail.com', '1234', '+56936177611', 'tu mamita');

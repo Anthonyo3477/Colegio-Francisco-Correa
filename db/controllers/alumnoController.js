@@ -1,5 +1,6 @@
 const conn = require('../conexion');
 const TABLA = 'alumno';
+const ExcelJS = require("exceljs");
 
 // =====================================
 //  FORMATO DE FECHA
@@ -188,4 +189,4 @@ async function deleteAlumno(id) {
     return result;
 }
 
-module.exports = { createAlumno, getAllAlumnos, getAlumnoById, getAlumnosConApoderados, getAllCursos, updateAlumno, deleteAlumno};
+module.exports = { createAlumno, getAllAlumnos, getAlumnoById, getAlumnosConApoderados, getAllCursos, updateAlumno, deleteAlumno };

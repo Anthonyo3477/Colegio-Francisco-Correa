@@ -70,4 +70,12 @@ router.get('/matricula/editarVisual/:id', async (req, res) => {
 // ===============================================================
 router.post('/matricula/editarPDFVisual/:id', documentoController.editarMatriculaPDF);
 
+// ===============================================================
+// Descargar Excel
+// este apartado deberia descargar un Excel con todos los datos 
+// es decir todos los alumnos ingresados
+// ===============================================================
+
+router.get('/descargar-excel', documentoController.generarExcel);
+
 module.exports = router;
