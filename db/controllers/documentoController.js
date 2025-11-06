@@ -465,7 +465,8 @@ exports.generarExcel = async function (req, res) {
     const worksheet = workbook.addWorksheet("Lista de Alumnos");
 
     worksheet.columns = [
-      { header: "Orden de LLegada", key: "orden_llegada", width: 20 },
+      // ------------------------- Alumno -------------------------
+      { header: "Orden de LLegada", key: "orden_llegada", width: 15 },
       { header: "Nombre Completo", key: "nombreCompleto_alumno", width: 30 },
       { header: "RUT", key: "rut_alumnos", width: 15 },
       { header: "Genero", key: "sexo", width: 10 },
@@ -482,26 +483,122 @@ exports.generarExcel = async function (req, res) {
       { header: "Direccion", key: "direccion", width: 40 },
       { header: "Vive Con", key: "viveCon", width: 20 },
       { header: "Pueblo Originario", key: "puebloOriginario", width: 20 },
-      { header: "¿Que Pueblo?", key: "quePueblo", width: 20 }
+      { header: "¿Que Pueblo?", key: "quePueblo", width: 20 },
+      // ------------------------- Apoderado Principal -------------------------
+      { header: "Nombre Apoderado Completo", key: "nombre_apoderado", width: 30 },
+      { header: "Rut Apoderado", key: "rut_apoderado", width: 20 },
+      { header: "Parentesco", key: "parentesco_apoderado", width: 15 },
+      { header: "telefono", key: "telefono", width: 15 },
+      { header: "correo_apoderado", key: "correo_apoderado", width: 30 },
+
+      // ------------------------- Apoderado Suplente -------------------------
+      { header: "Nombre Completo Apoderado Suplente", key: "nombreApoderado_suplente", width: 30 },
+      { header: "Rut Apoderado Suplente", key: "rut_apoderado_suplente", width: 20 },
+      { header: "Parentesco", key: "parentescoApoderado_suplente", width: 15 },
+      { header: "Telefono Apoderado Suplente", key: "telefono_suplente", width: 15 },
+      { header: "Correo Apoderado Suplente", key: "correoApoderado_suplente", width: 30 }
     ];
 
-    const [rows] = await conn.query('SELECT * FROM alumno');
+    const [rows] = await conn.query(`
+            SELECT 
+                a.orden_llegada,
+                a.nombreCompleto_alumno,
+                a.rut_alumnos,
+                a.sexo,
+                a.fechaNacimiento_alumno,
+                a.edadAlumno,
+                a.curso,
+                a.enfermedad,
+                a.alergias,
+                a.medicamentos,
+                a.nacionalidad,
+                a.añoIngresoChile,
+                a.fecha_ingreso,
+                a.comuna,
+                a.direccion,
+                a.viveCon,
+                a.puebloOriginario,
+                a.quePueblo,
 
+                -- Apoderado Principal
+                p.nombre_apoderado,
+                p.parentesco_apoderado,
+                p.rut_apoderado,
+                p.telefono AS telefono_apoderado,
+                p.correo_apoderado,
+
+                -- Apoderado Suplente
+                s.nombreApoderado_suplente,
+                s.parentescoApoderado_suplente,
+                s.rut_apoderado_suplente,
+                s.telefono_suplente,
+                s.correoApoderado_suplente
+
+            FROM alumno a
+            LEFT JOIN apoderados p ON a.id = p.alumno_id
+            LEFT JOIN apoderado_suplente s ON a.id = s.alumno_id
+            ORDER BY a.orden_llegada ASC
+        `);
+
+    // Se agregan las Filas al Excel
     rows.forEach(alumno => worksheet.addRow(alumno));
 
-    worksheet.getRow(1).eachCell(cell => {
-      cell.font = { bold: true };
-      cell.alignment = { horizontal: 'center' };
+    // Encabezado
+    worksheet.getRow(1).font = {bold: true, colo:{ argb: 'FFFFFFFF' }};
+    worksheet.getRow(1).alignment = { horizontal: 'center', vertical: 'middle' };
+    worksheet.getRow(1).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: {argb: '4472C4' }
+    };
+    workbook.getRow(1).height = 25;
+
+    worksheet.eachRow({ includeEmpty: false }, row => {
+      row.eachRow(cell => {
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          rigth: { style: 'thin' }
+        };
+      });
     });
 
-    res.setHeader(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    );
-    res.setHeader(
-      'Content-Disposition',
-      'attachment; filename=Listado_Alumnos.xlsx'
-    );
+    worksheet.columns.forEach( column => {
+      let maxLength = 0;
+      column.eachCell({ includeEmpty: true }, cell =>{
+        const value = cell.value ? cell.value.toString() : "";
+        maxLength = Math.max(maxLength, value.length);
+      });
+      column.width = maxLength < 15 ? 15 : maxLength + 2;
+    });
+
+    worksheet.mergeCells('A1:AC1');
+    worksheet.getCell('A1').value = 'LISTADO DE TODOS LOS ALUMNOS';
+    worksheet.getCell('A1').font = {size: 16, bold: true, color: { argb: 'FFFFFF' }};
+    worksheet.getCell('A1').alignment = {horizontal: 'center', vertical: 'middle'};
+    worksheet.getCell('A1').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: '305496' }
+    };
+
+    worksheet.getRow(1).height = 30;
+
+    worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+      if (rowNumber > 2 && rowNumber % 2 === 0 ) {
+        row.eachCell(cell => {
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'F2F2F2' }
+          };
+        });
+      }
+    });
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=Listado_Alumnos.xlsx');
 
     await workbook.xlsx.write(res);
     res.end();
