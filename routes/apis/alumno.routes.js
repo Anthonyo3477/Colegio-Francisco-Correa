@@ -9,9 +9,9 @@ const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware')
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
-// ==========================================================
+// -----------------------------------------------
 // FORMATO DE FECHA 
-// ==========================================================
+// -----------------------------------------------
 function formatDate(date) {
     if (!date) return null;
     const d = new Date(date);
@@ -22,9 +22,9 @@ function formatDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-/* ================================================
+/* -----------------------------------------------
     Convertir Datos a PDF 
-==================================================*/
+-----------------------------------------------*/
 router.post('/generar-pdf', isAuthenticated, isAdmin, async (req, res) => {
     try {
         const datos = req.body;
@@ -74,9 +74,9 @@ router.post('/generar-pdf', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-/* ==================================================
+/* -----------------------------------------------
    CREAR ALUMNO
-================================================== */
+----------------------------------------------- */
 // Mostrar formulario
 router.get('/nuevo', isAuthenticated, isAdmin, (req, res) => {
     res.render('alumno', {
@@ -161,9 +161,9 @@ router.post('/insert', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-/* ==================================================
+/* -----------------------------------------------
    LISTAR ALUMNOS 
-================================================== */
+----------------------------------------------- */
 router.get('/listaAlumnos', isAuthenticated, async (req, res) => {
     try {
         const alumnos = await alumnoController.getAlumnosConApoderados();
@@ -179,9 +179,9 @@ router.get('/listaAlumnos', isAuthenticated, async (req, res) => {
     }
 });
 
-/* ==================================================
+/* -----------------------------------------------
     FILTRAR ALUMNO
-================================================== */
+----------------------------------------------- */
 router.get('/filtrar', isAuthenticated, async (req, res) => {
     try {
         const { curso } = req.query;
@@ -195,9 +195,9 @@ router.get('/filtrar', isAuthenticated, async (req, res) => {
     }
 });
 
-/* ==================================================
+/* -----------------------------------------------
    MODIFICAR ALUMNO
-================================================== */
+----------------------------------------------- */
 // Formulario edición
 router.get('/editar/:id', isAuthenticated, isAdmin, async (req, res) => {
     const id = req.params.id;
@@ -300,9 +300,9 @@ router.post('/actualizar/:id', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-/* ==================================================
+/* -----------------------------------------------
    ELIMINAR ALUMNO
-================================================== */
+----------------------------------------------- */
 router.post('/eliminar/:id', isAuthenticated, isAdmin, async (req, res) => {
     const id = req.params.id;
     try {

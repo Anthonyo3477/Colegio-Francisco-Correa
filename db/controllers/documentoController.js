@@ -6,9 +6,9 @@ const { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
 const ExcelJS = require('exceljs');
 
 
-// =====================================================
+// -----------------------------------------------------
 // SUBIR PDF MANUAL (desde formulario)
-// =====================================================
+// -----------------------------------------------------
 exports.subirDocumento = async (req, res) => {
   try {
     if (!req.file) {
@@ -31,9 +31,9 @@ exports.subirDocumento = async (req, res) => {
   }
 };
 
-// =====================================================
+// -----------------------------------------------------
 // LISTAR MATRÍCULAS
-// =====================================================
+// -----------------------------------------------------
 exports.listarMatriculas = async (req, res) => {
   try {
     const [rows] = await conn.execute(
@@ -53,9 +53,9 @@ exports.listarMatriculas = async (req, res) => {
   }
 };
 
-// =====================================================
+// -----------------------------------------------------
 // VISUALIZAR PDF EN EL NAVEGADOR
-// =====================================================
+// -----------------------------------------------------
 exports.verMatricula = async (req, res) => {
   try {
     const { id } = req.params;
@@ -78,9 +78,9 @@ exports.verMatricula = async (req, res) => {
   }
 };
 
-// =====================================================
+// -----------------------------------------------------
 // GENERAR O REEMPLAZAR PDF DESDE PLANTILLA EXISTENTE
-// =====================================================
+// -----------------------------------------------------
 exports.generarMatriculaPDF = async (req, res) => {
   try {
     const { idAlumno } = req.params;
@@ -119,9 +119,9 @@ exports.generarMatriculaPDF = async (req, res) => {
       }
     }
 
-    // =======================
+    // -----------------------------------------------
     // DATOS DEL ALUMNO
-    // =======================
+    // -----------------------------------------------
     setText("nombreCompleto", alumno.nombreCompleto_alumno);
     setText("sexoAlumno", alumno.sexo, 2);
     setText("rutAlumnos", alumno.rut_alumnos);
@@ -141,9 +141,9 @@ exports.generarMatriculaPDF = async (req, res) => {
     setText("pesoAlumno", alumno.peso);
     setText("tallaAlumno", alumno.talla);
 
-    // =======================
+    // -----------------------------------------------
     // DATOS SOCIO-ACADÉMICOS
-    // =======================
+    // -----------------------------------------------
     if (datosAcademicos) {
       setText("UltimoCurso", datosAcademicos.ultimo_curso_cursado);
       setText("añoCursado", datosAcademicos.año_cursado?.toString());
@@ -153,9 +153,9 @@ exports.generarMatriculaPDF = async (req, res) => {
       setText("perteneceProgramaProteccionInfantil", datosAcademicos.proteccion_infantil);
     }
 
-    // =======================
+    // -----------------------------------------------
     // PADRE
-    // =======================
+    // -----------------------------------------------
     if (padre) {
       setText("nombrePadre", padre.nombre_padre);
       setText("rutPadre", padre.rut_padre);
@@ -168,9 +168,9 @@ exports.generarMatriculaPDF = async (req, res) => {
       setText("telefonoPadre", padre.telefono_padre);
     }
 
-    // =======================
+    // -----------------------------------------------
     // MADRE
-    // =======================
+    // -----------------------------------------------
     if (madre) {
       setText("nombreMadre", madre.nombre_madre);
       setText("rutMadre", madre.rut_madre);
@@ -183,9 +183,9 @@ exports.generarMatriculaPDF = async (req, res) => {
       setText("telefonoMadre", madre.telefono_madre);
     }
 
-    // =======================
+    // -----------------------------------------------
     // APODERADO PRINCIPAL
-    // =======================
+    // -----------------------------------------------
     if (apoderado) {
       setText("nombreApoderado", apoderado.nombre_apoderado);
       setText("parentescoApoderado", apoderado.parentesco_apoderado);
@@ -197,9 +197,9 @@ exports.generarMatriculaPDF = async (req, res) => {
       setText("nivelEducacionalApoderado", apoderado.nivelEducacional_apoderado);
     }
 
-    // =======================
+    // -----------------------------------------------
     // APODERADO SUPLENTE
-    // =======================
+    // -----------------------------------------------
     if (apoderado2) {
       setText("nombreApoderado2", apoderado2.nombreApoderado_suplente);
       setText("parentescoApoderado2", apoderado2.parentescoApoderado_suplente);
@@ -211,9 +211,9 @@ exports.generarMatriculaPDF = async (req, res) => {
       setText("nivelEducacionalApoderado2", apoderado2.nivelEducacional_apoderado_suplente);
     }
 
-    // =======================
+    // -----------------------------------------------
     // RETIRO
-    // =======================
+    // -----------------------------------------------
     if (retiros) {
       setText("nombreRetiro", retiros.nombre_retiro);
       setText("rutRetirado", retiros.rut_retiro);
@@ -244,9 +244,9 @@ exports.generarMatriculaPDF = async (req, res) => {
   }
 };
 
-// =====================================================
+// -----------------------------------------------
 // REGENERAR PDF
-// =====================================================
+// -----------------------------------------------
 exports.regenerarMatricula = async (req, res) => {
   try {
     return exports.generarMatriculaPDF(req, res);
@@ -256,9 +256,9 @@ exports.regenerarMatricula = async (req, res) => {
   }
 };
 
-// =====================================================
+// -----------------------------------------------
 // DESCARGAR PDF
-// =====================================================
+// -----------------------------------------------
 exports.descargarMatricula = async (req, res) => {
   try {
     const { id } = req.params;
@@ -278,9 +278,9 @@ exports.descargarMatricula = async (req, res) => {
   }
 };
 
-// =====================================================
+// -----------------------------------------------
 // ELIMINAR MATRÍCULA
-// =====================================================
+// -----------------------------------------------
 exports.eliminarMatricula = async (req, res) => {
   try {
     const { id } = req.params;
@@ -296,9 +296,9 @@ exports.eliminarMatricula = async (req, res) => {
   }
 };
 
-// ==========================================================
+// -----------------------------------------------
 // EDITAR PDF DE MANERA VISUAL
-// ==========================================================
+// -----------------------------------------------
 exports.editarMatriculaPDF = async (req, res) => {
   try {
     const { id } = req.params;
@@ -338,10 +338,10 @@ exports.editarMatriculaPDF = async (req, res) => {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const fontSize = 11;
 
-    // ======================================================================
+    // ----------------------------------------------------------------------
     // Este apartado solo escribira encima cuando detecte que se
     // Escribio en el, de lo contrrio mantendra solo el mismo datos que esta
-    // ======================================================================
+    // ----------------------------------------------------------------------
     function escribirCampo(texto, x, y, width, height) {
       if (texto && texto.trim() !== "") {
         page.drawRectangle({ x, y, width, height, color: rgb(1, 1, 1) });
@@ -349,9 +349,9 @@ exports.editarMatriculaPDF = async (req, res) => {
       }
     }
 
-    // ==========================================================
+    // -------------------------------------
     // Alumno
-    // ==========================================================
+    // -------------------------------------
     escribirCampo(nombreAlumno, 140, 796, 200, 11);
     escribirCampo(generoAlumno, 70, 782, 60, 11);
     escribirCampo(rutAlumno, 170, 782, 80, 11);
@@ -371,9 +371,9 @@ exports.editarMatriculaPDF = async (req, res) => {
     escribirCampo(peso, 70, 671, 30, 11);
     escribirCampo(talla, 160, 671, 30, 11);
 
-    // ==========================================================
+    // -------------------------------------
     // Socio Academico
-    // ==========================================================
+    // -------------------------------------
     escribirCampo(ultimoCurso_aprobado, 160, 615, 50, 11);
     escribirCampo(añoCursado, 277, 615, 30, 11);
     escribirCampo(colegioProcedencia, 160, 600, 30, 11);
@@ -381,9 +381,9 @@ exports.editarMatriculaPDF = async (req, res) => {
     escribirCampo(beca, 310, 585, 80, 11);
     escribirCampo(proteccionInfantil, 425, 545, 80, 11);
 
-    // ==========================================================
+    // -------------------------------------
     // Padre
-    // ==========================================================
+    // -------------------------------------
     escribirCampo(nombrePadre, 118, 494, 130, 11);
     escribirCampo(rutPadre, 340, 495, 70, 11);
     escribirCampo(fechaNacimiento_padre, 510, 495, 60, 11);
@@ -394,9 +394,9 @@ exports.editarMatriculaPDF = async (req, res) => {
     escribirCampo(telefonoPadre, 436, 452, 100, 11);
     escribirCampo(correoPadre, 390, 466, 150, 11);
 
-    // ==========================================================
+    // -------------------------------------
     // Madre
-    // ==========================================================
+    // -------------------------------------
     escribirCampo(nombreMadre, 120, 425, 150, 11);
     escribirCampo(rutMadre, 340, 424, 70, 11);
     escribirCampo(fechaNacimiento_madre, 510, 424, 60, 11);
@@ -407,9 +407,9 @@ exports.editarMatriculaPDF = async (req, res) => {
     escribirCampo(telefonoMadre, 436, 382, 100, 11);
     escribirCampo(correoMadre, 390, 396, 100, 11);
 
-    // ==========================================================
+    // -------------------------------------
     // Apoderado Principal
-    // ==========================================================
+    // -------------------------------------
     escribirCampo(nombreApoderado, 154, 318, 130, 11);
     escribirCampo(parentescoApoderado, 398, 318, 100, 11);
     escribirCampo(rutApoderado, 70, 303, 90, 11);
@@ -419,9 +419,9 @@ exports.editarMatriculaPDF = async (req, res) => {
     escribirCampo(trabajoApoderado, 139, 275, 100, 11);
     escribirCampo(nivelEducacional_apoderado, 350, 275, 100, 11);
 
-    // ==========================================================
+    // -------------------------------------
     // Apoderado Suplente
-    // ==========================================================
+    // -------------------------------------
     escribirCampo(nombreApoderado2, 154, 235, 130, 11);
     escribirCampo(parentescoApoderado2, 387, 235, 90, 11);
     escribirCampo(rutApoderado2, 70, 219, 90, 11);
@@ -431,16 +431,16 @@ exports.editarMatriculaPDF = async (req, res) => {
     escribirCampo(trabajoApoderado2, 139, 190, 90, 11);
     escribirCampo(nivelEducacional_apoderado2, 350, 190, 90, 11);
 
-    // ==========================================================
+    // -------------------------------------
     // Apoderado Retiro
-    // ==========================================================
+    // -------------------------------------
     escribirCampo(nombreRetiro, 300, 164, 120, 11);
     escribirCampo(rutRetiro, 70, 148, 90, 11);
     escribirCampo(parentescoRetiro, 280, 148, 100, 11);
 
-    // ==========================================================
+    // -------------------------------------
     // Guardar
-    // ==========================================================
+    // -------------------------------------
     const pdfEditado = await pdfDoc.save();
     await conn.execute(
       "UPDATE matriculas SET documento = ?, fecha_subida = CURRENT_TIMESTAMP WHERE id = ?",
@@ -456,9 +456,9 @@ exports.editarMatriculaPDF = async (req, res) => {
   }
 };
 
-// =====================================
+// -------------------------------------
 // DESCARGAR EXCEL
-// =====================================
+// -------------------------------------
 exports.generarExcel = async function (req, res) {
   try {
     const workbook = new ExcelJS.Workbook();

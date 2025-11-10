@@ -1,9 +1,9 @@
 const { PDFDocument } = require('pdf-lib');
 const conn = require('../conexion');
 
-// ==========================================================
+// ---------------------------------
 // MOSTRAR FORMULARIO DE EDICION
-// ==========================================================
+// ---------------------------------
 exports.mostrarFormulario = async (req, res) => {
   try {
     const documentoId = req.params.id;
@@ -38,9 +38,9 @@ exports.mostrarFormulario = async (req, res) => {
 };
 
 
-// ==========================================================
+// ------------------------------
 // PROCESAR EDICION
-// ==========================================================
+// ------------------------------
 exports.editarPDF = async (req, res) => {
   try {
     const {documentoId, nombreCompleto, sexoAlumno, rutAlumnos, fechaNacimientoAlumno, domicilioAlumno,
@@ -74,7 +74,7 @@ exports.editarPDF = async (req, res) => {
     // Intentamos obtener los campos del formulario PDF
     const form = pdfDoc.getForm();
 
-    // ================= Datos del Alumno =================
+    // ----------------------- Datos del Alumno -----------------------
     form.getTextField('nombreCompleto').setText(nombreCompleto || '');
     form.getTextField('sexoAlumno').setText(sexoAlumno || '');
     form.getTextField('rutAlumnos').setText(rutAlumnos || '');
@@ -93,7 +93,7 @@ exports.editarPDF = async (req, res) => {
     form.getTextField('pesoAlumno').setText(pesoAlumno || '');
     form.getTextField('tallaAlumno').setText(tallaAlumno || '');
 
-    // ================= Datos Socio-Economicos =================
+    // ----------------------- Datos Socio-Economicos -----------------------
     form.getTextField('UltimoCurso').setText(UltimoCurso || '');
     form.getTextField('añoCursado').setText(añoCursado || '');
     form.getTextField('colegioProcedencia').setText(colegioProcedencia || '');
@@ -101,7 +101,7 @@ exports.editarPDF = async (req, res) => {
     form.getTextField('cualBeca').setText(cualBeca || '');
     form.getTextField('perteneceProgramaProteccionInfantil').setText(perteneceProgramaProteccionInfantil || '');
 
-    // ================= Antecedentes Familiares =================
+    // ----------------------- Antecedentes Familiares -----------------------
     form.getTextField('nombrePadre').setText(nombrePadre || '');
     form.getTextField('rutPadre').setText(rutPadre || '');
     form.getTextField('fechaNacimientoPadre').setText(fechaNacimientoPadre || '');
@@ -121,7 +121,7 @@ exports.editarPDF = async (req, res) => {
     form.getTextField('direccionMadre').setText(direccionMadre || '');
     form.getTextField('telefonoMadre').setText(telefonoMadre || '');
 
-    // ================= Datos del Apoderado =================
+    // ----------------------- Datos del Apoderado -----------------------
     form.getTextField('nombre_apoderado').setText(nombre_apoderado || '');
     form.getTextField('parentesco_apoderado').setText(parentesco_apoderado || '');
     form.getTextField('rut_apoderado').setText(rut_apoderado || '');

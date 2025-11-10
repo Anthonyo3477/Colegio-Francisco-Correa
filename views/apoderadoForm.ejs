@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <!-- Navbar -->
+    <!-- --------------------------- Navbar --------------------------- -->
     <%- include('partials/navbar') %>
 
         <header>
@@ -26,7 +26,7 @@
                     </p>
                     <% } %>
 
-                        <!-- Formulario -->
+                        <!-- --------------------------- Formulario --------------------------- -->
                         <form action="/insertApoderado" method="POST">
                             <input type="hidden" name="alumno_id" value="<%= alumnoId %>">
 
@@ -37,37 +37,28 @@
                                     <h3>Datos del Apoderado</h3>
 
                                     <label for="nombre_apoderado">Nombre Completo:</label>
-                                    <input type="text" id="nombre_apoderado" name="nombre_apoderado" maxlength="100"
-                                        required value="<%= valores?.nombre_apoderado || '' %>">
+                                    <input type="text" id="nombre_apoderado" name="nombre_apoderado" maxlength="100" required value="<%= valores?.nombre_apoderado || '' %>">
 
                                     <label for="parentesco_apoderado">Parentesco:</label>
-                                    <input type="text" id="parentesco_apoderado" name="parentesco_apoderado"
-                                        maxlength="100" required value="<%= valores?.parentesco_apoderado || '' %>">
+                                    <input type="text" id="parentesco_apoderado" name="parentesco_apoderado" maxlength="100" required value="<%= valores?.parentesco_apoderado || '' %>">
 
                                     <label for="rut_apoderado">RUT:</label>
-                                    <input type="text" id="rut_apoderado" name="rut_apoderado" maxlength="12" required
-                                        value="<%= valores?.rut_apoderado || '' %>">
+                                    <input type="text" id="rut_apoderado" name="rut_apoderado" maxlength="12" required value="<%= valores?.rut_apoderado || '' %>">
 
                                     <label for="fechaNacimiento_apoderado">Fecha de Nacimiento:</label>
-                                    <input type="date" id="fechaNacimiento_apoderado" name="fechaNacimiento_apoderado"
-                                        required value="<%= valores?.fechaNacimiento_apoderado || '' %>">
+                                    <input type="date" id="fechaNacimiento_apoderado" name="fechaNacimiento_apoderado" required value="<%= valores?.fechaNacimiento_apoderado || '' %>">
 
                                     <label for="telefono">Teléfono:</label>
-                                    <input type="text" id="telefono" name="telefono" maxlength="15" required
-                                        value="<%= valores?.telefono || '' %>">
+                                    <input type="text" id="telefono" name="telefono" maxlength="15" required value="<%= valores?.telefono || '' %>">
 
                                     <label for="correo_apoderado">Correo:</label>
-                                    <input type="email" id="correo_apoderado" name="correo_apoderado" maxlength="100"
-                                        required value="<%= valores?.correo_apoderado || '' %>">
+                                    <input type="email" id="correo_apoderado" name="correo_apoderado" maxlength="100" required value="<%= valores?.correo_apoderado || '' %>">
 
                                     <label for="trabajo_apoderado">Trabajo:</label>
-                                    <input type="text" id="trabajo_apoderado" name="trabajo_apoderado" maxlength="100"
-                                        required value="<%= valores?.trabajo_apoderado || '' %>">
+                                    <input type="text" id="trabajo_apoderado" name="trabajo_apoderado" maxlength="100" required value="<%= valores?.trabajo_apoderado || '' %>">
 
                                     <label for="nivelEducacional_apoderado">Nivel Educacional:</label>
-                                    <input type="text" id="nivelEducacional_apoderado" name="nivelEducacional_apoderado"
-                                        maxlength="200" required
-                                        value="<%= valores?.nivelEducacional_apoderado || '' %>">
+                                    <input type="text" id="nivelEducacional_apoderado" name="nivelEducacional_apoderado" maxlength="200" required value="<%= valores?.nivelEducacional_apoderado || '' %>">
                                 </div>
 
                                 <!-- Apoderado Suplente -->
@@ -75,39 +66,28 @@
                                     <h3>Datos del Apoderado Suplente</h3>
 
                                     <label for="nombreApoderado_suplente">Nombre Completo:</label>
-                                    <input type="text" id="nombreApoderado_suplente" name="nombreApoderado_suplente"
-                                        maxlength="100" value="<%= valores?.nombreApoderado_suplente || '' %>">
+                                    <input type="text" id="nombreApoderado_suplente" name="nombreApoderado_suplente" maxlength="100" value="<%= valores?.nombreApoderado_suplente || '' %>">
 
                                     <label for="parentescoApoderado_suplente">Parentesco:</label>
-                                    <input type="text" id="parentescoApoderado_suplente"
-                                        name="parentescoApoderado_suplente" maxlength="100"
-                                        value="<%= valores?.parentescoApoderado_suplente || '' %>">
+                                    <input type="text" id="parentescoApoderado_suplente" name="parentescoApoderado_suplente" maxlength="100" value="<%= valores?.parentescoApoderado_suplente || '' %>">
 
                                     <label for="rut_apoderado_suplente">RUT:</label>
-                                    <input type="text" id="rut_apoderado_suplente" name="rut_apoderado_suplente"
-                                        maxlength="12" value="<%= valores?.rut_apoderado_suplente || '' %>">
+                                    <input type="text" id="rut_apoderado_suplente" name="rut_apoderado_suplente" maxlength="12" value="<%= valores?.rut_apoderado_suplente || '' %>">
 
                                     <label for="fechaNacimiento_apoderado_suplente">Fecha de Nacimiento:</label>
-                                    <input type="date" id="fechaNacimiento_apoderado_suplente"
-                                        name="fechaNacimiento_apoderado_suplente"
-                                        value="<%= valores?.fechaNacimiento_apoderado_suplente || '' %>">
+                                    <input type="date" id="fechaNacimiento_apoderado_suplente" name="fechaNacimiento_apoderado_suplente" value="<%= valores?.fechaNacimiento_apoderado_suplente || '' %>">
 
                                     <label for="telefono_suplente">Teléfono:</label>
-                                    <input type="text" id="telefono_suplente" name="telefono_suplente" maxlength="15"
-                                        value="<%= valores?.telefono_suplente || '' %>">
+                                    <input type="text" id="telefono_suplente" name="telefono_suplente" maxlength="15" value="<%= valores?.telefono_suplente || '' %>">
 
                                     <label for="correoApoderado_suplente">Correo:</label>
-                                    <input type="email" id="correoApoderado_suplente" name="correoApoderado_suplente"
-                                        maxlength="100" value="<%= valores?.correoApoderado_suplente || '' %>">
+                                    <input type="email" id="correoApoderado_suplente" name="correoApoderado_suplente" maxlength="100" value="<%= valores?.correoApoderado_suplente || '' %>">
 
                                     <label for="trabajoApoderado_suplente">Trabajo:</label>
-                                    <input type="text" id="trabajoApoderado_suplente" name="trabajoApoderado_suplente"
-                                        maxlength="100" value="<%= valores?.trabajoApoderado_suplente || '' %>">
+                                    <input type="text" id="trabajoApoderado_suplente" name="trabajoApoderado_suplente" maxlength="100" value="<%= valores?.trabajoApoderado_suplente || '' %>">
 
                                     <label for="nivelEducacional_apoderado_suplente">Nivel Educacional:</label>
-                                    <input type="text" id="nivelEducacional_apoderado_suplente"
-                                        name="nivelEducacional_apoderado_suplente" maxlength="200"
-                                        value="<%= valores?.nivelEducacional_apoderado_suplente || '' %>">
+                                    <input type="text" id="nivelEducacional_apoderado_suplente" name="nivelEducacional_apoderado_suplente" maxlength="200" value="<%= valores?.nivelEducacional_apoderado_suplente || '' %>">
                                 </div>
                             </div>
 
@@ -116,29 +96,25 @@
                                 <h3>Datos de la Persona que hará el Retiro del Alumno</h3>
 
                                 <label for="nombre_retiro">Nombre Completo:</label>
-                                <input type="text" id="nombre_retiro" name="nombre_retiro" maxlength="100" required
-                                    value="<%= valores?.nombre_retiro || '' %>">
+                                <input type="text" id="nombre_retiro" name="nombre_retiro" maxlength="100" required value="<%= valores?.nombre_retiro || '' %>">
 
                                 <label for="rut_retiro">RUT:</label>
-                                <input type="text" id="rut_retiro" name="rut_retiro" maxlength="12" required
-                                    value="<%= valores?.rut_retiro || '' %>">
+                                <input type="text" id="rut_retiro" name="rut_retiro" maxlength="12" required value="<%= valores?.rut_retiro || '' %>">
 
                                 <label for="parentesco_retiro">Parentesco con el Alumno:</label>
-                                <input type="text" id="parentesco_retiro" name="parentesco_retiro" maxlength="100"
-                                    required value="<%= valores?.parentesco_retiro || '' %>">
+                                <input type="text" id="parentesco_retiro" name="parentesco_retiro" maxlength="100" required value="<%= valores?.parentesco_retiro || '' %>">
                             </div>
 
                             <!-- Botones -->
                             <div style="text-align:center; margin-top:20px;">
                                 <button type="submit">Registrar Apoderados</button>
-                                <button type="button" onclick="window.history.back()"
-                                    style="margin-left:10px;">Volver</button>
+                                <button type="button" onclick="window.history.back()" style="margin-left:10px;">Volver</button>
                             </div>
                         </form>
             </div>
         </main>
 
-        <!-- Footer -->
+        <!-- --------------------------- Footer --------------------------- -->
         <%- include('partials/footer') %>
 </body>
 

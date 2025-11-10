@@ -2,9 +2,9 @@ const conn = require('../conexion');
 const TABLA = 'alumno';
 const ExcelJS = require("exceljs");
 
-// =====================================
+// -----------------------------------------------
 //  FORMATO DE FECHA
-// =====================================
+// -----------------------------------------------
 function formatDate(date) {
     if (!date) return null;
     if (/^\d{2}-\d{2}-\d{4}$/.test(date)) {
@@ -23,9 +23,9 @@ function formatDate(date) {
     return date;
 }
 
-// =====================================
+// -----------------------------------------------
 //  CREAR ALUMNO
-// =====================================
+// -----------------------------------------------
 async function createAlumno(alumno) {
     const {
         nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno,
@@ -50,9 +50,9 @@ async function createAlumno(alumno) {
     return result;
 }
 
-// =====================================
+// -----------------------------------------------
 //  OBTENER TODOS LOS ALUMNOS
-// =====================================
+// -----------------------------------------------
 async function getAllAlumnos() {
     const sql = `
         SELECT id, nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno, 
@@ -65,9 +65,9 @@ async function getAllAlumnos() {
     return rows;
 }
 
-// =====================================
+// -----------------------------------------------
 //  OBTENER ALUMNOS ID
-// =====================================
+// -----------------------------------------------
 async function getAlumnoById(id) {
     if (!id) return null;
     const sql = `SELECT * FROM ${TABLA} WHERE id = ?`;
@@ -75,9 +75,9 @@ async function getAlumnoById(id) {
     return rows[0] || null;
 }
 
-// =====================================
+// -----------------------------------------------
 //  LISTADO ALUMNO CON APODERADO
-// =====================================
+// -----------------------------------------------
 async function getAlumnosConApoderados({ curso } = {}) {
     let sql = `
         SELECT 
@@ -145,17 +145,17 @@ async function getAlumnosConApoderados({ curso } = {}) {
     return Array.from(alumnosMap.values());
 }
 
-// =====================================
+// -----------------------------------------------
 // obtiene todos los cursos
-// =====================================
+// -----------------------------------------------
 async function getAllCursos() {
     const [rows] = await conn.query("SELECT DISTINCT curso FROM alumno ORDER BY curso ASC");
     return rows.map(r => r.curso);
 }
 
-// =====================================
+// -----------------------------------------------
 // Actualizar ALUMNOS
-// =====================================
+// -----------------------------------------------
 async function updateAlumno(id, alumno) {
     const {
         nombreCompleto_alumno, sexo, rut_alumnos, fechaNacimiento_alumno, edadAlumno,
@@ -180,9 +180,9 @@ async function updateAlumno(id, alumno) {
     return result;
 }
 
-// =====================================
+// -----------------------------------------------
 //  ELIMINAR ALUMNO
-// =====================================
+// -----------------------------------------------
 async function deleteAlumno(id) {
     const sql = `DELETE FROM ${TABLA} WHERE id = ?`;
     const [result] = await conn.query(sql, [id]);

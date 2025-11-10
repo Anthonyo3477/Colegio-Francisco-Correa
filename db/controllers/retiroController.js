@@ -1,9 +1,9 @@
 const conn = require('../conexion');
 const TABLA = 'retiros';
 
-// ============================================================
+// ---------------------------------
 // CREAR RETIRO
-// ============================================================
+// ---------------------------------
 async function createRetiro({ nombre_retiro, rut_retiro, parentesco_retiro, alumno_id }) {
     const sql = `
     INSERT INTO ${TABLA} (nombre_retiro, rut_retiro, parentesco_retiro, alumno_id)
@@ -15,9 +15,9 @@ async function createRetiro({ nombre_retiro, rut_retiro, parentesco_retiro, alum
     return result;
 }
 
-// ============================================================
+// ---------------------------------
 // OBTENER TODOS LOS RETIROS
-// ============================================================
+// ---------------------------------
 async function getAllRetiros() {
     const sql = `
     SELECT r.id, r.nombre_retiro, r.rut_retiro, r.parentesco_retiro,
@@ -30,9 +30,9 @@ async function getAllRetiros() {
     return rows;
 }
 
-// ============================================================
+// ---------------------------------
 // OBTENER RETIRO POR ID
-// ============================================================
+// ---------------------------------
 async function getRetiroById(id) {
     if (!id) return null;
     const sql = `
@@ -45,18 +45,18 @@ async function getRetiroById(id) {
     return rows[0] || null;
 }
 
-// ============================================================
+// ---------------------------------
 // OBTENER RETIRO POR ALUMNO_ID
-// ============================================================
+// ---------------------------------
 async function getRetiroByAlumnoId(alumno_id) {
     const sql = `SELECT * FROM ${TABLA} WHERE alumno_id = ?`;
     const [rows] = await conn.query(sql, [alumno_id]);
     return rows[0] || null;
 }
 
-// ============================================================
+// ---------------------------------
 // ACTUALIZAR RETIRO
-// ============================================================
+// ---------------------------------
 async function updateRetiro(id, { nombre_retiro, rut_retiro, parentesco_retiro, alumno_id }) {
     const sql = `
     UPDATE ${TABLA}
@@ -68,9 +68,9 @@ async function updateRetiro(id, { nombre_retiro, rut_retiro, parentesco_retiro, 
     return result;
 }
 
-// ============================================================
+// ---------------------------------
 // ELIMINAR RETIRO
-// ============================================================
+// ---------------------------------
 async function deleteRetiro(id) {
     if (!id) return null;
     const sql = `DELETE FROM ${TABLA} WHERE id = ?`;

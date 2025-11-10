@@ -63,18 +63,14 @@ router.get('/matricula/editarVisual/:id', async (req, res) => {
   }
 });
 
-// ===============================================================
+// -------------------------------
 // EDITA PDF SOLO ALGUNOS CAMPOS
-// direccion, telefono, correo, comuna, y con quien vive el alumno
-// ojo se edita de manera visual
-// ===============================================================
+// -------------------------------
 router.post('/matricula/editarPDFVisual/:id', documentoController.editarMatriculaPDF);
 
-// ===============================================================
+// -------------------------------
 // Descargar Excel
-// este apartado deberia descargar un Excel con todos los datos 
-// es decir todos los alumnos ingresados
-// ===============================================================
+// -------------------------------
 
 router.get('/descargar-excel', documentoController.generarExcel);
 

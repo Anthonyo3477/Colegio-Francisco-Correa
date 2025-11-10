@@ -1,9 +1,9 @@
 const conn = require('../conexion');
 const bcrypt = require('bcryptjs');
 
-// ========================
+// -------------------------------------
 // Login de usuario
-// ========================
+// -------------------------------------
 exports.login = async (req, res) => {
     const { correo_usuario, contrasena_usuario } = req.body;
     console.log("Datos recibidos en login:", req.body);
@@ -58,9 +58,9 @@ exports.login = async (req, res) => {
 };
 
 
-// ========================
+// -------------------------------------
 // Registrar usuario
-// ========================
+// -------------------------------------
 exports.registrar = async (req, res) => {
     let { rut_usuario, nombre_usuario, correo_usuario, contrasena_usuario, telefono, direccion, rol } = req.body;
     console.log("Datos recibidos en registrar:", req.body);
@@ -98,9 +98,9 @@ exports.registrar = async (req, res) => {
     }
 };
 
-// ========================
+// -------------------------------------
 // Logout de usuario
-// ========================
+// -------------------------------------
 exports.logout = (req, res) => {
     req.session.destroy((err) => {
         if (err) {

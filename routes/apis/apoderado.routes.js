@@ -5,9 +5,9 @@ const apoderadoSuplenteController = require('../../db/controllers/apoderadoSuple
 const retiroController = require('../../db/controllers/retiroController');
 const { isAuthenticated, isAdmin } = require('../../middlewares/authMiddleware');
 
-// ==========================================================
+// -------------------------------
 // FORMATO FECHA
-// ==========================================================
+// -------------------------------
 function formatDate(date) {
     if (!date) return null;
     const d = new Date(date);
@@ -18,9 +18,9 @@ function formatDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-/* ==================================================
+/* ----------------------------------------
    FORMULARIO NUEVO APODERADO
-================================================== */
+---------------------------------------- */
 router.get('/nuevo-apoderado/:alumnoId', isAuthenticated, isAdmin, (req, res) => {
     const { alumnoId } = req.params;
     res.render('apoderadoForm', {
@@ -31,9 +31,9 @@ router.get('/nuevo-apoderado/:alumnoId', isAuthenticated, isAdmin, (req, res) =>
     });
 });
 
-/* ==================================================
+/* ------------------------------------------
    INSERTAR APODERADO + SUPLENTE + RETIRO
-================================================== */
+------------------------------------------ */
 router.post('/insertApoderado', isAuthenticated, isAdmin, async (req, res) => {
     try {
         const {
@@ -131,9 +131,9 @@ router.post('/insertApoderado', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-/* ==================================================
+/* ------------------------------------------
    FORMULARIO EDITAR APODERADO
-================================================== */
+------------------------------------------ */
 router.get('/editar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, res) => {
     const alumnoId = req.params.alumnoId;
     try {
@@ -174,9 +174,9 @@ router.get('/editar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, 
     }
 });
 
-/* ==================================================
+/* -----------------------------------------------
    ACTUALIZAR APODERADO + SUPLENTE + RETIRO
-================================================== */
+----------------------------------------------- */
 router.post('/actualizar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, res) => {
     const alumnoId = req.params.alumnoId;
 
@@ -289,9 +289,9 @@ router.post('/actualizar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (
     }
 });
 
-/* ==================================================
+/* -----------------------------------------------
    ELIMINAR APODERADO + SUPLENTE + RETIRO
-================================================== */
+----------------------------------------------- */
 router.post('/eliminar-apoderado/:alumnoId', isAuthenticated, isAdmin, async (req, res) => {
     const alumnoId = req.params.alumnoId;
     try {

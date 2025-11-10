@@ -1,9 +1,9 @@
 const conn = require("../conexion");
 const TABLA = "madre";
 
-// ==========================================================
+// -----------------------------------------------------
 // CREATE MADRE
-// ==========================================================
+// -----------------------------------------------------
 async function createMadre(madre) {
     const { nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre,
         trabajo_madre, correo_madre,  direccion_madre, telefono_madre, alumno_id } = madre;
@@ -22,9 +22,9 @@ async function createMadre(madre) {
     return result;
 }
 
-// ==========================================================
+// -----------------------------------------------------
 // LISTAR MADRES
-// ==========================================================
+// -----------------------------------------------------
 async function getAllMadres() {
     const sql = `
         SELECT id, nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre, 
@@ -34,9 +34,9 @@ async function getAllMadres() {
     return rows;
 }
 
-// ==========================================================
+// -----------------------------------------------------
 // LISTAR MADRE POR ID
-// ==========================================================
+// -----------------------------------------------------
 async function getMadresById(id) {
     if (!id) return null;
     const sql = `SELECT * FROM ${TABLA} WHERE id = ?`;
@@ -44,17 +44,17 @@ async function getMadresById(id) {
     return rows[0] || null;
 }
 
-// ==========================================================
+// -----------------------------------------------------
 // LISTAR MADRE CON ALUMNO
-// ==========================================================
+// -----------------------------------------------------
 async function getMadreByAlumnoId (alumnoId) {
     const [rows] = await conn.query('SELECT * FROM madre WHERE alumno_id = ?', [alumnoId]);
     return rows[0] || null;
 }
 
-// ==========================================================
+// -----------------------------------------------------
 // ACTUALIZAR MADRE
-// ==========================================================
+// -----------------------------------------------------
 async function updateMadres(id, madre) {
     const { nombre_madre, rut_madre, fechaNacimiento_madre, nacionalidad_madre, nivelEducacional_madre, 
         trabajo_madre, correo_madre, direccion_madre, telefono_madre, alumno_id } = madre;
@@ -73,9 +73,9 @@ async function updateMadres(id, madre) {
     return result;
 }
 
-// ==========================================================
+// -----------------------------------------------------
 // ELIMINAR MADRE
-// ==========================================================
+// -----------------------------------------------------
 async function deleteMadre(id) {
     if (!id) return null;
     const sql = `DELETE FROM ${TABLA} WHERE id = ?`;
