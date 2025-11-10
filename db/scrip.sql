@@ -1,7 +1,7 @@
 CREATE DATABASE colegio;
 USE colegio;
 
--- Usuarios del sistema (solo admins y usuarios con acceso)
+-- Usuarios del sistema
 CREATE TABLE usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     rut_usuario VARCHAR(12) NOT NULL UNIQUE,
@@ -13,7 +13,7 @@ CREATE TABLE usuario (
     rol VARCHAR(50) NOT NULL 
 );
 
--- Alumnos (NO entran al sistema, solo se gestionan)
+-- Alumnos
 CREATE TABLE alumno (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombreCompleto_alumno VARCHAR(500) NOT NULL,
