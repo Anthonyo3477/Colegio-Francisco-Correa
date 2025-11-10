@@ -50,6 +50,7 @@ const matriculaRoutes = require('./routes/apis/documento.routes');
 const apoderadoRoutes = require('./routes/apis/apoderado.routes');
 const nuevoPDFRoutes = require('./routes/apis/nuevoPDF.routes');
 const padresRouter = require('./routes/apis/padres.routes');
+const { error } = require('console');
 
 app.use('/', home);
 app.use('/', alumnoRoutes);
@@ -72,7 +73,10 @@ app.get('/DocMatricula', (req, res) => {
 
 // Vista de inicio de sesión
 app.get('/InicioSeccion', (req, res) => {
-    res.render('InicioSeccion', { error: null });
+    res.render('InicioSeccion', {
+        error: req.query.error || null,
+        success: req.query.success || null
+    });
 });
 
 // ==========================
@@ -82,6 +86,7 @@ app.get('/home', requireLogin, (req, res) => {
     res.render('home', {
         nombre: req.session.nombre_usuario,
         rol: req.session.rol,
+        error: req.query.error || null,
         success: req.query.success || null
     });
 });

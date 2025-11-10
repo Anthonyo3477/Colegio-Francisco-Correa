@@ -67,6 +67,62 @@ main {
     flex: 1;
 }
 
+/* ------------------ Contenedro Principal de la alerta ------------------ */
+.container.mt-4 {
+  position: relative;
+  max-width: 700px;
+  margin-top: 2rem !important;
+  z-index: 3;
+}
+
+.alert-container {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  max-width: 600px;
+  z-index: 1055;
+  animation: fadeInDown 0.6s ease-out;
+  color: #fff;
+}
+
+/* ------------------ Estilo de la alerta en sí ------------------ */
+.alert {
+  text-align: center;
+  box-shadow: 0px 4px 15px rgba(0,0 ,0, 0.2 );
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+/* ------------------ Íconos ------------------ */
+.alert i {
+  font-size: 1.4rem;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+/* ------------------ Animación ------------------ */
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .alert-container {
+    width: 90%;
+  }
+}
+
+
 /* ------------------ Botones ------------------ */
 .btn {
     background: #120077;

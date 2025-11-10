@@ -488,6 +488,27 @@ exports.generarExcel = async function (req, res) {
       { header: "Pueblo Originario", key: "puebloOriginario", width: 20 },
       { header: "¿Qué Pueblo?", key: "quePueblo", width: 20 },
 
+      // ------------------------- Padres -------------------------
+      { header: "Nombre Completo Padre", key: "nombre_padre", width: 30 },
+      { header: "RUT Padre", key: "rut_padre", width: 15 },
+      { header: "Fecha Nacimiento Padre", key: "fechaNacimiento_padre", width: 20 },
+      { header: "Nacionalidad Padre", key: "nacionalidad_padre", width: 20 },
+      { header: "Nivel Educacional", key: "nivelEducacional_padre", width: 40 },
+      { header: "Trabajo Padre", key: "trabajo_padre", width: 50 },
+      { header: "Correo Electronico", key: "correo_padre", width: 30 },
+      { header: "Direccion Padre", key: "direccion_padre", width: 50 },
+      { header: "Telefono Padre", key: "telefono_padre", width: 15 },
+
+      { header: "Nombre Completo Madre", key: "nombre_madre", width: 30 },
+      { header: "RUT Madre", key: "rut_madre", width: 30 },
+      { header: "Fecha Nacimiento Madre", key: "fechaNacimiento_madre", width: 30 },
+      { header: "Nacionalidad Madre", key: "nacionalidad_madre", width: 30 },
+      { header: "Nivel Educacional Madre", key: "nivelEducacional_madre", width: 30 },
+      { header: "Trabajo Madre", key: "trabajo_madre", width: 30 },
+      { header: "Correo Electronico Madre", key: "correo_madre", width: 30 },
+      { header: "Direccion Madre", key: "direccion_madre", width: 30 },
+      { header: "Telefono Madre", key: "telefono_madre", width: 30 },
+
       // ------------------------- Apoderado Principal -------------------------
       { header: "Nombre Apoderado Completo", key: "nombre_apoderado", width: 30 },
       { header: "RUT Apoderado", key: "rut_apoderado", width: 20 },
@@ -561,6 +582,27 @@ exports.generarExcel = async function (req, res) {
         a.puebloOriginario,
         a.quePueblo,
 
+        -- Padres
+        pa.nombre_padre,
+        pa.rut_padre,
+        pa.fechaNacimiento_padre,
+        pa.nacionalidad_padre,
+        pa.nivelEducacional_padre,
+        pa.trabajo_padre,
+        pa.correo_padre,
+        pa.direccion_padre,
+        pa.telefono_padre,
+
+        ma.nombre_madre,
+        ma.rut_madre,
+        ma.fechaNacimiento_madre,
+        ma.nacionalidad_madre,
+        ma.nivelEducacional_madre,
+        ma.trabajo_madre,
+        ma.correo_madre,
+        ma.direccion_madre,
+        ma.telefono_madre,
+
         -- Apoderado Principal
         p.nombre_apoderado,
         p.parentesco_apoderado,
@@ -576,6 +618,8 @@ exports.generarExcel = async function (req, res) {
         s.correoApoderado_suplente
 
       FROM alumno a
+      LEFT JOIN padre pa ON a.id = pa.alumno_id
+      LEFT JOIN madre ma ON a.id = ma.alumno_id
       LEFT JOIN apoderados p ON a.id = p.alumno_id
       LEFT JOIN apoderado_suplente s ON a.id = s.alumno_id
       ORDER BY a.orden_llegada ASC
